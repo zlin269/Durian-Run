@@ -16,6 +16,12 @@
 		623EB13526A167BE000628CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 623EB13426A167BE000628CB /* Assets.xcassets */; };
 		623EB14026A167BE000628CB /* Durian_RunTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB13F26A167BE000628CB /* Durian_RunTests.swift */; };
 		623EB14B26A167BE000628CB /* Durian_RunUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB14A26A167BE000628CB /* Durian_RunUITests.swift */; };
+		623EB15926A16844000628CB /* NormalRun.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 623EB15826A16844000628CB /* NormalRun.atlas */; };
+		623EB15B26A16860000628CB /* AbsorbRun.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 623EB15A26A16860000628CB /* AbsorbRun.atlas */; };
+		623EB15D26A16878000628CB /* BoostRun.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 623EB15C26A16878000628CB /* BoostRun.atlas */; };
+		623EB15F26A16B0B000628CB /* Durian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB15E26A16B0B000628CB /* Durian.swift */; };
+		623EB16126A17D50000628CB /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB16026A17D50000628CB /* Platform.swift */; };
+		623EB16326A187D4000628CB /* HitMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB16226A187D4000628CB /* HitMask.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +57,12 @@
 		623EB14626A167BE000628CB /* Durian RunUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Durian RunUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		623EB14A26A167BE000628CB /* Durian_RunUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Durian_RunUITests.swift; sourceTree = "<group>"; };
 		623EB14C26A167BE000628CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		623EB15826A16844000628CB /* NormalRun.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = NormalRun.atlas; sourceTree = "<group>"; };
+		623EB15A26A16860000628CB /* AbsorbRun.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = AbsorbRun.atlas; sourceTree = "<group>"; };
+		623EB15C26A16878000628CB /* BoostRun.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = BoostRun.atlas; sourceTree = "<group>"; };
+		623EB15E26A16B0B000628CB /* Durian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Durian.swift; sourceTree = "<group>"; };
+		623EB16026A17D50000628CB /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
+		623EB16226A187D4000628CB /* HitMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitMask.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,10 +113,16 @@
 		623EB12626A167BC000628CB /* Durian Run */ = {
 			isa = PBXGroup;
 			children = (
+				623EB15C26A16878000628CB /* BoostRun.atlas */,
+				623EB15A26A16860000628CB /* AbsorbRun.atlas */,
+				623EB15826A16844000628CB /* NormalRun.atlas */,
 				623EB12726A167BC000628CB /* AppDelegate.swift */,
+				623EB16226A187D4000628CB /* HitMask.swift */,
 				623EB12926A167BC000628CB /* GameScene.sks */,
 				623EB12B26A167BC000628CB /* Actions.sks */,
 				623EB12D26A167BC000628CB /* GameScene.swift */,
+				623EB15E26A16B0B000628CB /* Durian.swift */,
+				623EB16026A17D50000628CB /* Platform.swift */,
 				623EB12F26A167BC000628CB /* GameViewController.swift */,
 				623EB13126A167BC000628CB /* Main.storyboard */,
 				623EB13426A167BE000628CB /* Assets.xcassets */,
@@ -235,8 +253,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				623EB13326A167BC000628CB /* Main.storyboard in Resources */,
+				623EB15926A16844000628CB /* NormalRun.atlas in Resources */,
 				623EB12A26A167BC000628CB /* GameScene.sks in Resources */,
+				623EB15D26A16878000628CB /* BoostRun.atlas in Resources */,
 				623EB13526A167BE000628CB /* Assets.xcassets in Resources */,
+				623EB15B26A16860000628CB /* AbsorbRun.atlas in Resources */,
 				623EB12C26A167BC000628CB /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,9 +283,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				623EB16126A17D50000628CB /* Platform.swift in Sources */,
 				623EB12E26A167BC000628CB /* GameScene.swift in Sources */,
 				623EB13026A167BC000628CB /* GameViewController.swift in Sources */,
+				623EB15F26A16B0B000628CB /* Durian.swift in Sources */,
 				623EB12826A167BC000628CB /* AppDelegate.swift in Sources */,
+				623EB16326A187D4000628CB /* HitMask.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
