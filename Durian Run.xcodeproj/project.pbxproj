@@ -1,0 +1,594 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		623EB12826A167BC000628CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB12726A167BC000628CB /* AppDelegate.swift */; };
+		623EB12A26A167BC000628CB /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 623EB12926A167BC000628CB /* GameScene.sks */; };
+		623EB12C26A167BC000628CB /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 623EB12B26A167BC000628CB /* Actions.sks */; };
+		623EB12E26A167BC000628CB /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB12D26A167BC000628CB /* GameScene.swift */; };
+		623EB13026A167BC000628CB /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB12F26A167BC000628CB /* GameViewController.swift */; };
+		623EB13326A167BC000628CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 623EB13126A167BC000628CB /* Main.storyboard */; };
+		623EB13526A167BE000628CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 623EB13426A167BE000628CB /* Assets.xcassets */; };
+		623EB14026A167BE000628CB /* Durian_RunTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB13F26A167BE000628CB /* Durian_RunTests.swift */; };
+		623EB14B26A167BE000628CB /* Durian_RunUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB14A26A167BE000628CB /* Durian_RunUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		623EB13C26A167BE000628CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 623EB11C26A167BC000628CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 623EB12326A167BC000628CB;
+			remoteInfo = "Durian Run";
+		};
+		623EB14726A167BE000628CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 623EB11C26A167BC000628CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 623EB12326A167BC000628CB;
+			remoteInfo = "Durian Run";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		623EB12426A167BC000628CB /* Durian Run.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Durian Run.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		623EB12726A167BC000628CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		623EB12926A167BC000628CB /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		623EB12B26A167BC000628CB /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		623EB12D26A167BC000628CB /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		623EB12F26A167BC000628CB /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		623EB13226A167BC000628CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		623EB13426A167BE000628CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		623EB13626A167BE000628CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		623EB13B26A167BE000628CB /* Durian RunTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Durian RunTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		623EB13F26A167BE000628CB /* Durian_RunTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Durian_RunTests.swift; sourceTree = "<group>"; };
+		623EB14126A167BE000628CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		623EB14626A167BE000628CB /* Durian RunUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Durian RunUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		623EB14A26A167BE000628CB /* Durian_RunUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Durian_RunUITests.swift; sourceTree = "<group>"; };
+		623EB14C26A167BE000628CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		623EB12126A167BC000628CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		623EB13826A167BE000628CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		623EB14326A167BE000628CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		623EB11B26A167BC000628CB = {
+			isa = PBXGroup;
+			children = (
+				623EB12626A167BC000628CB /* Durian Run */,
+				623EB13E26A167BE000628CB /* Durian RunTests */,
+				623EB14926A167BE000628CB /* Durian RunUITests */,
+				623EB12526A167BC000628CB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		623EB12526A167BC000628CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				623EB12426A167BC000628CB /* Durian Run.app */,
+				623EB13B26A167BE000628CB /* Durian RunTests.xctest */,
+				623EB14626A167BE000628CB /* Durian RunUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		623EB12626A167BC000628CB /* Durian Run */ = {
+			isa = PBXGroup;
+			children = (
+				623EB12726A167BC000628CB /* AppDelegate.swift */,
+				623EB12926A167BC000628CB /* GameScene.sks */,
+				623EB12B26A167BC000628CB /* Actions.sks */,
+				623EB12D26A167BC000628CB /* GameScene.swift */,
+				623EB12F26A167BC000628CB /* GameViewController.swift */,
+				623EB13126A167BC000628CB /* Main.storyboard */,
+				623EB13426A167BE000628CB /* Assets.xcassets */,
+				623EB13626A167BE000628CB /* Info.plist */,
+			);
+			path = "Durian Run";
+			sourceTree = "<group>";
+		};
+		623EB13E26A167BE000628CB /* Durian RunTests */ = {
+			isa = PBXGroup;
+			children = (
+				623EB13F26A167BE000628CB /* Durian_RunTests.swift */,
+				623EB14126A167BE000628CB /* Info.plist */,
+			);
+			path = "Durian RunTests";
+			sourceTree = "<group>";
+		};
+		623EB14926A167BE000628CB /* Durian RunUITests */ = {
+			isa = PBXGroup;
+			children = (
+				623EB14A26A167BE000628CB /* Durian_RunUITests.swift */,
+				623EB14C26A167BE000628CB /* Info.plist */,
+			);
+			path = "Durian RunUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		623EB12326A167BC000628CB /* Durian Run */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 623EB14F26A167BE000628CB /* Build configuration list for PBXNativeTarget "Durian Run" */;
+			buildPhases = (
+				623EB12026A167BC000628CB /* Sources */,
+				623EB12126A167BC000628CB /* Frameworks */,
+				623EB12226A167BC000628CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Durian Run";
+			productName = "Durian Run";
+			productReference = 623EB12426A167BC000628CB /* Durian Run.app */;
+			productType = "com.apple.product-type.application";
+		};
+		623EB13A26A167BE000628CB /* Durian RunTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 623EB15226A167BE000628CB /* Build configuration list for PBXNativeTarget "Durian RunTests" */;
+			buildPhases = (
+				623EB13726A167BE000628CB /* Sources */,
+				623EB13826A167BE000628CB /* Frameworks */,
+				623EB13926A167BE000628CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				623EB13D26A167BE000628CB /* PBXTargetDependency */,
+			);
+			name = "Durian RunTests";
+			productName = "Durian RunTests";
+			productReference = 623EB13B26A167BE000628CB /* Durian RunTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		623EB14526A167BE000628CB /* Durian RunUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 623EB15526A167BE000628CB /* Build configuration list for PBXNativeTarget "Durian RunUITests" */;
+			buildPhases = (
+				623EB14226A167BE000628CB /* Sources */,
+				623EB14326A167BE000628CB /* Frameworks */,
+				623EB14426A167BE000628CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				623EB14826A167BE000628CB /* PBXTargetDependency */,
+			);
+			name = "Durian RunUITests";
+			productName = "Durian RunUITests";
+			productReference = 623EB14626A167BE000628CB /* Durian RunUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		623EB11C26A167BC000628CB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1250;
+				LastUpgradeCheck = 1250;
+				TargetAttributes = {
+					623EB12326A167BC000628CB = {
+						CreatedOnToolsVersion = 12.5;
+					};
+					623EB13A26A167BE000628CB = {
+						CreatedOnToolsVersion = 12.5;
+						TestTargetID = 623EB12326A167BC000628CB;
+					};
+					623EB14526A167BE000628CB = {
+						CreatedOnToolsVersion = 12.5;
+						TestTargetID = 623EB12326A167BC000628CB;
+					};
+				};
+			};
+			buildConfigurationList = 623EB11F26A167BC000628CB /* Build configuration list for PBXProject "Durian Run" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 623EB11B26A167BC000628CB;
+			productRefGroup = 623EB12526A167BC000628CB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				623EB12326A167BC000628CB /* Durian Run */,
+				623EB13A26A167BE000628CB /* Durian RunTests */,
+				623EB14526A167BE000628CB /* Durian RunUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		623EB12226A167BC000628CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				623EB13326A167BC000628CB /* Main.storyboard in Resources */,
+				623EB12A26A167BC000628CB /* GameScene.sks in Resources */,
+				623EB13526A167BE000628CB /* Assets.xcassets in Resources */,
+				623EB12C26A167BC000628CB /* Actions.sks in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		623EB13926A167BE000628CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		623EB14426A167BE000628CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		623EB12026A167BC000628CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				623EB12E26A167BC000628CB /* GameScene.swift in Sources */,
+				623EB13026A167BC000628CB /* GameViewController.swift in Sources */,
+				623EB12826A167BC000628CB /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		623EB13726A167BE000628CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				623EB14026A167BE000628CB /* Durian_RunTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		623EB14226A167BE000628CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				623EB14B26A167BE000628CB /* Durian_RunUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		623EB13D26A167BE000628CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 623EB12326A167BC000628CB /* Durian Run */;
+			targetProxy = 623EB13C26A167BE000628CB /* PBXContainerItemProxy */;
+		};
+		623EB14826A167BE000628CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 623EB12326A167BC000628CB /* Durian Run */;
+			targetProxy = 623EB14726A167BE000628CB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		623EB13126A167BC000628CB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				623EB13226A167BC000628CB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		623EB14D26A167BE000628CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		623EB14E26A167BE000628CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		623EB15026A167BE000628CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5RP3YJ7VKV;
+				INFOPLIST_FILE = "Durian Run/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Lin.Durian-Run";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		623EB15126A167BE000628CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5RP3YJ7VKV;
+				INFOPLIST_FILE = "Durian Run/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Lin.Durian-Run";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		623EB15326A167BE000628CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5RP3YJ7VKV;
+				INFOPLIST_FILE = "Durian RunTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Lin.Durian-RunTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Durian Run.app/Durian Run";
+			};
+			name = Debug;
+		};
+		623EB15426A167BE000628CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5RP3YJ7VKV;
+				INFOPLIST_FILE = "Durian RunTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Lin.Durian-RunTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Durian Run.app/Durian Run";
+			};
+			name = Release;
+		};
+		623EB15626A167BE000628CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5RP3YJ7VKV;
+				INFOPLIST_FILE = "Durian RunUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Lin.Durian-RunUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Durian Run";
+			};
+			name = Debug;
+		};
+		623EB15726A167BE000628CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5RP3YJ7VKV;
+				INFOPLIST_FILE = "Durian RunUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Lin.Durian-RunUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Durian Run";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		623EB11F26A167BC000628CB /* Build configuration list for PBXProject "Durian Run" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				623EB14D26A167BE000628CB /* Debug */,
+				623EB14E26A167BE000628CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		623EB14F26A167BE000628CB /* Build configuration list for PBXNativeTarget "Durian Run" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				623EB15026A167BE000628CB /* Debug */,
+				623EB15126A167BE000628CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		623EB15226A167BE000628CB /* Build configuration list for PBXNativeTarget "Durian RunTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				623EB15326A167BE000628CB /* Debug */,
+				623EB15426A167BE000628CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		623EB15526A167BE000628CB /* Build configuration list for PBXNativeTarget "Durian RunUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				623EB15626A167BE000628CB /* Debug */,
+				623EB15726A167BE000628CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 623EB11C26A167BC000628CB /* Project object */;
+}
