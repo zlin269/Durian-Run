@@ -22,6 +22,7 @@
 		623EB15F26A16B0B000628CB /* Durian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB15E26A16B0B000628CB /* Durian.swift */; };
 		623EB16126A17D50000628CB /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB16026A17D50000628CB /* Platform.swift */; };
 		623EB16326A187D4000628CB /* HitMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB16226A187D4000628CB /* HitMask.swift */; };
+		623EB16726A52627000628CB /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB16626A52627000628CB /* Button.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		623EB15E26A16B0B000628CB /* Durian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Durian.swift; sourceTree = "<group>"; };
 		623EB16026A17D50000628CB /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 		623EB16226A187D4000628CB /* HitMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitMask.swift; sourceTree = "<group>"; };
+		623EB16626A52627000628CB /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				623EB12926A167BC000628CB /* GameScene.sks */,
 				623EB12B26A167BC000628CB /* Actions.sks */,
 				623EB12D26A167BC000628CB /* GameScene.swift */,
+				623EB16626A52627000628CB /* Button.swift */,
 				623EB15E26A16B0B000628CB /* Durian.swift */,
 				623EB16026A17D50000628CB /* Platform.swift */,
 				623EB12F26A167BC000628CB /* GameViewController.swift */,
@@ -283,6 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				623EB16726A52627000628CB /* Button.swift in Sources */,
 				623EB16126A17D50000628CB /* Platform.swift in Sources */,
 				623EB12E26A167BC000628CB /* GameScene.swift in Sources */,
 				623EB13026A167BC000628CB /* GameViewController.swift in Sources */,

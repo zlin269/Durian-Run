@@ -15,6 +15,7 @@ enum DurianState: Int {
 class Durian: SKSpriteNode {
 	
 	var state: DurianState = DurianState.normal
+	var inAir: Bool = false 
 	
 	let normalRun = SKTextureAtlas(named: "NormalRun")
 	let absorbRun = SKTextureAtlas(named: "AbsorbRun")
@@ -43,11 +44,11 @@ class Durian: SKSpriteNode {
 		}
 		
 		for i in 0..<absorbRun.textureNames.count {
-			absorbRunTexture.append(normalRun.textureNamed("p2_walk0\(i+1)"))
+			absorbRunTexture.append(absorbRun.textureNamed("p2_walk0\(i+1)"))
 		}
 		
 		for i in 0..<boostRun.textureNames.count {
-			boostRunTexture.append(normalRun.textureNamed("p3_walk0\(i+1)"))
+			boostRunTexture.append(boostRun.textureNamed("p3_walk0\(i+1)"))
 		}
 		
 	}
@@ -80,6 +81,11 @@ class Durian: SKSpriteNode {
 		self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000))
 		
 		self.run(SKAction.animate(with: jumpTexture, timePerFrame: 1))
+		
+		inAir = true
+	}
+	
+	func attack() {
 		
 	}
 	
