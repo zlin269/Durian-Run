@@ -24,6 +24,8 @@
 		623EB16326A187D4000628CB /* HitMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB16226A187D4000628CB /* HitMask.swift */; };
 		623EB16726A52627000628CB /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB16626A52627000628CB /* Button.swift */; };
 		623EB16926A5406D000628CB /* StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB16826A5406D000628CB /* StatusBar.swift */; };
+		623EB16D26A54BFD000628CB /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB16C26A54BFD000628CB /* GameOverScene.swift */; };
+		623EB16F26A54CDF000628CB /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB16E26A54CDF000628CB /* MenuScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		623EB16226A187D4000628CB /* HitMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitMask.swift; sourceTree = "<group>"; };
 		623EB16626A52627000628CB /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		623EB16826A5406D000628CB /* StatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
+		623EB16C26A54BFD000628CB /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		623EB16E26A54CDF000628CB /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,14 +121,13 @@
 		623EB12626A167BC000628CB /* Durian Run */ = {
 			isa = PBXGroup;
 			children = (
+				623EB17026A54CF4000628CB /* Scenes */,
 				623EB15C26A16878000628CB /* BoostRun.atlas */,
 				623EB15A26A16860000628CB /* AbsorbRun.atlas */,
 				623EB15826A16844000628CB /* NormalRun.atlas */,
 				623EB12726A167BC000628CB /* AppDelegate.swift */,
 				623EB16226A187D4000628CB /* HitMask.swift */,
-				623EB12926A167BC000628CB /* GameScene.sks */,
 				623EB12B26A167BC000628CB /* Actions.sks */,
-				623EB12D26A167BC000628CB /* GameScene.swift */,
 				623EB16826A5406D000628CB /* StatusBar.swift */,
 				623EB16626A52627000628CB /* Button.swift */,
 				623EB15E26A16B0B000628CB /* Durian.swift */,
@@ -153,6 +156,17 @@
 				623EB14C26A167BE000628CB /* Info.plist */,
 			);
 			path = "Durian RunUITests";
+			sourceTree = "<group>";
+		};
+		623EB17026A54CF4000628CB /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				623EB16E26A54CDF000628CB /* MenuScene.swift */,
+				623EB12D26A167BC000628CB /* GameScene.swift */,
+				623EB16C26A54BFD000628CB /* GameOverScene.swift */,
+				623EB12926A167BC000628CB /* GameScene.sks */,
+			);
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -296,6 +310,8 @@
 				623EB13026A167BC000628CB /* GameViewController.swift in Sources */,
 				623EB15F26A16B0B000628CB /* Durian.swift in Sources */,
 				623EB12826A167BC000628CB /* AppDelegate.swift in Sources */,
+				623EB16F26A54CDF000628CB /* MenuScene.swift in Sources */,
+				623EB16D26A54BFD000628CB /* GameOverScene.swift in Sources */,
 				623EB16326A187D4000628CB /* HitMask.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -58,6 +58,7 @@ class Durian: SKSpriteNode {
 		self.physicsBody?.categoryBitMask = HitMask.durian
 		self.physicsBody?.contactTestBitMask = HitMask.platform
 		self.physicsBody?.mass = 1
+		self.physicsBody?.restitution = 0
 		
 		for i in 0..<normalRun.textureNames.count {
 			normalRunTexture.append(normalRun.textureNamed("p1_walk0\(i+1)"))

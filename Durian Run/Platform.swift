@@ -17,6 +17,8 @@ class Platform: SKNode {
 		self.physicsBody?.isDynamic = false
 		self.physicsBody?.categoryBitMask = HitMask.platform
 		self.physicsBody?.contactTestBitMask = HitMask.durian
+		self.physicsBody?.restitution = 0
+
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
