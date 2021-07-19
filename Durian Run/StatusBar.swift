@@ -7,9 +7,9 @@
 
 import SpriteKit
 
-
 class StatusBar: SKNode {
 	
+	// dimensions
 	let width: CGFloat = 600
 	let height: CGFloat = 100
 	

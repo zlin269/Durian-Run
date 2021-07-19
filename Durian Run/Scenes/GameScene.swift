@@ -12,8 +12,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	// time var
     private var lastUpdateTime : TimeInterval = 0
-	var boostStartTime : TimeInterval = 0
-	var justUnpaused : Bool = false
+	var boostStartTime : TimeInterval = 0 // keep track of when boost will end
+	var justUnpaused : Bool = false // prevent loss of health during pause
     
 	// Big game elements
 	lazy var durian = Durian()
@@ -34,6 +34,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		// gravity
 		self.physicsWorld.contactDelegate = self
 		self.physicsWorld.gravity = CGVector(dx: 0, dy: -15)
+		
+		// game elements
 		
 		durian.name = "durian"
 		durian.position = CGPoint(x: 300, y: 500)
@@ -61,6 +63,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
     }
 	
+	// Long press event, handles absorb action
 	@objc func longPressHappened (sender: UILongPressGestureRecognizer) {
 		if durian.state != DurianState.boost {
 			if sender.state == .began { durian.state = DurianState.absorb }
@@ -81,6 +84,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 	}
     
+	// Boost Mode and Attack handled at touchDown
     func touchDown(atPoint pos : CGPoint) {
 		let touchedNode = atPoint(pos)
 		if isPaused  { return }
@@ -98,9 +102,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
     }
     
-    func touchMoved(toPoint pos : CGPoint) {
-    }
+//    // Not needed
+//    func touchMoved(toPoint pos : CGPoint) {
+//    }
     
+	// Pause and Jump handled at touchUp
     func touchUp(atPoint pos : CGPoint) {
 		let touchedNode = atPoint(pos)
 		if touchedNode.name == "pauseButton" {
@@ -123,13 +129,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 	}
     
+	// ------------ No Need to Modify Any of the Touches ------------
+	
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
-    }
+//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+//    }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
@@ -139,6 +147,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
+	// ------------ No Need to Modify Any of the Touches ------------
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
@@ -174,6 +183,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.lastUpdateTime = currentTime
     }
 	
+	// Creates a game over scene
 	func displayGameOver() {
 		
 		let gameOverScene = GameOverScene(size: size)

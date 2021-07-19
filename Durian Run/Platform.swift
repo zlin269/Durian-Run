@@ -7,12 +7,14 @@
 
 import SpriteKit
 
+// A platform consists of many blocks of grass
 class Platform: SKNode {
 	
-	var width: CGFloat = 0
+	var width: CGFloat = 0 // used to decide where the next block should go
 	
 	override init() {
 		super.init()
+		// Physics Attributes
 		self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 2530, height: 300))
 		self.physicsBody?.isDynamic = false
 		self.physicsBody?.categoryBitMask = HitMask.platform

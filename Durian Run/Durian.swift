@@ -9,17 +9,16 @@ import SpriteKit
 
 enum DurianState: Int {
 	case run = 1, normal, absorb, boost
-	
 }
 
 class Durian: SKSpriteNode {
 	
 	var state: DurianState = DurianState.normal {
 		didSet {
-			run()
+			run() // every time the state changes, execute run() function to update texture
 		}
 	}
-	var inAir: Bool = false {
+	var inAir: Bool = false { // this variable is used for texture update
 		didSet {
 			if inAir {
 				var jumpTexture = [SKTexture]()
@@ -37,6 +36,7 @@ class Durian: SKSpriteNode {
 		}
 	}
 	
+	// gathering assets
 	let normalRun = SKTextureAtlas(named: "NormalRun")
 	let absorbRun = SKTextureAtlas(named: "AbsorbRun")
 	let boostRun = SKTextureAtlas(named: "BoostRun")
@@ -47,10 +47,10 @@ class Durian: SKSpriteNode {
 	
 	init() {
 		
-		
 		let stand = SKTexture(imageNamed: "stand")
 		super.init(texture: stand, color: UIColor.white, size: stand.size())
 		
+		// physics body attributes
 		self.physicsBody = SKPhysicsBody(circleOfRadius: 120)
 		self.physicsBody?.affectedByGravity = true
 		self.physicsBody?.allowsRotation = false

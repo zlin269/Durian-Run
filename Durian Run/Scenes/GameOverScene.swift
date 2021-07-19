@@ -16,8 +16,6 @@ class GameOverScene: MenuScene {
 	override init(size: CGSize) {
 		super.init(size: size)
 		
-		self.backgroundColor = SKColor.darkGray
-		
 		addChild(notificationLabel)
 		notificationLabel.fontSize = 32.0
 		notificationLabel.color = SKColor.white
