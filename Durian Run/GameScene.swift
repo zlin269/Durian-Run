@@ -24,6 +24,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
 	override func didMove(to view: SKView) {
 		
+		// long press gesture recognizer
+		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
+		self.view?.addGestureRecognizer(recognizer)
+		
 		// gravity
 		self.physicsWorld.contactDelegate = self
 		self.physicsWorld.gravity = CGVector(dx: 0, dy: -15)
@@ -43,13 +47,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		boostButton.position = CGPoint(x: 2300, y: 500)
 		self.addChild(boostButton)
     }
+	
+	@objc func longPressHappened (sender: UILongPressGestureRecognizer) {
+		if durian.state != DurianState.boost {
+			if sender.state == .began { durian.state = DurianState.absorb }
+			if sender.state == .ended { durian.state = DurianState.normal }
+		}
+	}
     
 	func didBegin(_ contact: SKPhysicsContact) {
 		if contact.bodyA.node?.name == "platform" || contact.bodyB.node?.name == "durian" {
 			durian.inAir = false
-			durian.run()
 		}
 
+	}
+	
+	func didEnd(_ contact: SKPhysicsContact) {
+		if contact.bodyA.node?.name == "platform" || contact.bodyB.node?.name == "durian" {
+			durian.inAir = true
+		}
 	}
     
     func touchDown(atPoint pos : CGPoint) {
@@ -63,9 +79,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		} else {
 			if durian.state == DurianState.boost {
 				// TODO: attack animation
-				print("attack")
-			} else {
-				durian.state = DurianState.absorb
+				durian.attack()
 			}
 		}
     }
@@ -74,12 +88,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func touchUp(atPoint pos : CGPoint) {
-		if durian.state != DurianState.boost {
-			durian.state = DurianState.normal
+		if durian.state == DurianState.normal {
 			if !durian.inAir {
 				durian.jump()
 			}
-		}
+		} 
 	}
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

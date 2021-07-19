@@ -14,8 +14,28 @@ enum DurianState: Int {
 
 class Durian: SKSpriteNode {
 	
-	var state: DurianState = DurianState.normal
-	var inAir: Bool = false 
+	var state: DurianState = DurianState.normal {
+		didSet {
+			run()
+		}
+	}
+	var inAir: Bool = false {
+		didSet {
+			if inAir {
+				var jumpTexture = [SKTexture]()
+				if state == DurianState.normal {
+					jumpTexture.append(SKTexture(imageNamed: "p1_jump"))
+				} else if state == DurianState.absorb {
+					jumpTexture.append(SKTexture(imageNamed: "p2_jump"))
+				} else {
+					jumpTexture.append(SKTexture(imageNamed: "p3_jump"))
+				}
+				self.run(SKAction.animate(with: jumpTexture, timePerFrame: 1))
+			} else {
+				self.run()
+			}
+		}
+	}
 	
 	let normalRun = SKTextureAtlas(named: "NormalRun")
 	let absorbRun = SKTextureAtlas(named: "AbsorbRun")
@@ -69,24 +89,12 @@ class Durian: SKSpriteNode {
 	
 	func jump() {
 		self.removeAllActions()
-		var jumpTexture = [SKTexture]()
-		if state == DurianState.normal {
-			jumpTexture.append(SKTexture(imageNamed: "p1_jump"))
-		} else if state == DurianState.absorb {
-			jumpTexture.append(SKTexture(imageNamed: "p2_jump"))
-		} else {
-			jumpTexture.append(SKTexture(imageNamed: "p3_jump"))
-		}
-		
 		self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000))
-		
-		self.run(SKAction.animate(with: jumpTexture, timePerFrame: 1))
-		
-		inAir = true
 	}
 	
 	func attack() {
-		
+		// TODO: attack animation and effects
+		print("attack")
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
