@@ -9,10 +9,10 @@ import SpriteKit
 
 class Button: SKSpriteNode {
 	
-	// Buttons have default size of 300 by 300
+	// Buttons have default size of 200 by 200
 	init(imageNamed image: String) {
 		let texture = SKTexture(imageNamed: image)
-		super.init(texture: texture, color: UIColor.white, size: CGSize(width: 300, height: 300))
+		super.init(texture: texture, color: UIColor.white, size: CGSize(width: 200, height: 200))
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

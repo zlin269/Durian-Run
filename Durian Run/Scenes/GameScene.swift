@@ -52,7 +52,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		self.addChild(statusBar)
 		
 		boostButton.name = "boostButton"
-		boostButton.position = CGPoint(x: 2300, y: 500)
+		boostButton.position = CGPoint(x: 2350, y: 500)
+		boostButton.anchorPoint = CGPoint(x: 1, y: 1) // anchor point at bottom top
 		self.addChild(boostButton)
 		
 		pauseButton.name = "pauseButton"

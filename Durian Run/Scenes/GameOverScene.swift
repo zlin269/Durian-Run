@@ -9,18 +9,16 @@ import SpriteKit
 import GameplayKit
 
 class GameOverScene: MenuScene {
-	
-	
-	var notificationLabel = SKLabelNode(text: "Game Over")
-	
 	override init(size: CGSize) {
 		super.init(size: size)
 		
-		addChild(notificationLabel)
-		notificationLabel.fontSize = 32.0
-		notificationLabel.color = SKColor.white
-		notificationLabel.fontName = "Thonburi-Bold"
-		notificationLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+		let winner = SKLabelNode(fontNamed: "Chalkduster")
+		winner.text = "Game Over!"
+		winner.fontSize = 200
+		winner.fontColor = SKColor.brown
+		winner.position = CGPoint(x: frame.midX, y: frame.midY)
+		
+		addChild(winner)
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

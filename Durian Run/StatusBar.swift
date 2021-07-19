@@ -21,6 +21,7 @@ class StatusBar: SKNode {
 		let background = SKSpriteNode(color: UIColor.gray, size: CGSize(width: width, height: height))
 		background.anchorPoint = CGPoint(x: 0, y: 0)
 		background.position = CGPoint(x: 0, y: 0)
+		background.name = "background"
 		coloredBar.anchorPoint = CGPoint(x: 0, y: 0)
 		coloredBar.position = CGPoint(x: 20, y: 20)
 		self.addChild(background)
