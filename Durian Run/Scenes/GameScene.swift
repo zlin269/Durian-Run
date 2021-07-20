@@ -23,7 +23,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var statusBar = StatusBar(UIColor.red)
 	lazy var sun = Sun()
 	
-	var statusBar = StatusBar(UIColor.red)
     var platforms = [Platform]()
 
 	// platforms
@@ -182,6 +181,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Platform move
         if(platforms[0].position.x + platforms[0].width < 0){
         // remove platform that out of scene
+			platforms[0].removeFromParent()
             platforms.remove(at: 0)
         }
         
