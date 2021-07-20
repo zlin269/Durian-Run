@@ -12,5 +12,6 @@ import Foundation
 class HitMask {
 	static var durian: UInt32 = 0b0001
 	static var platform: UInt32 = 0b0010
-	static var pollution: UInt32 = 0b0100
+	static var enemy: UInt32 = 0b0100
+	static var collectable: UInt32 = 0b1000
 }

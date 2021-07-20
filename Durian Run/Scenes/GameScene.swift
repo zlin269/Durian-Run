@@ -22,6 +22,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var platform = Platform()
 	lazy var statusBar = StatusBar(UIColor.red)
 	lazy var sun = Sun()
+	lazy var fertilizer = Fertilizer()
 	
     lazy var platforms = [Platform]()
 	lazy var factories = [Factory]()
@@ -86,6 +87,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		pauseButton.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
 		self.addChild(pauseButton)
 		
+		fertilizer.name = "fertilizer"
+		
     }
 	
 	// Long press event, handles absorb action
@@ -99,6 +102,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	func didBegin(_ contact: SKPhysicsContact) {
 		if (contact.bodyA.node?.name == "platform" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "platform" && contact.bodyA.node?.name == "durian") {
 			durian.inAir += 1
+		}
+		if (contact.bodyA.node?.name == "fertilizer" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "fertilizer" && contact.bodyA.node?.name == "durian") {
+			fertilizer.getCollected()
 		}
 	}
 	
@@ -209,6 +215,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         platformPositionR = platformPositionR - CGFloat(platformSpeed)
 		
+		if fertilizer.inGame {
+			fertilizer.move(speed: platformSpeed)
+		}
+		
 		// Do not update status bars the first frame after unpause
 		// Otherwise health bar drops by a lot (because its based on dt)
         // Unpaused
@@ -248,6 +258,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				}
 			}
 		}
+		
+		// MARK: --Collectable
+		if fertilizer.inGame && (fertilizer.position.x < -100 || fertilizer.position.y < -100) {
+			fertilizer.removeFromParent()
+			fertilizer.inGame = false
+		}
 	
 		// Sun Timer
 		if sun.isOpen && currentTime - sunStartTime > 10 {
@@ -255,12 +271,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		let epsilon = 0.1 // Random Events Generation
 		if abs((Double(gameTime) - Double(Int(gameTime)))) < epsilon && !sun.isOpen {
-			let num = arc4random_uniform(30)
-			if num == 0 {
+			let num = arc4random_uniform(100)
+			if num < 3 {
 				sunStart()
 			}
-			if num < 3 {
+			if num < 5 {
 				spawnFactory()
+			}
+			if num < 100 {
+				spawnFertilizer()
 			}
 		}
 		
@@ -295,7 +314,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		factory.position = CGPoint(x: self.frame.width + 200, y: 400)
 		factory.zPosition = 0
 		if factory.position.x - 500 < factories.last?.position.x ?? 500 {
-			print(1)
 			factory.removeFromParent()
 			return
 		}
@@ -305,6 +323,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			factory.removeFromParent()
 			self.factories.removeFirst()
 		})
+	}
+	
+	func spawnFertilizer () {
+		guard !fertilizer.inGame else {
+			return
+		}
+		fertilizer.inGame = true
+		fertilizer.position = CGPoint(x: self.frame.width + 200, y: 700)
+		fertilizer.zPosition = 100
+		self.addChild(fertilizer)
 	}
 	
 }
