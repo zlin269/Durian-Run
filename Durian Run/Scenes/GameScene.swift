@@ -28,7 +28,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
 	// platforms
     var platformSpeed = 6
-    var platformLength = 6
+    var platformLength = 15
     var platformGap = 350
     var platformPositionR: CGFloat = 0
     
