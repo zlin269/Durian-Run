@@ -29,7 +29,7 @@ class Durian: SKSpriteNode {
 				} else {
 					jumpTexture.append(SKTexture(imageNamed: "p3_jump"))
 				}
-				self.run(SKAction.animate(with: jumpTexture, timePerFrame: 1))
+				self.run(SKAction.animate(with: jumpTexture, timePerFrame: 0.1))
 			} else {
 				self.run()
 			}
@@ -51,7 +51,7 @@ class Durian: SKSpriteNode {
 		super.init(texture: stand, color: UIColor.white, size: stand.size())
 		
 		// physics body attributes
-		self.physicsBody = SKPhysicsBody(circleOfRadius: 120)
+		self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 200, height: 260), center: CGPoint(x: 0, y: 0))
 		self.physicsBody?.affectedByGravity = true
 		self.physicsBody?.allowsRotation = false
 		self.physicsBody?.isDynamic = true
@@ -59,6 +59,7 @@ class Durian: SKSpriteNode {
 		self.physicsBody?.contactTestBitMask = HitMask.platform
 		self.physicsBody?.mass = 1
 		self.physicsBody?.restitution = 0
+		self.physicsBody?.friction = 0
 		
 		for i in 0..<normalRun.textureNames.count {
 			normalRunTexture.append(normalRun.textureNamed("p1_walk0\(i+1)"))
@@ -90,7 +91,7 @@ class Durian: SKSpriteNode {
 	
 	func jump() {
 		self.removeAllActions()
-		self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000))
+		self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1500))
 	}
 	
 	func attack() {

@@ -14,13 +14,7 @@ class Platform: SKNode {
 	
 	override init() {
 		super.init()
-		// Physics Attributes
-		self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 2530, height: 300))
-		self.physicsBody?.isDynamic = false
-		self.physicsBody?.categoryBitMask = HitMask.platform
-		self.physicsBody?.contactTestBitMask = HitMask.durian
-		self.physicsBody?.restitution = 0
-
+		self.physicsBody = SKPhysicsBody()
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -28,6 +22,7 @@ class Platform: SKNode {
 	}
 	
 	func create (number: Int) {
+		
 		let grass_l = SKSpriteNode(imageNamed: "grassLeft")
 		grass_l.size = CGSize(width: grass_l.size.width * 2, height: grass_l.size.height * 2)
 		grass_l.anchorPoint = CGPoint(x: 0, y: 0)
@@ -50,6 +45,14 @@ class Platform: SKNode {
 		grass_r.position.x = width
 		width += grass_r.frame.width
 		self.addChild(grass_r)
+		
+		
+		self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: width, height: grass_l.size.height), center: CGPoint(x: width/2, y: grass_l.size.height/2))
+		self.physicsBody?.isDynamic = false
+		self.physicsBody?.categoryBitMask = HitMask.platform
+		self.physicsBody?.contactTestBitMask = HitMask.durian
+		self.physicsBody?.restitution = 0
+		self.physicsBody?.friction = 0
 		
 	}
 	

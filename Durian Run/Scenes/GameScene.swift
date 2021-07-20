@@ -49,6 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		// game elements
 		
 		durian.name = "durian"
+		durian.inAir = true
 		durian.position = CGPoint(x: 300, y: 500)
 		durian.size = CGSize(width: durian.size.width * 3, height: durian.size.height * 3)
 		self.addChild(durian)
@@ -90,14 +91,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
     
 	func didBegin(_ contact: SKPhysicsContact) {
-		if contact.bodyA.node?.name == "platform" || contact.bodyB.node?.name == "durian" {
+		if (contact.bodyA.node?.name == "platform" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "platform" && contact.bodyA.node?.name == "durian") {
 			durian.inAir = false
 		}
 
 	}
 	
 	func didEnd(_ contact: SKPhysicsContact) {
-		if contact.bodyA.node?.name == "platform" || contact.bodyB.node?.name == "durian" {
+		if (contact.bodyA.node?.name == "platform" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "platform" && contact.bodyA.node?.name == "durian") {
 			durian.inAir = true
 		}
 	}
@@ -191,6 +192,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             platform.create(number: platformLength)
             platform.position = CGPoint(x:Int(frame.width) + platformGap, y:50)
             platformPositionR = platform.position.x + platform.width
+			platform.name = "platform"
             self.addChild(platform)
             platforms.append(platform)
         }
@@ -250,7 +252,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		// MARK: --DEBUG INFO
 		print(gameTime)
 		print(durian.state)
-		print(sun.isOpen)
         
         self.lastUpdateTime = currentTime
     }
