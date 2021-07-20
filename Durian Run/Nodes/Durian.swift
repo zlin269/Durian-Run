@@ -101,6 +101,7 @@ class Durian: SKSpriteNode {
 	func attack() {
 		// TODO: attack animation and effects
 		print("attack")
+		jump()
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

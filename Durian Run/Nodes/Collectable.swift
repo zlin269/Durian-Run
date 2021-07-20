@@ -13,7 +13,7 @@ class Collectable: SKSpriteNode {
 	
 	init(imageNamed image: String) {
 		super.init(texture: SKTexture(imageNamed: image), color: UIColor.white, size: CGSize(width: 200, height: 200))
-		self.physicsBody = SKPhysicsBody(circleOfRadius: 100)
+		self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 200, height: 200))
 		self.physicsBody?.isDynamic = true
 		self.physicsBody?.affectedByGravity = true
 		self.physicsBody?.allowsRotation = false

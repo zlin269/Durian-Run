@@ -21,6 +21,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var durian = Durian()
 	lazy var platform = Platform()
 	lazy var statusBar = StatusBar(UIColor.red)
+	lazy var boostBar = StatusBar(UIColor.blue)
 	lazy var sun = Sun()
 	lazy var fertilizer = Fertilizer()
 	
@@ -28,9 +29,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var factories = [Factory]()
 
 	// platforms
-    var platformSpeed = 6
-    var platformLength = 15
-    var platformGap = 350
+    var platformSpeed = 12
+    var platformLength = 10
+    var platformGap = 250
     var platformPositionR: CGFloat = 0
     
 	// buttons
@@ -69,6 +70,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		statusBar.zPosition = 200
 		self.addChild(statusBar)
 		
+		boostBar.name = "mana"
+		boostBar.position = CGPoint(x: 1800, y: 900)
+		boostBar.zPosition = 200
+		boostBar.setEmpty()
+		self.addChild(boostBar)
+		
 		sun.name = "sun"
 		sun.position = CGPoint(x: 1300, y: 800)
 		sun.zPosition = 0
@@ -87,8 +94,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		pauseButton.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
 		self.addChild(pauseButton)
 		
-		fertilizer.name = "fertilizer"
-		
     }
 	
 	// Long press event, handles absorb action
@@ -105,6 +110,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		if (contact.bodyA.node?.name == "fertilizer" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "fertilizer" && contact.bodyA.node?.name == "durian") {
 			fertilizer.getCollected()
+			boostBar.increase(by: 50)
 		}
 	}
 	
@@ -119,9 +125,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		let touchedNode = atPoint(pos)
 		if isPaused  { return }
 		if touchedNode.name == "boostButton" {
-			if durian.state != DurianState.boost {
+			if durian.state != DurianState.boost && boostBar.isMoreThanOrEqualTo(100) {
 				durian.state = DurianState.boost
 				boostStartTime = self.lastUpdateTime
+				boostBar.setEmpty()
 				durian.run()
 			}
 		} else {
@@ -190,6 +197,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Calculate time since last update
         let dt = currentTime - self.lastUpdateTime
         
+		// MARK: --Platforms
         // Platform move
         if(platforms[0].position.x + platforms[0].width < 0){
         // remove platform that out of scene
@@ -200,8 +208,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (platformPositionR < frame.width){
         // create new platform
             platform = Platform()
-            platform.create(number: platformLength + Int(arc4random() % 5))
-            platform.position = CGPoint(x:CGFloat(frame.width) + CGFloat(platformGap + Int(arc4random() % 100)), y:50)
+			platform.create(number: platformLength + Int(arc4random_uniform(20)))
+            platform.position = CGPoint(x:CGFloat(frame.width) + CGFloat(platformGap + Int(arc4random_uniform(500))), y:50)
             platform.zPosition = 100
             platformPositionR = platform.position.x + platform.width
 			platform.name = "platform"
@@ -248,7 +256,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		
 		// MARK: --Absorbtion Related
-		if durian.state == DurianState.absorb {
+		if durian.state == DurianState.absorb || durian.state == DurianState.boost {
 			if sun.isOpen {
 				statusBar.increase(by: CGFloat(dt * 20))
 			}
@@ -270,16 +278,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			sun.close()
 		}
 		let epsilon = 0.1 // Random Events Generation
-		if abs((Double(gameTime) - Double(Int(gameTime)))) < epsilon && !sun.isOpen {
+		if abs((Double(gameTime) - Double(Int(gameTime)))) < epsilon {
 			let num = arc4random_uniform(100)
-			if num < 3 {
+			if 5 < num && num <= 12 && !sun.isOpen {
 				sunStart()
 			}
-			if num < 5 {
+			if 1 < num && num <= 5 {
 				spawnFactory()
 			}
-			if num < 100 {
+			if num <= 1 {
 				spawnFertilizer()
+				print("carrot spawned")
 			}
 		}
 		
@@ -329,8 +338,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		guard !fertilizer.inGame else {
 			return
 		}
+		fertilizer = Fertilizer()
+		fertilizer.name = "fertilizer"
 		fertilizer.inGame = true
-		fertilizer.position = CGPoint(x: self.frame.width + 200, y: 700)
+		fertilizer.position = CGPoint(x: self.frame.width + 400, y: 700)
 		fertilizer.zPosition = 100
 		self.addChild(fertilizer)
 	}

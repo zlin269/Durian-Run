@@ -32,6 +32,14 @@ class StatusBar: SKNode {
 		coloredBar.size.width = width - 40
 	}
 	
+	func setEmpty() {
+		coloredBar.size.width = 0
+	}
+	
+	func isMoreThanOrEqualTo(_ percent: CGFloat) -> Bool {
+		return coloredBar.size.width / (width - 40) >= percent / 100
+	}
+	
 	func increase (by percent: CGFloat) {
 		guard 0 < percent && percent < 100 else { return }
 		coloredBar.size.width += percent / 100 * (width - 40)
