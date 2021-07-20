@@ -27,8 +27,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
 	// platforms
     var platformSpeed = 6
-    var platformLength = 2
-    var platformGap = 150
+    var platformLength = 6
+    var platformGap = 350
     var platformPositionR: CGFloat = 0
     
 	// buttons
@@ -189,8 +189,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (platformPositionR < frame.width){
         // create new platform
             platform = Platform()
-            platform.create(number: platformLength)
-            platform.position = CGPoint(x:Int(frame.width) + platformGap, y:50)
+            platform.create(number: platformLength + Int(arc4random() % 5))
+            platform.position = CGPoint(x:CGFloat(frame.width) + CGFloat(platformGap + Int(arc4random() % 100)), y:50)
             platformPositionR = platform.position.x + platform.width
 			platform.name = "platform"
             self.addChild(platform)
