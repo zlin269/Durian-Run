@@ -18,9 +18,13 @@ class Durian: SKSpriteNode {
 			run() // every time the state changes, execute run() function to update texture
 		}
 	}
-	var inAir: Bool = false { // this variable is used for texture update
+	// this variable is used for texture update and jump determination
+	// UInt is used because Bool is not suffcient. It is possible to be in
+	// contact with multiple platforms and we need to make sure ending contact
+	// with one of the platform does not make the character inAir
+	var inAir: UInt = 0 {
 		didSet {
-			if inAir {
+			if inAir == 0 {
 				var jumpTexture = [SKTexture]()
 				if state == DurianState.normal {
 					jumpTexture.append(SKTexture(imageNamed: "p1_jump"))
