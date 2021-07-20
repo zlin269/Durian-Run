@@ -12,12 +12,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	// time var
     private var lastUpdateTime : TimeInterval = 0
-	var boostStartTime : TimeInterval = 0 // keep track of when boost will end
-	var justUnpaused : Bool = false // prevent loss of health during pause
+	private var boostStartTime : TimeInterval = 0 // keep track of when boost will end
+	private var sunStartTime : TimeInterval = 0
+	private var justUnpaused : Bool = false // prevent loss of health during pause
+	private var gameTime : TimeInterval = 0
     
 	// Big game elements
 	lazy var durian = Durian()
 	lazy var platform = Platform()
+	lazy var statusBar = StatusBar(UIColor.red)
+	lazy var sun = Sun()
+	
 	var statusBar = StatusBar(UIColor.red)
     var platforms = [Platform]()
 
@@ -38,7 +43,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
 		self.view?.addGestureRecognizer(recognizer)
 		
-		// gravity
+		// MARK: --gravity
 		self.physicsWorld.contactDelegate = self
 		self.physicsWorld.gravity = CGVector(dx: 0, dy: -15)
 		
@@ -59,6 +64,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		statusBar.name = "health"
 		statusBar.position = CGPoint(x: 1800, y: 1000)
 		self.addChild(statusBar)
+		
+		sun.name = "sun"
+		sun.position = CGPoint(x: 1300, y: 800)
+		self.addChild(sun)
 		
 		boostButton.name = "boostButton"
 		boostButton.position = CGPoint(x: 2350, y: 500)
@@ -192,26 +201,56 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         platformPositionR = platformPositionR - CGFloat(platformSpeed)
 		
+		// Do not update status bars the first frame after unpause
+		// Otherwise health bar drops by a lot (because its based on dt)
         // Unpaused
 		if justUnpaused {
 			justUnpaused = false
 		} else {
+			gameTime += dt
 			if durian.state != DurianState.boost {
-				statusBar.decrease(by: CGFloat(dt * 10))
+				statusBar.decrease(by: CGFloat(dt * 5))
 			}
 		}
 		
+		// MARK: --Health Bar
 		if statusBar.isEmpty() {
 			displayGameOver()
 		}
+		
+		// MARK: --Death On Falling
+		if durian.position.y < 0 {
+			displayGameOver()
+		}
         
+		// MARK: --Boost
 		if durian.state == DurianState.boost && currentTime - boostStartTime > 5 {
 			durian.state = DurianState.normal
 			durian.run()
 		}
-		print(currentTime - boostStartTime)
 		
+		// MARK: --Absorb
+		if sun.isOpen {
+			if durian.state == DurianState.absorb {
+				statusBar.increase(by: CGFloat(dt * 20))
+			}
+			if currentTime - sunStartTime > 10 {
+				sun.close()
+			}
+		}
+		let epsilon = 0.1
+		if abs((Double(gameTime) - Double(Int(gameTime)))) < epsilon && !sun.isOpen {
+			let num = arc4random_uniform(30)
+			if num == 0 {
+				sunStart()
+			}
+		}
+		print(abs((Double(gameTime) - Double(Int(gameTime)))))
+
+		// MARK: --DEBUG INFO
+		print(gameTime)
 		print(durian.state)
+		print(sun.isOpen)
         
         self.lastUpdateTime = currentTime
     }
@@ -224,6 +263,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
 		view?.presentScene(gameOverScene, transition: reveal)
+	}
+	
+	// MARK: --Manage Sun Behavior
+	func sunStart () {
+		sun.open()
+		sunStartTime = lastUpdateTime
 	}
 	
 }

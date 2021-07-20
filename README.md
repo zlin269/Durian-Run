@@ -4,7 +4,7 @@ Jack：有问题微信我
 
 TODO:
 1. Moving background (Lawrence)
-2. Collectables (Jack)
+2. Collectables (Jack, Done)
 3. Enemies
 4. Energy bar (Jack, Done)
 5. Boost mode (Jack, Done)
