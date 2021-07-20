@@ -23,7 +23,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var statusBar = StatusBar(UIColor.red)
 	lazy var sun = Sun()
 	
-    var platforms = [Platform]()
+    lazy var platforms = [Platform]()
+	lazy var factories = [Factory]()
 
 	// platforms
     var platformSpeed = 6
@@ -49,13 +50,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		// game elements
 		
 		durian.name = "durian"
-		durian.inAir = true
 		durian.position = CGPoint(x: 300, y: 500)
+		durian.zPosition = 100
 		durian.size = CGSize(width: durian.size.width * 3, height: durian.size.height * 3)
 		self.addChild(durian)
 		
 		platform.name = "platform"
 		platform.position = CGPoint(x: 0, y: 50)
+		platform.zPosition = 100
 		platform.create(number: 16)
         platformPositionR = platform.position.x + platform.width
 		self.addChild(platform)
@@ -63,19 +65,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		statusBar.name = "health"
 		statusBar.position = CGPoint(x: 1800, y: 1000)
+		statusBar.zPosition = 200
 		self.addChild(statusBar)
 		
 		sun.name = "sun"
 		sun.position = CGPoint(x: 1300, y: 800)
+		sun.zPosition = 0
 		self.addChild(sun)
 		
 		boostButton.name = "boostButton"
 		boostButton.position = CGPoint(x: 2350, y: 500)
+		boostButton.zPosition = 200
 		boostButton.anchorPoint = CGPoint(x: 1, y: 1) // anchor point at bottom top
 		self.addChild(boostButton)
 		
 		pauseButton.name = "pauseButton"
 		pauseButton.position = CGPoint(x: 80, y: 1100)
+		pauseButton.zPosition = 200
 		pauseButton.size = CGSize(width: 200, height: 200)
 		pauseButton.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
 		self.addChild(pauseButton)
@@ -92,14 +98,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	func didBegin(_ contact: SKPhysicsContact) {
 		if (contact.bodyA.node?.name == "platform" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "platform" && contact.bodyA.node?.name == "durian") {
-			durian.inAir = false
+			durian.inAir += 1
 		}
-
 	}
 	
 	func didEnd(_ contact: SKPhysicsContact) {
 		if (contact.bodyA.node?.name == "platform" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "platform" && contact.bodyA.node?.name == "durian") {
-			durian.inAir = true
+			durian.inAir -= 1
 		}
 	}
     
@@ -140,7 +145,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		} else {
 			if !isPaused {
 				if durian.state == DurianState.normal {
-					if !durian.inAir {
+					if durian.inAir != 0{
 						durian.jump()
 					}
 				}
@@ -191,6 +196,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             platform = Platform()
             platform.create(number: platformLength)
             platform.position = CGPoint(x:Int(frame.width) + platformGap, y:50)
+			platform.zPosition = 100
             platformPositionR = platform.position.x + platform.width
 			platform.name = "platform"
             self.addChild(platform)
@@ -231,27 +237,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			durian.run()
 		}
 		
-		// MARK: --Absorb
-		if sun.isOpen {
-			if durian.state == DurianState.absorb {
+		// MARK: --Absorbtion Related
+		if durian.state == DurianState.absorb {
+			if sun.isOpen {
 				statusBar.increase(by: CGFloat(dt * 20))
 			}
-			if currentTime - sunStartTime > 10 {
-				sun.close()
+			for f in factories {
+				if abs(f.position.x - durian.position.x) < 300 {
+					statusBar.decrease(by: CGFloat(dt * 25))
+				}
 			}
 		}
-		let epsilon = 0.1
+	
+		// Sun Timer
+		if sun.isOpen && currentTime - sunStartTime > 10 {
+			sun.close()
+		}
+		let epsilon = 0.1 // Random Events Generation
 		if abs((Double(gameTime) - Double(Int(gameTime)))) < epsilon && !sun.isOpen {
 			let num = arc4random_uniform(30)
 			if num == 0 {
 				sunStart()
 			}
+			if num < 3 {
+				spawnFactory()
+			}
 		}
-		print(abs((Double(gameTime) - Double(Int(gameTime)))))
+		
 
 		// MARK: --DEBUG INFO
-		print(gameTime)
-		print(durian.state)
+//		print("game time:", gameTime)
+//		print("durian state:", durian.state)
+//		print("in air:", durian.inAir)
         
         self.lastUpdateTime = currentTime
     }
@@ -270,6 +287,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	func sunStart () {
 		sun.open()
 		sunStartTime = lastUpdateTime
+	}
+	
+	// MARK: --Manage Pollution
+	func spawnFactory () {
+		let factory = Factory()
+		factory.position = CGPoint(x: self.frame.width + 200, y: 400)
+		factory.zPosition = 0
+		if factory.position.x - 500 < factories.last?.position.x ?? 500 {
+			print(1)
+			factory.removeFromParent()
+			return
+		}
+		self.addChild(factory)
+		factories.append(factory)
+		factory.run(SKAction.moveTo(x: -200, duration: 10), completion: {
+			factory.removeFromParent()
+			self.factories.removeFirst()
+		})
 	}
 	
 }
