@@ -53,5 +53,7 @@ class Platform: SKNode {
 		
 	}
 	
-	
+    func move(speed: Int){
+        self.position.x = self.position.x - CGFloat(speed)
+    }
 }
