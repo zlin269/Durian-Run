@@ -19,7 +19,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var durian = Durian()
 	lazy var platform = Platform()
 	var statusBar = StatusBar(UIColor.red)
-	
+    var platforms = [Platform]()
+
+	// platforms
+    var platformSpeed = 6
+    var platformLength = 2
+    var platformGap = 150
+    var platformPositionR: CGFloat = 0
+    
 	// buttons
 	var boostButton = Button(imageNamed: "boost")
 	var pauseButton = Button(imageNamed: "pause")
@@ -45,7 +52,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		platform.name = "platform"
 		platform.position = CGPoint(x: 0, y: 50)
 		platform.create(number: 16)
+        platformPositionR = platform.position.x + platform.width
 		self.addChild(platform)
+        platforms.append(platform)
 		
 		statusBar.name = "health"
 		statusBar.position = CGPoint(x: 1800, y: 1000)
@@ -160,7 +169,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Calculate time since last update
         let dt = currentTime - self.lastUpdateTime
+        
+        // Platform move
+        if(platforms[0].position.x + platforms[0].width < 0){
+        // remove platform that out of scene
+            platforms.remove(at: 0)
+        }
+        
+        if (platformPositionR < frame.width){
+        // create new platform
+            platform = Platform()
+            platform.create(number: platformLength)
+            platform.position = CGPoint(x:Int(frame.width) + platformGap, y:50)
+            platformPositionR = platform.position.x + platform.width
+            self.addChild(platform)
+            platforms.append(platform)
+        }
+        
+        for p in platforms{
+            p.move(speed: platformSpeed)
+        }
+        
+        platformPositionR = platformPositionR - CGFloat(platformSpeed)
 		
+        // Unpaused
 		if justUnpaused {
 			justUnpaused = false
 		} else {
