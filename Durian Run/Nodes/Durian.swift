@@ -60,7 +60,8 @@ class Durian: SKSpriteNode {
 		self.physicsBody?.allowsRotation = false
 		self.physicsBody?.isDynamic = true
 		self.physicsBody?.categoryBitMask = HitMask.durian
-		self.physicsBody?.contactTestBitMask = HitMask.platform | HitMask.collectable
+		self.physicsBody?.contactTestBitMask = HitMask.collectable
+		self.physicsBody?.collisionBitMask = HitMask.platform
 		self.physicsBody?.mass = 1
 		self.physicsBody?.restitution = 0
 		self.physicsBody?.friction = 0

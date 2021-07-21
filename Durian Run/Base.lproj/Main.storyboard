@@ -33,7 +33,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="start" backgroundImage="background"/>
                         <connections>
-                            <segue destination="BV1-FR-VrT" kind="show" id="gl5-4I-zLr"/>
+                            <segue destination="BV1-FR-VrT" kind="showDetail" id="gl5-4I-zLr"/>
                         </connections>
                     </button>
                     <nil key="simulatedTopBarMetrics"/>

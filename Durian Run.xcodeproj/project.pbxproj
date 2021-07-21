@@ -31,6 +31,7 @@
 		6270E11426A6B31800011319 /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E11326A6B31800011319 /* Enemy.swift */; };
 		6270E11726A6B61800011319 /* Collectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E11626A6B61800011319 /* Collectable.swift */; };
 		6270E11926A6BA5C00011319 /* Fertilizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E11826A6BA5C00011319 /* Fertilizer.swift */; };
+		6270E11B26A7BBD000011319 /* Bug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E11A26A7BBD000011319 /* Bug.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		6270E11326A6B31800011319 /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
 		6270E11626A6B61800011319 /* Collectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collectable.swift; sourceTree = "<group>"; };
 		6270E11826A6BA5C00011319 /* Fertilizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fertilizer.swift; sourceTree = "<group>"; };
+		6270E11A26A7BBD000011319 /* Bug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bug.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,17 +181,50 @@
 		623EB17826A66A50000628CB /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
-				623EB17526A66A3A000628CB /* Sun.swift */,
-				6270E11126A67FC300011319 /* Factory.swift */,
-				623EB16826A5406D000628CB /* StatusBar.swift */,
-				623EB16626A52627000628CB /* Button.swift */,
+				6270E11F26A7BC1F00011319 /* Enemies */,
+				6270E11E26A7BC0600011319 /* Collectables */,
+				6270E11D26A7BBF200011319 /* UI */,
+				6270E11C26A7BBDB00011319 /* Environment */,
 				623EB15E26A16B0B000628CB /* Durian.swift */,
-				6270E11626A6B61800011319 /* Collectable.swift */,
-				6270E11826A6BA5C00011319 /* Fertilizer.swift */,
 				623EB16026A17D50000628CB /* Platform.swift */,
-				6270E11326A6B31800011319 /* Enemy.swift */,
 			);
 			path = Nodes;
+			sourceTree = "<group>";
+		};
+		6270E11C26A7BBDB00011319 /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				623EB17526A66A3A000628CB /* Sun.swift */,
+				6270E11126A67FC300011319 /* Factory.swift */,
+			);
+			path = Environment;
+			sourceTree = "<group>";
+		};
+		6270E11D26A7BBF200011319 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				623EB16826A5406D000628CB /* StatusBar.swift */,
+				623EB16626A52627000628CB /* Button.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		6270E11E26A7BC0600011319 /* Collectables */ = {
+			isa = PBXGroup;
+			children = (
+				6270E11626A6B61800011319 /* Collectable.swift */,
+				6270E11826A6BA5C00011319 /* Fertilizer.swift */,
+			);
+			path = Collectables;
+			sourceTree = "<group>";
+		};
+		6270E11F26A7BC1F00011319 /* Enemies */ = {
+			isa = PBXGroup;
+			children = (
+				6270E11A26A7BBD000011319 /* Bug.swift */,
+				6270E11326A6B31800011319 /* Enemy.swift */,
+			);
+			path = Enemies;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -328,6 +363,7 @@
 			files = (
 				623EB16726A52627000628CB /* Button.swift in Sources */,
 				623EB16126A17D50000628CB /* Platform.swift in Sources */,
+				6270E11B26A7BBD000011319 /* Bug.swift in Sources */,
 				6270E11926A6BA5C00011319 /* Fertilizer.swift in Sources */,
 				6270E11426A6B31800011319 /* Enemy.swift in Sources */,
 				623EB12E26A167BC000628CB /* GameScene.swift in Sources */,

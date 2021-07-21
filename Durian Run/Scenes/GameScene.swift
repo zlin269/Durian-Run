@@ -4,6 +4,7 @@
 //
 //  Created by 林子轩 on 2021/7/16.
 //
+//
 
 import SpriteKit
 import GameplayKit
@@ -27,9 +28,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
     lazy var platforms = [Platform]()
 	lazy var factories = [Factory]()
+	lazy var enemies = [Enemy]()
 
 	// platforms
-    var platformSpeed = 12
+	static var platformSpeed : CGFloat = 12
     var platformLength = 10
     var platformGap = 250
     var platformPositionR: CGFloat = 0
@@ -39,6 +41,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	var pauseButton = Button(imageNamed: "pause")
 	
 	
+	// MARK: --Layers in Scene
+	// Layers of nodes in the scene are determined by their zPosition
+	// In this game we use the following convention:
+	// Any background nodes has zPos < 0
+	// Any gameplay related non-physics node has 0 <= zPos < 100
+	// Any physics node has 100 <= zPos < 200
+	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
 		
 		// long press gesture recognizer
@@ -104,6 +113,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 	}
     
+	// MARK: --CONTACT DETECTION
 	func didBegin(_ contact: SKPhysicsContact) {
 		if (contact.bodyA.node?.name == "platform" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "platform" && contact.bodyA.node?.name == "durian") {
 			durian.inAir += 1
@@ -111,6 +121,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if (contact.bodyA.node?.name == "fertilizer" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "fertilizer" && contact.bodyA.node?.name == "durian") {
 			fertilizer.getCollected()
 			boostBar.increase(by: 50)
+		}
+		if contact.bodyA.node?.name == "bug" && contact.bodyB.node?.name == "durian" {
+			if durian.state == DurianState.boost {
+				let b = contact.bodyA.node as! Bug
+				b.receiveDamage(1)
+			} else {
+				statusBar.decrease(by: 30)
+				boostBar.decrease(by: 50)
+			}
+		} else if contact.bodyB.node?.name == "bug" && contact.bodyA.node?.name == "durian" {
+			if durian.state == DurianState.boost {
+				let b = contact.bodyB.node as! Bug
+				b.receiveDamage(1)
+			} else {
+				statusBar.decrease(by: 30)
+				boostBar.decrease(by: 50)
+			}
 		}
 	}
 	
@@ -218,14 +245,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         for p in platforms{
-            p.move(speed: platformSpeed)
+			p.move(speed: GameScene.platformSpeed)
         }
         
-        platformPositionR = platformPositionR - CGFloat(platformSpeed)
+		platformPositionR = platformPositionR - CGFloat(GameScene.platformSpeed)
 		
 		if fertilizer.inGame {
-			fertilizer.move(speed: platformSpeed)
+			fertilizer.move(speed: GameScene.platformSpeed)
 		}
+		
+		// MARK: --Enemies
+		if	!enemies.isEmpty && (enemies[0].position.x < -200 || enemies[0].position.y < -200) {
+			enemies[0].selfDestruction()
+			enemies.removeFirst()
+		}
+		for e in enemies {
+			e.move()
+		}
+		
 		
 		// Do not update status bars the first frame after unpause
 		// Otherwise health bar drops by a lot (because its based on dt)
@@ -277,18 +314,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if sun.isOpen && currentTime - sunStartTime > 10 {
 			sun.close()
 		}
-		let epsilon = 0.1 // Random Events Generation
+		
+		// MARK: Random Events Generation
+		let epsilon = 0.1
 		if abs((Double(gameTime) - Double(Int(gameTime)))) < epsilon {
 			let num = arc4random_uniform(100)
 			if 5 < num && num <= 12 && !sun.isOpen {
 				sunStart()
-			}
-			if 1 < num && num <= 5 {
+			} else if 1 < num && num <= 5 {
 				spawnFactory()
-			}
-			if num <= 1 {
+			} else if num <= 1 {
 				spawnFertilizer()
 				print("carrot spawned")
+			} else if 12 < num && num <= 20 && enemies.count == 0 {
+				spawnBugs(Int(arc4random_uniform(2)) + 1)
 			}
 		}
 		
@@ -346,5 +385,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		self.addChild(fertilizer)
 	}
 	
+	func spawnBugs (_ num: Int) {
+		for i in 1...num {
+			let bug = Bug()
+			bug.position = CGPoint(x: self.frame.width + 200 * CGFloat(i), y: 600)
+			bug.zPosition = 100
+			enemies.append(bug)
+			self.addChild(bug)
+		}
+	}
 }
 

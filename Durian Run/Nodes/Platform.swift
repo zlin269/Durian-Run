@@ -50,13 +50,13 @@ class Platform: SKNode {
 		self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: width, height: grass_l.size.height), center: CGPoint(x: width/2, y: grass_l.size.height/2))
 		self.physicsBody?.isDynamic = false
 		self.physicsBody?.categoryBitMask = HitMask.platform
-		self.physicsBody?.contactTestBitMask = HitMask.durian | HitMask.collectable
+		self.physicsBody?.contactTestBitMask = HitMask.durian 
 		self.physicsBody?.restitution = 0
 		self.physicsBody?.friction = 0
 		
 	}
 	
-    func move(speed: Int){
-        self.position.x = self.position.x - CGFloat(speed)
+    func move(speed: CGFloat){
+        self.position.x = self.position.x - speed
     }
 }

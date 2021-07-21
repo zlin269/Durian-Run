@@ -19,7 +19,8 @@ class Collectable: SKSpriteNode {
 		self.physicsBody?.allowsRotation = false
 		self.physicsBody?.friction = 0
 		self.physicsBody?.categoryBitMask = HitMask.collectable
-		self.physicsBody?.collisionBitMask = HitMask.platform | HitMask.durian
+		self.physicsBody?.contactTestBitMask = HitMask.durian
+		self.physicsBody?.collisionBitMask = HitMask.platform
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -35,7 +36,7 @@ class Collectable: SKSpriteNode {
 		inGame = false
 	}
 	
-	func move(speed: Int){
-		self.position.x = self.position.x - CGFloat(speed)
+	func move(speed: CGFloat){
+		self.position.x = self.position.x - speed
 	}
 }

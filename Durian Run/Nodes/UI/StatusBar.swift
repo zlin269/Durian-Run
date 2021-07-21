@@ -10,10 +10,10 @@ import SpriteKit
 class StatusBar: SKNode {
 	
 	// dimensions
-	let width: CGFloat = 600
-	let height: CGFloat = 100
+	private let width: CGFloat = 600
+	private let height: CGFloat = 100
 	
-	var coloredBar: SKSpriteNode
+	private var coloredBar: SKSpriteNode
 	
 	init(_ color: UIColor) {
 		coloredBar = SKSpriteNode(color: color, size: CGSize(width: width - 40, height: height - 40))
