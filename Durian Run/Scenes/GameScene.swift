@@ -293,7 +293,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		
 		// MARK: --Absorbtion Related
-		if durian.state == DurianState.absorb || durian.state == DurianState.boost {
+		if durian.state == DurianState.absorb {
 			if sun.isOpen {
 				statusBar.increase(by: CGFloat(dt * 20))
 			}
@@ -302,6 +302,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 					statusBar.decrease(by: CGFloat(dt * 25))
 				}
 			}
+		}
+		if durian.state == DurianState.boost {
+			statusBar.increase(by: CGFloat(dt * 20))
 		}
 		
 		// MARK: --Collectable
