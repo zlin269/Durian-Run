@@ -44,7 +44,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	private var seasonTimer : TimeInterval = 0 {
 		didSet {
-			if seasonTimer > 45 {
+			if seasonTimer > 30 {
 				nextSeason()
 				seasonTimer = 0
 			}
@@ -54,8 +54,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	var difficulty : Double = 1
 	
 	// MARK: --Scoring
-	var score : Int = 0
-	lazy var scoreLabel = SKLabelNode(text: String(score))
+	var score : Double = 0 {
+		didSet {
+			scoreLabel.text = String(Int(score))
+		}
+	}
+	lazy var scoreLabel = SKLabelNode(text: String(Int(score)))
 	
 	// Boolean
 	var isRaining: Bool = false
@@ -106,7 +110,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("Inside Gameplay Scene")
             createBackground()
 
-		season = .Fall
+		season = .Spring
 		
 		// long press gesture recognizer
 		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
@@ -176,6 +180,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		seasonIndicator.zPosition = 200
 		self.addChild(seasonIndicator)
 		
+		scoreLabel.fontName = "Chalkduster"
+		scoreLabel.fontSize = 200
+		scoreLabel.fontColor = UIColor.red
+		scoreLabel.position = CGPoint(x: frame.width / 2, y: frame.height - 200)
+		scoreLabel.zPosition = 200
+		self.addChild(scoreLabel)
+		
+		
     }
     
     func createBackground() {
@@ -232,12 +244,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
         if (contact.bodyA.node is Fertilizer && contact.bodyB.node is Durian) || (contact.bodyB.node is Fertilizer && contact.bodyA.node is Durian) {
 			fertilizer.getCollected()
+			score += 500
 			boostBar.increase(by: 50)
         }
 		if contact.bodyA.node is Enemy && contact.bodyB.node is Durian {
 			if durian.state == DurianState.boost {
 				let b = contact.bodyA.node as! Bug
 				b.receiveDamage(1)
+				score += 1000
 			} else {
 				sunshineBar.decrease(by: 30 * (CGFloat(difficulty) * 5))
 				boostBar.decrease(by: 30 * (CGFloat(difficulty) * 5))
@@ -246,9 +260,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			if durian.state == DurianState.boost {
 				let b = contact.bodyB.node as! Bug
 				b.receiveDamage(1)
+				score += 1000
 			} else {
-				sunshineBar.decrease(by: 30)
-				boostBar.decrease(by: 50)
+				sunshineBar.decrease(by: 30 * (CGFloat(difficulty) * 5))
+				boostBar.decrease(by: 30 * (CGFloat(difficulty) * 5))
 			}
 		}
         
@@ -412,6 +427,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			waterBar.decrease(by: CGFloat(dt * difficulty))
 		}
 		
+		// Scoring Update
+		score += dt * Double(GameScene.platformSpeed) * difficulty
+		
 		// MARK: --Boost
 		if durian.state == DurianState.boost && currentTime - boostStartTime > 5 {
 			durian.state = DurianState.normal
@@ -531,6 +549,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //		print("game time:", gameTime)
 //		print("durian state:", durian.state)
 //		print("in air:", durian.inAir)
+		
+		
         
         self.lastUpdateTime = currentTime
     }
