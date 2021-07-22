@@ -22,7 +22,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	private var justUnpaused : Bool = false // prevent loss of health during pause
 	private var gameTime : TimeInterval = 0
     private var currentRainDropSpawnTime : TimeInterval = 0
-    private var rainDropSpawnRate : TimeInterval = 0.5
+    private var rainDropSpawnRate : TimeInterval = 0.1
 	private var season : Season = Season.Spring {
 		didSet {
 			switch season {
@@ -45,6 +45,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			}
 		}
 	}
+	
+	// Boolean
+	var isRaining: Bool = true
     
 	// Big game elements
 	lazy var durian = Durian()
@@ -53,12 +56,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var boostBar = StatusBar(UIColor.blue)
 	lazy var sun = Sun()
 	lazy var fertilizer = Fertilizer()
-    lazy var rain = Rain()
     
 	
     lazy var platforms = [Platform]()
 	lazy var factories = [Factory]()
 	lazy var enemies = [Enemy]()
+	lazy var raindrops = [Rain]()
 
 	// platforms
 	static var platformSpeed : CGFloat = 12
@@ -67,7 +70,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var platformPositionR: CGFloat = 0
     
 	// buttons
-    let raindropTexture = SKTexture(imageNamed: "rain_drop")
 	var boostButton = Button(imageNamed: "boost")
 	var pauseButton = Button(imageNamed: "pause")
 	
@@ -145,6 +147,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		seasonIndicator.position = CGPoint(x: 80, y: 800)
 		seasonIndicator.zPosition = 200
 		self.addChild(seasonIndicator)
+		
     }
     
     func createBackground() {
@@ -198,18 +201,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if (contact.bodyA.node?.name == "platform" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "platform" && contact.bodyA.node?.name == "durian") {
 			durian.inAir += 1
 		}
-        if rain.inGame && (contact.bodyA.node?.name == "raindrop" && contact.bodyB.node?.name == "platform") || (contact.bodyB.node?.name == "raindrop" && contact.bodyA.node?.name == "platform") {
-            rain.removeFromParent()
-            rain.inGame = false
-        }
-        if (contact.bodyA.node?.name == "raindrop" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "raindrop" && contact.bodyA.node?.name == "durian") {
-            rain.getCollected()
-            boostBar.increase(by: 50)
-        }
-		if (contact.bodyA.node?.name == "fertilizer" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "fertilizer" && contact.bodyA.node?.name == "durian") {
+        if (contact.bodyA.node?.name == "fertilizer" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "fertilizer" && contact.bodyA.node?.name == "durian") {
 			fertilizer.getCollected()
-			boostBar.increase(by: 50)
-		}
+			boostBar.increase(by: 30)
+        }
 		if contact.bodyA.node?.name == "bug" && contact.bodyB.node?.name == "durian" {
 			if durian.state == DurianState.boost {
 				let b = contact.bodyA.node as! Bug
@@ -312,7 +307,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         // Calculate time since last update
-        let dt = currentTime - self.lastUpdateTime
+        var dt = currentTime - self.lastUpdateTime
 		
         
 		// MARK: --Platforms
@@ -360,21 +355,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Unpaused
 		if justUnpaused {
 			justUnpaused = false
-		} else {
-			gameTime += dt
-			if durian.state != DurianState.boost {
-				statusBar.decrease(by: CGFloat(dt * 5))
-			}
-			
-			// MARK: --Boost
-			if durian.state == DurianState.boost && currentTime - boostStartTime > 5 {
-			durian.state = DurianState.normal
-			durian.run()
-			}
-			
-			// MARK: --Season Change
-			seasonTimer += dt
+			dt = 0
 		}
+		
+		gameTime += dt
+		if durian.state != DurianState.boost {
+			statusBar.decrease(by: CGFloat(dt * 5))
+		}
+		
+		// MARK: --Boost
+		if durian.state == DurianState.boost && currentTime - boostStartTime > 5 {
+		durian.state = DurianState.normal
+		durian.run()
+		}
+		
+		// MARK: --Season Change
+		seasonTimer += dt
 		
 		// MARK: --Health Bar
 		if statusBar.isEmpty() {
@@ -392,11 +388,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			if sun.isOpen {
 				statusBar.increase(by: CGFloat(dt * 20))
 			}
+			if isRaining {
+				boostBar.increase(by: CGFloat(dt * 5))
+			}
 			for f in factories {
 				if abs(f.position.x - durian.position.x) < 300 {
 					statusBar.decrease(by: CGFloat(dt * 25))
 				}
 			}
+			
 		}
 		if durian.state == DurianState.boost {
 			statusBar.increase(by: CGFloat(dt * 20))
@@ -406,6 +406,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if fertilizer.inGame && (fertilizer.position.x < -100 || fertilizer.position.y < -100) {
 			fertilizer.removeFromParent()
 			fertilizer.inGame = false
+		}
+		if	!raindrops.isEmpty && !raindrops[0].inGame {
+			raindrops.removeFirst()
 		}
 	
 		// Sun Timer
@@ -428,13 +431,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				spawnBugs(Int(arc4random_uniform(2)) + 1)
 			}
 		}
-        // Update the spawn timer
-        currentRainDropSpawnTime += dt
+		
+		if isRaining {
+			// Update the spawn timer
+			currentRainDropSpawnTime += dt
 
-        if currentRainDropSpawnTime > rainDropSpawnRate {
-          currentRainDropSpawnTime = 0
-          spawnRaindrop()
-        }
+			if currentRainDropSpawnTime > rainDropSpawnRate {
+			  currentRainDropSpawnTime = 0
+			  spawnRaindrop()
+			}
+		}
 		
 
 		// MARK: --DEBUG INFO
@@ -513,18 +519,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
     
     func spawnRaindrop() {
-        rain = Rain()
-        rain.name = "rain"
-        rain.inGame = true
-        let raindrop = SKSpriteNode(texture: raindropTexture)
-        raindrop.physicsBody = SKPhysicsBody(texture: raindropTexture, size: raindrop.size)
-        let xPosition =
-            CGFloat(arc4random()).truncatingRemainder(dividingBy: size.width)
+		
+		let raindrop = Rain()
+		raindrop.name = "raindrop"
+		let xPosition = CGFloat(arc4random_uniform(UInt32(self.frame.width)))
         let yPosition = size.height + raindrop.size.height
 
         raindrop.position = CGPoint(x: xPosition, y: yPosition)
-
-        self.addChild(rain)
+		raindrop.run(SKAction.moveTo(y: -100, duration: 0.5), completion: {
+			raindrop.removeFromParent()
+			raindrop.inGame = false
+		})
+		raindrops.append(raindrop)
+        self.addChild(raindrop)
       }
 }
 

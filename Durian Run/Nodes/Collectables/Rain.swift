@@ -12,6 +12,11 @@ class Rain: Collectable {
     
     init() {
         super.init(imageNamed: "rain_drop")
+		
+		self.inGame = true
+		let texture = SKTexture(imageNamed: "rain_drop")
+		self.size = texture.size()
+		self.physicsBody = nil
     }
     
     required init?(coder aDecoder: NSCoder) {
