@@ -14,7 +14,7 @@ TODO:
 9. Game Over (Jack, Done)
 10. Movements, Jumping, Absorption (Jack, Done)
 11. Storm
-12. collectable Resources (and their effects)
-13. Water
+12. collectable Resources (and their effects) (Jack)
+13. Water (Lawrence, Done)
 14. Platforms to jump and run on （Alice）
 15. Four seasons (Jack)
