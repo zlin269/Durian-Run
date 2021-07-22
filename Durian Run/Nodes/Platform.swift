@@ -15,6 +15,7 @@ class Platform: SKNode {
 	override init() {
 		super.init()
 		self.physicsBody = SKPhysicsBody()
+        
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

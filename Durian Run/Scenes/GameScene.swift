@@ -21,6 +21,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	private var sunStartTime : TimeInterval = 0
 	private var justUnpaused : Bool = false // prevent loss of health during pause
 	private var gameTime : TimeInterval = 0
+    private var currentRainDropSpawnTime : TimeInterval = 0
+    private var rainDropSpawnRate : TimeInterval = 0.5
 	private var season : Season = Season.Spring {
 		didSet {
 			switch season {
@@ -51,6 +53,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var boostBar = StatusBar(UIColor.blue)
 	lazy var sun = Sun()
 	lazy var fertilizer = Fertilizer()
+    lazy var rain = Rain()
+    
 	
     lazy var platforms = [Platform]()
 	lazy var factories = [Factory]()
@@ -63,6 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var platformPositionR: CGFloat = 0
     
 	// buttons
+    let raindropTexture = SKTexture(imageNamed: "rain_drop")
 	var boostButton = Button(imageNamed: "boost")
 	var pauseButton = Button(imageNamed: "pause")
 	
@@ -147,7 +152,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         for i in 0 ... 3 {
             let background = SKSpriteNode(texture: backgroundTexture)
-            background.zPosition = -150
+            background.zPosition = -100
             
             background.anchorPoint = CGPoint.zero
             
@@ -155,6 +160,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             addChild(background)
             
             let moveLeft = SKAction.moveBy(x: -backgroundTexture.size().width, y: 0, duration: 15)
+            let moveReset = SKAction.moveBy(x: backgroundTexture.size().width, y: 0, duration: 0)
+            let moveLoop = SKAction.sequence([moveLeft, moveReset])
+            let moveForever = SKAction.repeatForever(moveLoop)
+            
+            background.run(moveForever)
+        }
+        
+        for i in 0 ... 3 {
+            let background = SKSpriteNode(texture: backgroundTexture)
+            background.zPosition = -100
+            
+            background.anchorPoint = CGPoint.zero
+            
+            background.position = CGPoint(x: (backgroundTexture.size().width * CGFloat(i)) - CGFloat(1 * i), y: 550)
+            addChild(background)
+            
+            let moveLeft = SKAction.moveBy(x: -backgroundTexture.size().width, y: 0, duration: 50)
             let moveReset = SKAction.moveBy(x: backgroundTexture.size().width, y: 0, duration: 0)
             let moveLoop = SKAction.sequence([moveLeft, moveReset])
             let moveForever = SKAction.repeatForever(moveLoop)
@@ -176,6 +198,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if (contact.bodyA.node?.name == "platform" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "platform" && contact.bodyA.node?.name == "durian") {
 			durian.inAir += 1
 		}
+        if rain.inGame && (contact.bodyA.node?.name == "raindrop" && contact.bodyB.node?.name == "platform") || (contact.bodyB.node?.name == "raindrop" && contact.bodyA.node?.name == "platform") {
+            rain.removeFromParent()
+            rain.inGame = false
+        }
+        if (contact.bodyA.node?.name == "raindrop" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "raindrop" && contact.bodyA.node?.name == "durian") {
+            rain.getCollected()
+            boostBar.increase(by: 50)
+        }
 		if (contact.bodyA.node?.name == "fertilizer" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "fertilizer" && contact.bodyA.node?.name == "durian") {
 			fertilizer.getCollected()
 			boostBar.increase(by: 50)
@@ -197,6 +227,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				boostBar.decrease(by: 50)
 			}
 		}
+        
+        
 	}
 	
 	func didEnd(_ contact: SKPhysicsContact) {
@@ -396,6 +428,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				spawnBugs(Int(arc4random_uniform(2)) + 1)
 			}
 		}
+        // Update the spawn timer
+        currentRainDropSpawnTime += dt
+
+        if currentRainDropSpawnTime > rainDropSpawnRate {
+          currentRainDropSpawnTime = 0
+          spawnRaindrop()
+        }
 		
 
 		// MARK: --DEBUG INFO
@@ -472,5 +511,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			season = .Spring
 		}
 	}
+    
+    func spawnRaindrop() {
+        rain = Rain()
+        rain.name = "rain"
+        rain.inGame = true
+        let raindrop = SKSpriteNode(texture: raindropTexture)
+        raindrop.physicsBody = SKPhysicsBody(texture: raindropTexture, size: raindrop.size)
+        let xPosition =
+            CGFloat(arc4random()).truncatingRemainder(dividingBy: size.width)
+        let yPosition = size.height + raindrop.size.height
+
+        raindrop.position = CGPoint(x: xPosition, y: yPosition)
+
+        self.addChild(rain)
+      }
 }
 
