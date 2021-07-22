@@ -14,6 +14,7 @@ class MenuScene: SKScene {
 	// MARK: - Scene lifecycle
 	
 	override func sceneDidLoad() {
+        
 		super.sceneDidLoad()
 		
 		configureBackground()
