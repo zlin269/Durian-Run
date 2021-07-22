@@ -2,7 +2,7 @@
 //  GameViewController.swift
 //  Durian Run
 //
-//  Created by 林子轩 on 2021/7/16.
+//  Created by 林子轩 and Lawrence on 2021/7/16.
 //
 
 import UIKit
@@ -10,8 +10,10 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
+    
 
     override func viewDidLoad() {
+
         super.viewDidLoad()
         
         // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
@@ -36,6 +38,9 @@ class GameViewController: UIViewController {
                 }
             }
         }
+        super.viewDidLoad()
+       
+
     }
 
     override var shouldAutorotate: Bool {
