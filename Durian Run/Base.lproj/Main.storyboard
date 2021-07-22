@@ -11,7 +11,7 @@
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="BV1-FR-VrT" customClass="GameViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -27,7 +27,7 @@
         <!--View Controller-->
         <scene sceneID="Q4f-ar-0De">
             <objects>
-                <viewController storyboardIdentifier="StartingView" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="light" id="Xb4-PN-XEg" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StartingView" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="light" id="Xb4-PN-XEg" sceneMemberID="viewController">
                     <button key="view" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="YTI-Wt-8Rs">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
