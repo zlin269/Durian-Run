@@ -49,6 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Big game elements
 	lazy var durian = Durian()
 	lazy var platform = Platform()
+    lazy var platformLevel = Platform()
 	lazy var statusBar = StatusBar(UIColor.red)
 	lazy var boostBar = StatusBar(UIColor.blue)
 	lazy var sun = Sun()
@@ -57,6 +58,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	
     lazy var platforms = [Platform]()
+    lazy var platformLevels = [Platform]()
 	lazy var factories = [Factory]()
 	lazy var enemies = [Enemy]()
 
@@ -65,6 +67,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var platformLength = 10
     var platformGap = 250
     var platformPositionR: CGFloat = 0
+    var levelLength = 2
+    var levelGap = 2000
+    var platformLevelPositionR: CGFloat = 0
     
 	// buttons
     let raindropTexture = SKTexture(imageNamed: "rain_drop")
@@ -110,6 +115,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         platformPositionR = platform.position.x + platform.width
 		self.addChild(platform)
         platforms.append(platform)
+        
+        platformLevel.name = "platformLevel"
+        platformLevel.position = CGPoint(x: 1500, y: 520)
+        platformLevel.zPosition = 100
+        platformLevel.create(number: 4)
+        platformLevelPositionR = platformLevel.position.x + platformLevel.width
+        self.addChild(platformLevel)
+        platformLevels.append(platformLevel)
+        
 		
 		statusBar.name = "health"
 		statusBar.position = CGPoint(x: 1800, y: 1000)
@@ -195,7 +209,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	// MARK: --CONTACT DETECTION
 	func didBegin(_ contact: SKPhysicsContact) {
-		if (contact.bodyA.node?.name == "platform" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "platform" && contact.bodyA.node?.name == "durian") {
+		if (contact.bodyA.node is Platform && contact.bodyB.node is Durian) ||
+            (contact.bodyB.node is Platform && contact.bodyA.node is Durian) {
 			durian.inAir += 1
 		}
         if rain.inGame && (contact.bodyA.node?.name == "raindrop" && contact.bodyB.node?.name == "platform") || (contact.bodyB.node?.name == "raindrop" && contact.bodyA.node?.name == "platform") {
@@ -232,7 +247,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	
 	func didEnd(_ contact: SKPhysicsContact) {
-		if (contact.bodyA.node?.name == "platform" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "platform" && contact.bodyA.node?.name == "durian") {
+		if (contact.bodyA.node is Platform && contact.bodyB.node is Durian) ||
+            (contact.bodyB.node is Platform && contact.bodyA.node is Durian) {
 			durian.inAir -= 1
 		}
 	}
@@ -340,6 +356,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
 		platformPositionR = platformPositionR - CGFloat(GameScene.platformSpeed)
+        
+        // PlatformLevel move
+        if(platformLevels[0].position.x + platformLevels[0].width < 0){
+        // remove platform that out of scene
+            platformLevels[0].removeFromParent()
+            platformLevels.remove(at: 0)
+        }
+        
+        if (platformLevelPositionR < frame.width){
+        // create new platform
+            platformLevel = Platform()
+            platformLevel.create(number: levelLength + Int(arc4random_uniform(3)))
+            platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:520)
+            platformLevel.zPosition = 100
+            platformLevelPositionR = platformLevel.position.x + platformLevel.width
+            platformLevel.name = "platformLevel"
+            self.addChild(platformLevel)
+            platformLevels.append(platformLevel)
+        }
+        
+        for pl in platformLevels{
+            pl.move(speed: GameScene.platformSpeed)
+        }
+        
+        platformLevelPositionR = platformLevelPositionR - CGFloat(GameScene.platformSpeed)
 		
 		if fertilizer.inGame {
 			fertilizer.move(speed: GameScene.platformSpeed)
