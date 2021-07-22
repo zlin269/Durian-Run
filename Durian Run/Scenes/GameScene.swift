@@ -27,6 +27,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		didSet {
 			switch season {
 			case .Spring:
+				difficulty += 1
 				seasonIndicator.color = UIColor.green
 				isRaining = true
 			case .Summer:
@@ -49,6 +50,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			}
 		}
 	}
+	// MARK: --Difficulty
+	var difficulty : Double = 1
+	
+	// MARK: --Scoring
+	var score : Int = 0
+	lazy var scoreLabel = SKLabelNode(text: String(score))
 	
 	// Boolean
 	var isRaining: Bool = false
@@ -99,11 +106,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("Inside Gameplay Scene")
             createBackground()
 
-		season = .Summer
+		season = .Fall
 		
 		// long press gesture recognizer
 		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
 		self.view?.addGestureRecognizer(recognizer)
+		recognizer.minimumPressDuration = 0.2
 		
 		// MARK: --gravity
 		self.physicsWorld.contactDelegate = self
@@ -125,14 +133,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		self.addChild(platform)
         platforms.append(platform)
         
-        platformLevel.name = "platformLevel"
-        platformLevel.position = CGPoint(x: 1500, y: 520)
-        platformLevel.zPosition = 100
-        platformLevel.create(number: 4)
-        platformLevelPositionR = platformLevel.position.x + platformLevel.width
-        self.addChild(platformLevel)
-        platformLevels.append(platformLevel)
-        
 		
 		sunshineBar.name = "health"
 		sunshineBar.position = CGPoint(x: 1800, y: 1000)
@@ -149,7 +149,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		boostBar.name = "mana"
 		boostBar.position = CGPoint(x: 1800, y: 800)
 		boostBar.zPosition = 200
-		boostBar.setEmpty()
+		boostBar.setFull()
 		self.addChild(boostBar)
 		
 		sun.name = "sun"
@@ -230,19 +230,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             (contact.bodyB.node is Platform && contact.bodyA.node is Durian) {
 			durian.inAir += 1
 		}
-        if (contact.bodyA.node?.name == "fertilizer" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "fertilizer" && contact.bodyA.node?.name == "durian") {
+        if (contact.bodyA.node is Fertilizer && contact.bodyB.node is Durian) || (contact.bodyB.node is Fertilizer && contact.bodyA.node is Durian) {
 			fertilizer.getCollected()
 			boostBar.increase(by: 50)
         }
-		if contact.bodyA.node?.name == "bug" && contact.bodyB.node?.name == "durian" {
+		if contact.bodyA.node is Enemy && contact.bodyB.node is Durian {
 			if durian.state == DurianState.boost {
 				let b = contact.bodyA.node as! Bug
 				b.receiveDamage(1)
 			} else {
-				sunshineBar.decrease(by: 30)
-				boostBar.decrease(by: 50)
+				sunshineBar.decrease(by: 30 * (CGFloat(difficulty) * 5))
+				boostBar.decrease(by: 30 * (CGFloat(difficulty) * 5))
 			}
-		} else if contact.bodyB.node?.name == "bug" && contact.bodyA.node?.name == "durian" {
+		} else if contact.bodyB.node is Enemy && contact.bodyA.node is Durian {
 			if durian.state == DurianState.boost {
 				let b = contact.bodyB.node as! Bug
 				b.receiveDamage(1)
@@ -371,30 +371,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
 		platformPositionR = platformPositionR - CGFloat(GameScene.platformSpeed)
         
-        // PlatformLevel move
-        if(platformLevels[0].position.x + platformLevels[0].width < 0){
-        // remove platform that out of scene
-            platformLevels[0].removeFromParent()
-            platformLevels.remove(at: 0)
-        }
-        
-        if (platformLevelPositionR < frame.width){
-        // create new platform
-            platformLevel = Platform()
-            platformLevel.create(number: levelLength + Int(arc4random_uniform(3)))
-            platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:520)
-            platformLevel.zPosition = 100
-            platformLevelPositionR = platformLevel.position.x + platformLevel.width
-            platformLevel.name = "platformLevel"
-            self.addChild(platformLevel)
-            platformLevels.append(platformLevel)
-        }
-        
-        for pl in platformLevels{
-            pl.move(speed: GameScene.platformSpeed)
-        }
-        
-        platformLevelPositionR = platformLevelPositionR - CGFloat(GameScene.platformSpeed)
+		// PlatformLevel move
+		if !platformLevels.isEmpty && platformLevels[0].position.x + platformLevels[0].width < 0 {
+			// remove platform that out of scene
+			platformLevels[0].removeFromParent()
+			platformLevels.remove(at: 0)
+		}
+		
+		for pl in platformLevels{
+			pl.move(speed: GameScene.platformSpeed)
+		}
+		
+		platformLevelPositionR = platformLevelPositionR - CGFloat(GameScene.platformSpeed)
 		
 		if fertilizer.inGame {
 			fertilizer.move(speed: GameScene.platformSpeed)
@@ -420,8 +408,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		gameTime += dt
 		if durian.state != DurianState.boost {
-			sunshineBar.decrease(by: CGFloat(dt * 3))
-			waterBar.decrease(by: CGFloat(dt * 3))
+			sunshineBar.decrease(by: CGFloat(dt * difficulty))
+			waterBar.decrease(by: CGFloat(dt * difficulty))
 		}
 		
 		// MARK: --Boost
@@ -504,6 +492,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				}
 				break
 			case .Winter:
+				
+				if (platformLevelPositionR < frame.width){
+					// create new platform
+					platformLevel = Platform()
+					platformLevel.create(number: levelLength + Int(arc4random_uniform(3)))
+					platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:480)
+					platformLevel.zPosition = 100
+					platformLevelPositionR = platformLevel.position.x + platformLevel.width
+					platformLevel.name = "platformLevel"
+					self.addChild(platformLevel)
+					platformLevels.append(platformLevel)
+				}
+				
 				break
 			default:
 				break

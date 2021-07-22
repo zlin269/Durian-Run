@@ -91,8 +91,19 @@ class Durian: SKSpriteNode {
 		} else if state == DurianState.boost {
 			runTexture = boostRunTexture
 		}
-			
-		self.run(SKAction.repeatForever(SKAction.animate(with: runTexture, timePerFrame: 0.05)))
+		if inAir == 0 {
+			var jumpTexture = [SKTexture]()
+			if state == DurianState.normal {
+				jumpTexture.append(SKTexture(imageNamed: "p1_jump"))
+			} else if state == DurianState.absorb {
+				jumpTexture.append(SKTexture(imageNamed: "p2_jump"))
+			} else {
+				jumpTexture.append(SKTexture(imageNamed: "p3_jump"))
+			}
+			self.run(SKAction.animate(with: jumpTexture, timePerFrame: 0.1))
+		} else {
+			self.run(SKAction.repeatForever(SKAction.animate(with: runTexture, timePerFrame: 0.05)))
+		}
 	}
 	
 	func jump() {
