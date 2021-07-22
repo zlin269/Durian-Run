@@ -97,6 +97,9 @@ class Durian: SKSpriteNode {
 	
 	func jump() {
 		self.removeAllActions()
+		if inAir == 0 {
+			self.physicsBody?.isResting = true
+		}
 		self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1500))
 	}
 	

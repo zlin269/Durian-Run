@@ -28,12 +28,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			switch season {
 			case .Spring:
 				seasonIndicator.color = UIColor.green
+				isRaining = true
 			case .Summer:
 				seasonIndicator.color = UIColor.cyan
+				isRaining = true
 			case .Fall:
 				seasonIndicator.color = UIColor.yellow
+				isRaining = false
 			default:
 				seasonIndicator.color = UIColor.white
+				isRaining = false
 			}
 		}
 	}
@@ -47,13 +51,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	
 	// Boolean
-	var isRaining: Bool = true
+	var isRaining: Bool = false
     
 	// Big game elements
 	lazy var durian = Durian()
 	lazy var platform = Platform()
-	lazy var statusBar = StatusBar(UIColor.red)
-	lazy var boostBar = StatusBar(UIColor.blue)
+	lazy var sunshineBar = StatusBar(UIColor.red)
+	lazy var waterBar = StatusBar(UIColor.blue)
+	lazy var boostBar = StatusBar(UIColor.purple)
 	lazy var sun = Sun()
 	lazy var fertilizer = Fertilizer()
     
@@ -88,6 +93,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("Inside Gameplay Scene")
             createBackground()
 
+		season = .Summer
 		
 		// long press gesture recognizer
 		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
@@ -113,13 +119,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		self.addChild(platform)
         platforms.append(platform)
 		
-		statusBar.name = "health"
-		statusBar.position = CGPoint(x: 1800, y: 1000)
-		statusBar.zPosition = 200
-		self.addChild(statusBar)
+		sunshineBar.name = "health"
+		sunshineBar.position = CGPoint(x: 1800, y: 1000)
+		sunshineBar.zPosition = 200
+		self.addChild(sunshineBar)
+		
+		waterBar.name = "water"
+		waterBar.position = CGPoint(x: 1800, y: 900)
+		waterBar.zPosition = 200
+		waterBar.setEmpty()
+		waterBar.increase(by: 50)
+		self.addChild(waterBar)
 		
 		boostBar.name = "mana"
-		boostBar.position = CGPoint(x: 1800, y: 900)
+		boostBar.position = CGPoint(x: 1800, y: 800)
 		boostBar.zPosition = 200
 		boostBar.setEmpty()
 		self.addChild(boostBar)
@@ -203,14 +216,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
         if (contact.bodyA.node?.name == "fertilizer" && contact.bodyB.node?.name == "durian") || (contact.bodyB.node?.name == "fertilizer" && contact.bodyA.node?.name == "durian") {
 			fertilizer.getCollected()
-			boostBar.increase(by: 30)
+			boostBar.increase(by: 50)
         }
 		if contact.bodyA.node?.name == "bug" && contact.bodyB.node?.name == "durian" {
 			if durian.state == DurianState.boost {
 				let b = contact.bodyA.node as! Bug
 				b.receiveDamage(1)
 			} else {
-				statusBar.decrease(by: 30)
+				sunshineBar.decrease(by: 30)
 				boostBar.decrease(by: 50)
 			}
 		} else if contact.bodyB.node?.name == "bug" && contact.bodyA.node?.name == "durian" {
@@ -218,7 +231,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				let b = contact.bodyB.node as! Bug
 				b.receiveDamage(1)
 			} else {
-				statusBar.decrease(by: 30)
+				sunshineBar.decrease(by: 30)
 				boostBar.decrease(by: 50)
 			}
 		}
@@ -270,8 +283,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		} else {
 			if !isPaused {
 				if durian.state == DurianState.normal {
-					if durian.inAir != 0{
+					if durian.inAir != 0 {
 						durian.jump()
+					} else {
+						if waterBar.isMoreThanOrEqualTo(90) {
+							durian.jump()
+							waterBar.decrease(by: 30)
+						}
 					}
 				}
 			}
@@ -360,20 +378,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		gameTime += dt
 		if durian.state != DurianState.boost {
-			statusBar.decrease(by: CGFloat(dt * 5))
+			sunshineBar.decrease(by: CGFloat(dt * 3))
+			waterBar.decrease(by: CGFloat(dt * 3))
 		}
 		
 		// MARK: --Boost
 		if durian.state == DurianState.boost && currentTime - boostStartTime > 5 {
-		durian.state = DurianState.normal
-		durian.run()
+			durian.state = DurianState.normal
+			durian.run()
 		}
 		
 		// MARK: --Season Change
 		seasonTimer += dt
 		
 		// MARK: --Health Bar
-		if statusBar.isEmpty() {
+		if sunshineBar.isEmpty() || waterBar.isEmpty() {
 			displayGameOver()
 		}
 		
@@ -386,20 +405,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		// MARK: --Absorbtion Related
 		if durian.state == DurianState.absorb {
 			if sun.isOpen {
-				statusBar.increase(by: CGFloat(dt * 20))
+				sunshineBar.increase(by: CGFloat(dt * 20))
 			}
 			if isRaining {
-				boostBar.increase(by: CGFloat(dt * 5))
+				waterBar.increase(by: CGFloat(dt * 10))
 			}
 			for f in factories {
 				if abs(f.position.x - durian.position.x) < 300 {
-					statusBar.decrease(by: CGFloat(dt * 25))
+					sunshineBar.decrease(by: CGFloat(dt * 25))
 				}
 			}
 			
 		}
 		if durian.state == DurianState.boost {
-			statusBar.increase(by: CGFloat(dt * 20))
+			sunshineBar.increase(by: CGFloat(dt * 20))
+			waterBar.increase(by: CGFloat(dt * 20))
 		}
 		
 		// MARK: --Collectable
@@ -420,17 +440,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		let epsilon = 0.1
 		if abs((Double(gameTime) - Double(Int(gameTime)))) < epsilon {
 			let num = arc4random_uniform(100)
+			
+			switch season {
+			case .Spring:
+				if 1 < num && num <= 5 {
+					spawnFactory()
+				}
+				break
+			case .Summer:
+				if num <= 1 {
+					spawnFertilizer()
+					print("carrot spawned")
+				}
+				break
+			case .Fall:
+				if 12 < num && num <= 20 && enemies.count == 0 {
+					spawnBugs(Int(arc4random_uniform(2)) + 1)
+				}
+				break
+			case .Winter:
+				break
+			default:
+				break
+			}
+			
 			if 5 < num && num <= 12 && !sun.isOpen {
 				sunStart()
-			} else if 1 < num && num <= 5 {
-				spawnFactory()
-			} else if num <= 1 {
-				spawnFertilizer()
-				print("carrot spawned")
-			} else if 12 < num && num <= 20 && enemies.count == 0 {
-				spawnBugs(Int(arc4random_uniform(2)) + 1)
 			}
 		}
+		
 		
 		if isRaining {
 			// Update the spawn timer
