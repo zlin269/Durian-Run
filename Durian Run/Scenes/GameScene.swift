@@ -380,7 +380,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // create new platform
             platform = Platform()
 			platform.create(number: platformLength + Int(arc4random_uniform(20)))
-            platform.position = CGPoint(x:CGFloat(frame.width) + CGFloat(platformGap + Int(arc4random_uniform(500))), y:50)
+			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? CGFloat(platformGap + Int(arc4random_uniform(500))) : 0), y:50)
             platform.zPosition = 100
             platformPositionR = platform.position.x + platform.width
 			platform.name = "platform"
@@ -461,6 +461,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			chaser.run(SKAction.move(to: durian.position, duration: 0.2), completion:  {
 				self.displayGameOver()
 			})
+		} else if durian.position.x < 600 {
+			durian.run(SKAction.moveBy(x: 1, y: 0, duration: dt))
 		}
         
 		
@@ -641,7 +643,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let yPosition = size.height + raindrop.size.height
 
         raindrop.position = CGPoint(x: xPosition, y: yPosition)
-		raindrop.run(SKAction.moveTo(y: -100, duration: 0.5), completion: {
+		raindrop.run(SKAction.moveTo(y: -100, duration: 0.8), completion: {
 			raindrop.removeFromParent()
 			raindrop.inGame = false
 		})
