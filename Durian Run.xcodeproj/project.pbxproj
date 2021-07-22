@@ -204,6 +204,7 @@
 			children = (
 				623EB17526A66A3A000628CB /* Sun.swift */,
 				6270E11126A67FC300011319 /* Factory.swift */,
+				C64B29D126A9213B006A1FEB /* Rain.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -222,7 +223,6 @@
 			children = (
 				6270E11626A6B61800011319 /* Collectable.swift */,
 				6270E11826A6BA5C00011319 /* Fertilizer.swift */,
-				C64B29D126A9213B006A1FEB /* Rain.swift */,
 			);
 			path = Collectables;
 			sourceTree = "<group>";
