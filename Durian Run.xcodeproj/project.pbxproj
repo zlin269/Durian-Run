@@ -32,6 +32,7 @@
 		6270E11726A6B61800011319 /* Collectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E11626A6B61800011319 /* Collectable.swift */; };
 		6270E11926A6BA5C00011319 /* Fertilizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E11826A6BA5C00011319 /* Fertilizer.swift */; };
 		6270E11B26A7BBD000011319 /* Bug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E11A26A7BBD000011319 /* Bug.swift */; };
+		6270E12226A976B800011319 /* Chaser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E12126A976B800011319 /* Chaser.swift */; };
 		C64B299126A8326B006A1FEB /* Extension_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B299026A8326B006A1FEB /* Extension_1.swift */; };
 		C64B299326A83289006A1FEB /* Extension_2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B299226A83289006A1FEB /* Extension_2.swift */; };
 		C64B29D226A9213B006A1FEB /* Rain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B29D126A9213B006A1FEB /* Rain.swift */; };
@@ -86,6 +87,7 @@
 		6270E11626A6B61800011319 /* Collectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collectable.swift; sourceTree = "<group>"; };
 		6270E11826A6BA5C00011319 /* Fertilizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fertilizer.swift; sourceTree = "<group>"; };
 		6270E11A26A7BBD000011319 /* Bug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bug.swift; sourceTree = "<group>"; };
+		6270E12126A976B800011319 /* Chaser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chaser.swift; sourceTree = "<group>"; };
 		C64B299026A8326B006A1FEB /* Extension_1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_1.swift; sourceTree = "<group>"; };
 		C64B299226A83289006A1FEB /* Extension_2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_2.swift; sourceTree = "<group>"; };
 		C64B29D126A9213B006A1FEB /* Rain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rain.swift; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 			children = (
 				6270E11A26A7BBD000011319 /* Bug.swift */,
 				6270E11326A6B31800011319 /* Enemy.swift */,
+				6270E12126A976B800011319 /* Chaser.swift */,
 			);
 			path = Enemies;
 			sourceTree = "<group>";
@@ -371,6 +374,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C64B29D226A9213B006A1FEB /* Rain.swift in Sources */,
+				6270E12226A976B800011319 /* Chaser.swift in Sources */,
 				623EB16726A52627000628CB /* Button.swift in Sources */,
 				623EB16126A17D50000628CB /* Platform.swift in Sources */,
 				6270E11B26A7BBD000011319 /* Bug.swift in Sources */,

@@ -71,9 +71,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var sunshineBar = StatusBar(UIColor.red)
 	lazy var waterBar = StatusBar(UIColor.blue)
 	lazy var boostBar = StatusBar(UIColor.purple)
-	lazy var statusBar = StatusBar(UIColor.red)
 	lazy var sun = Sun()
 	lazy var fertilizer = Fertilizer()
+	lazy var chaser = Chaser()
     
 	
     lazy var platforms = [Platform]()
@@ -110,7 +110,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("Inside Gameplay Scene")
             createBackground()
 
-		season = .Spring
+		season = .Winter
 		
 		// long press gesture recognizer
 		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
@@ -124,10 +124,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		// game elements
 		
 		durian.name = "durian"
-		durian.position = CGPoint(x: 300, y: 500)
+		durian.position = CGPoint(x: 600, y: 500)
 		durian.zPosition = 100
 		durian.size = CGSize(width: durian.size.width * 3, height: durian.size.height * 3)
 		self.addChild(durian)
+		
+		chaser.position = CGPoint(x: 200, y: 500)
+		chaser.zPosition = 120
+		self.addChild(chaser)
 		
 		platform.name = "platform"
 		platform.position = CGPoint(x: 0, y: 50)
@@ -247,23 +251,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			score += 500
 			boostBar.increase(by: 50)
         }
-		if contact.bodyA.node is Enemy && contact.bodyB.node is Durian {
+		if (contact.bodyA.node is Chaser && contact.bodyB.node is Durian) || (contact.bodyB.node is Chaser && contact.bodyA.node is Durian) {
+			sunshineBar.setEmpty()
+		}
+
+		if contact.bodyA.node is Bug && contact.bodyB.node is Durian {
 			if durian.state == DurianState.boost {
 				let b = contact.bodyA.node as! Bug
 				b.receiveDamage(1)
 				score += 1000
 			} else {
-				sunshineBar.decrease(by: 30 * (CGFloat(difficulty) * 5))
-				boostBar.decrease(by: 30 * (CGFloat(difficulty) * 5))
+				sunshineBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
+				boostBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
 			}
-		} else if contact.bodyB.node is Enemy && contact.bodyA.node is Durian {
+		} else if contact.bodyB.node is Bug && contact.bodyA.node is Durian {
 			if durian.state == DurianState.boost {
 				let b = contact.bodyB.node as! Bug
 				b.receiveDamage(1)
 				score += 1000
 			} else {
-				sunshineBar.decrease(by: 30 * (CGFloat(difficulty) * 5))
-				boostBar.decrease(by: 30 * (CGFloat(difficulty) * 5))
+				sunshineBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
+				boostBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
 			}
 		}
         
@@ -448,6 +456,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if durian.position.y < 0 {
 			displayGameOver()
 		}
+		
+		if durian.position.x < 300 {
+			chaser.run(SKAction.move(to: durian.position, duration: 0.2), completion:  {
+				self.displayGameOver()
+			})
+		}
         
 		
 		// MARK: --Absorbtion Related
@@ -468,9 +482,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if durian.state == DurianState.boost {
 			sunshineBar.increase(by: CGFloat(dt * 20))
 			waterBar.increase(by: CGFloat(dt * 20))
-		}
-		if durian.state == DurianState.boost {
-			statusBar.increase(by: CGFloat(dt * 20))
 		}
 		
 		// MARK: --Collectable
@@ -515,7 +526,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 					// create new platform
 					platformLevel = Platform()
 					platformLevel.create(number: levelLength + Int(arc4random_uniform(3)))
-					platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:480)
+					platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:460)
 					platformLevel.zPosition = 100
 					platformLevelPositionR = platformLevel.position.x + platformLevel.width
 					platformLevel.name = "platformLevel"
