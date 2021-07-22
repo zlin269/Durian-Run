@@ -9,6 +9,10 @@
 import SpriteKit
 import GameplayKit
 
+enum Seasons : Int {
+	case season = 0, Spring, Summer, Fall, Winter
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	// time var
@@ -40,6 +44,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	var boostButton = Button(imageNamed: "boost")
 	var pauseButton = Button(imageNamed: "pause")
 	
+	// Season Indicator
+	var seasonIndicator : SKSpriteNode
 	
 	// MARK: --Layers in Scene
 	// Layers of nodes in the scene are determined by their zPosition
@@ -103,6 +109,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		pauseButton.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
 		self.addChild(pauseButton)
 		
+		seasonIndicator = SKSpriteNode(color: UIColor.green, size: CGSize(width: 200, height: 200))
+		seasonIndicator.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
+		seasonIndicator.position = CGPoint(x: 80, y: 800)
     }
 	
 	// Long press event, handles absorb action
