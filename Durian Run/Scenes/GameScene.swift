@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-enum Seasons : Int {
+enum Season : Int {
 	case season = 0, Spring, Summer, Fall, Winter
 }
 
@@ -21,6 +21,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	private var sunStartTime : TimeInterval = 0
 	private var justUnpaused : Bool = false // prevent loss of health during pause
 	private var gameTime : TimeInterval = 0
+	private var season : Season = Season.Spring {
+		didSet {
+			switch season {
+			case .Spring:
+				seasonIndicator.color = UIColor.green
+			case .Summer:
+				seasonIndicator.color = UIColor.cyan
+			case .Fall:
+				seasonIndicator.color = UIColor.yellow
+			default:
+				seasonIndicator.color = UIColor.white
+			}
+		}
+	}
+	private var seasonTimer : TimeInterval = 0 {
+		didSet {
+			if seasonTimer > 45 {
+				nextSeason()
+				seasonTimer = 0
+			}
+		}
+	}
     
 	// Big game elements
 	lazy var durian = Durian()
@@ -45,7 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	var pauseButton = Button(imageNamed: "pause")
 	
 	// Season Indicator
-	var seasonIndicator : SKSpriteNode
+	var seasonIndicator = SKSpriteNode()
 	
 	// MARK: --Layers in Scene
 	// Layers of nodes in the scene are determined by their zPosition
@@ -116,6 +138,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		seasonIndicator = SKSpriteNode(color: UIColor.green, size: CGSize(width: 200, height: 200))
 		seasonIndicator.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
 		seasonIndicator.position = CGPoint(x: 80, y: 800)
+		seasonIndicator.zPosition = 200
+		self.addChild(seasonIndicator)
     }
     
     func createBackground() {
@@ -257,6 +281,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Calculate time since last update
         let dt = currentTime - self.lastUpdateTime
+		
         
 		// MARK: --Platforms
         // Platform move
@@ -308,6 +333,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			if durian.state != DurianState.boost {
 				statusBar.decrease(by: CGFloat(dt * 5))
 			}
+			
+			// MARK: --Boost
+			if durian.state == DurianState.boost && currentTime - boostStartTime > 5 {
+			durian.state = DurianState.normal
+			durian.run()
+			}
+			
+			// MARK: --Season Change
+			seasonTimer += dt
 		}
 		
 		// MARK: --Health Bar
@@ -320,11 +354,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			displayGameOver()
 		}
         
-		// MARK: --Boost
-		if durian.state == DurianState.boost && currentTime - boostStartTime > 5 {
-			durian.state = DurianState.normal
-			durian.run()
-		}
 		
 		// MARK: --Absorbtion Related
 		if durian.state == DurianState.absorb {
@@ -397,7 +426,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	func spawnFactory () {
 		let factory = Factory()
 		factory.position = CGPoint(x: self.frame.width + 200, y: 400)
-		factory.zPosition = 0
+		factory.zPosition = -50
 		if factory.position.x - 500 < factories.last?.position.x ?? 500 {
 			factory.removeFromParent()
 			return
@@ -429,6 +458,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			bug.zPosition = 100
 			enemies.append(bug)
 			self.addChild(bug)
+		}
+	}
+	
+	func nextSeason() {
+		if season == .Spring {
+			season = .Summer
+		} else if season == .Summer {
+			season = .Fall
+		} else if season == .Fall {
+			season = .Winter
+		} else if season == .Winter {
+			season = .Spring
 		}
 	}
 }
