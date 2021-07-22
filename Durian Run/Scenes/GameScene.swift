@@ -56,12 +56,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Big game elements
 	lazy var durian = Durian()
 	lazy var platform = Platform()
+    lazy var platformLevel = Platform()
 	lazy var sunshineBar = StatusBar(UIColor.red)
 	lazy var waterBar = StatusBar(UIColor.blue)
 	lazy var boostBar = StatusBar(UIColor.purple)
-    lazy var platformLevel = Platform()
 	lazy var statusBar = StatusBar(UIColor.red)
-	lazy var boostBar = StatusBar(UIColor.blue)
 	lazy var sun = Sun()
 	lazy var fertilizer = Fertilizer()
     
