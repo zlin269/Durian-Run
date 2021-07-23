@@ -92,7 +92,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var platformLevelPositionR: CGFloat = 0
     
 	// buttons
-	var boostButton = Button(imageNamed: "boost")
 	var pauseButton = Button(imageNamed: "pause")
 	
 	// Season Indicator
@@ -110,12 +109,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("Inside Gameplay Scene")
             createBackground()
 
-		season = .Winter
+		season = .Spring
 		
 		// long press gesture recognizer
 		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
 		self.view?.addGestureRecognizer(recognizer)
 		recognizer.minimumPressDuration = 0.2
+		
+		let swipeUpRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedUp))
+		self.view?.addGestureRecognizer(swipeUpRecognizer)
+		swipeUpRecognizer.direction = .up
+		
+		let swipeRightRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedRight))
+		self.view?.addGestureRecognizer(swipeRightRecognizer)
+		swipeRightRecognizer.direction = .right
 		
 		// MARK: --gravity
 		self.physicsWorld.contactDelegate = self
@@ -165,11 +172,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		sun.zPosition = 0
 		self.addChild(sun)
 		
-		boostButton.name = "boostButton"
-		boostButton.position = CGPoint(x: 2350, y: 500)
-		boostButton.zPosition = 200
-		boostButton.anchorPoint = CGPoint(x: 1, y: 1) // anchor point at bottom top
-		self.addChild(boostButton)
 		
 		pauseButton.name = "pauseButton"
 		pauseButton.position = CGPoint(x: 80, y: 1100)
@@ -239,7 +241,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			if sender.state == .ended { durian.state = DurianState.normal }
 		}
 	}
+	
+	@objc func swipedUp (sender: UISwipeGestureRecognizer) {
+		if durian.state != DurianState.boost && boostBar.isMoreThanOrEqualTo(100) {
+			durian.state = DurianState.boost
+			boostStartTime = self.lastUpdateTime
+			boostBar.setEmpty()
+			durian.run()
+		}
+	}
     
+	@objc func swipedRight (sender: UISwipeGestureRecognizer) {
+		
+	}
+	
 	// MARK: --CONTACT DETECTION
 	func didBegin(_ contact: SKPhysicsContact) {
 		if (contact.bodyA.node is Platform && contact.bodyB.node is Durian) ||
@@ -287,22 +302,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	// Boost Mode and Attack handled at touchDown
     func touchDown(atPoint pos : CGPoint) {
-		let touchedNode = atPoint(pos)
+		// let touchedNode = atPoint(pos)
 		if isPaused  { return }
-		if touchedNode.name == "boostButton" {
-			if durian.state != DurianState.boost && boostBar.isMoreThanOrEqualTo(100) {
-				durian.state = DurianState.boost
-				boostStartTime = self.lastUpdateTime
-				boostBar.setEmpty()
-				durian.run()
-			}
-		} else {
-			if durian.state == DurianState.boost {
-				// TODO: attack animation
-				durian.attack()
-			}
+		if durian.state == DurianState.boost {
+			// TODO: attack animation
+			durian.attack()
 		}
-    }
+	}
     
 //    // Not needed
 //    func touchMoved(toPoint pos : CGPoint) {
