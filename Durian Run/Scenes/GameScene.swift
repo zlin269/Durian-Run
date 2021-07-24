@@ -32,6 +32,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				seasonIndicator.color = UIColor.green
 				isRaining = true
 			case .Summer:
+				lightning()
 				seasonIndicator.color = UIColor.cyan
 				isRaining = true
 			case .Fall:
@@ -53,7 +54,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	private var seasonTimer : TimeInterval = 0 {
 		didSet {
-			if seasonTimer > 40 {
+			if seasonTimer > 10 {
 				nextSeason()
 				seasonTimer = 0
 			}
@@ -122,10 +123,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("Inside Gameplay Scene")
             createBackground()
 		
-		season = .Fall
+		season = .Spring
 		
 		let boundary = Boundary()
-		boundary.position = CGPoint(x: -100, y: -100)
+		boundary.position = CGPoint(x: -300, y: -300)
 		self.addChild(boundary)
 
 		// long press gesture recognizer
@@ -165,19 +166,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		sunshineBar.name = "health"
 		sunshineBar.position = CGPoint(x: 1800, y: 1000)
 		sunshineBar.zPosition = 200
+		sunshineBar.setEmpty()
+		sunshineBar.increase(by: 30)
 		self.addChild(sunshineBar)
 		
 		waterBar.name = "water"
 		waterBar.position = CGPoint(x: 1800, y: 900)
 		waterBar.zPosition = 200
 		waterBar.setEmpty()
-		waterBar.increase(by: 50)
+		waterBar.increase(by: 30)
 		self.addChild(waterBar)
 		
 		boostBar.name = "mana"
 		boostBar.position = CGPoint(x: 1800, y: 800)
 		boostBar.zPosition = 200
-		boostBar.setFull()
+		boostBar.setEmpty()
 		self.addChild(boostBar)
 		
 		sun.name = "sun"
@@ -504,7 +507,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				sunshineBar.increase(by: CGFloat(dt * 20))
 			}
 			if isRaining {
-				waterBar.increase(by: CGFloat(dt * 10))
+				waterBar.increase(by: CGFloat(dt * 20))
 			}
 			for f in factories {
 				if abs(f.position.x - durian.position.x) < 300 {
@@ -699,5 +702,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		raindrops.append(raindrop)
         self.addChild(raindrop)
       }
+	
+	func lightning () {
+		let flash = SKSpriteNode(color: UIColor.black, size: self.frame.size)
+		flash.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
+		flash.zPosition = 150
+		self.addChild(flash)
+		flash.alpha = 0
+		flash.run(SKAction.sequence([SKAction.fadeAlpha(to: 0.8, duration: 2),
+									 SKAction.fadeAlpha(to: 0, duration: 0.1),
+									 SKAction.colorize(with: UIColor.white, colorBlendFactor: 0, duration: 0.1),
+									 SKAction.fadeAlpha(to: 1, duration: 0.1),
+									 SKAction.fadeAlpha(to: 0, duration: 0.8)]), completion: {
+										flash.removeFromParent()
+									})
+	}
 }
 
