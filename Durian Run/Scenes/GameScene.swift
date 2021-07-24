@@ -37,20 +37,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			case .Fall:
 				seasonIndicator.color = UIColor.yellow
 				isRaining = false
+				suppliesSpawned = 0
+				supplySpawnTime.removeAll()
+				supplySpawnTime.append(TimeInterval(arc4random_uniform(20)))
+				supplySpawnTime.append(TimeInterval(arc4random_uniform(20) + 20))
 			default:
 				seasonIndicator.color = UIColor.white
 				isRaining = false
+				suppliesSpawned = 0
+				supplySpawnTime.removeAll()
+				supplySpawnTime.append(TimeInterval(arc4random_uniform(20)))
+				supplySpawnTime.append(TimeInterval(arc4random_uniform(20) + 20))
 			}
 		}
 	}
 	private var seasonTimer : TimeInterval = 0 {
 		didSet {
-			if seasonTimer > 30 {
+			if seasonTimer > 40 {
 				nextSeason()
 				seasonTimer = 0
 			}
 		}
 	}
+	var supplySpawnTime = [TimeInterval]()
+	
 	// MARK: --Difficulty
 	var difficulty : Double = 1
 	
@@ -62,8 +72,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	lazy var scoreLabel = SKLabelNode(text: String(Int(score)))
 	
-	// Boolean
+	// Boolean & Tracker
 	var isRaining: Bool = false
+	var suppliesSpawned : Int = 0
+	var stormTime : TimeInterval = 0
     
 	// Big game elements
 	lazy var durian = Durian()
@@ -74,6 +86,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var boostBar = StatusBar(UIColor.purple)
 	lazy var sun = Sun()
 	lazy var fertilizer = Fertilizer()
+	lazy var supply = Supply()
     
 	
     lazy var platforms = [Platform]()
@@ -108,6 +121,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         print("Inside Gameplay Scene")
             createBackground()
+		
+		season = .Fall
+		
+		let boundary = Boundary()
+		boundary.position = CGPoint(x: -100, y: -100)
+		self.addChild(boundary)
 
 		// long press gesture recognizer
 		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
@@ -258,8 +277,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (contact.bodyA.node is Fertilizer && contact.bodyB.node is Durian) || (contact.bodyB.node is Fertilizer && contact.bodyA.node is Durian) {
 			fertilizer.getCollected()
 			score += 100
-			boostBar.increase(by: 50)
+			boostBar.increase(by: 20)
         }
+		if (contact.bodyA.node is Supply && contact.bodyB.node is Durian) || (contact.bodyB.node is Supply && contact.bodyA.node is Durian) {
+			supply.getCollected()
+			score += 100
+			sunshineBar.increase(by: 20)
+			waterBar.increase(by: 20)
+		}
 		if (contact.bodyA.node is Chaser && contact.bodyB.node is Durian) || (contact.bodyB.node is Chaser && contact.bodyA.node is Durian) {
 			sunshineBar.setEmpty()
 		}
@@ -284,7 +309,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			}
 		}
         
-        
+		if contact.bodyA.node is Boundary {
+			contact.bodyB.node?.removeFromParent()
+		} else if contact.bodyB.node is Boundary {
+			contact.bodyA.node?.removeFromParent()
+		}
 	}
 	
 	func didEnd(_ contact: SKPhysicsContact) {
@@ -411,6 +440,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			fertilizer.move(speed: GameScene.platformSpeed)
 		}
 		
+		if supply.inGame {
+			supply.move(speed: GameScene.platformSpeed)
+		}
+		
+		
 		// MARK: --Enemies
 		if	!enemies.isEmpty && (enemies[0].position.x < -200 || enemies[0].position.y < -200) {
 			enemies[0].selfDestruction()
@@ -519,6 +553,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				if 12 < num && num <= 20 && enemies.count == 0 {
 					spawnBugs(Int(arc4random_uniform(2)) + 1)
 				}
+				if seasonTimer > supplySpawnTime[0] && suppliesSpawned == 0 {
+					spawnSupply()
+				}
+				if seasonTimer > supplySpawnTime[1] && suppliesSpawned == 1 {
+					spawnSupply()
+				}
 				break
 			case .Winter:
 				
@@ -609,6 +649,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		fertilizer.position = CGPoint(x: self.frame.width + 400, y: 700)
 		fertilizer.zPosition = 100
 		self.addChild(fertilizer)
+	}
+	
+	func spawnSupply () {
+		suppliesSpawned += 1
+		supply = Supply()
+		supply.inGame = true
+		supply.position = CGPoint(x: self.frame.width + 400, y: 700)
+		supply.zPosition = 100
+		self.addChild(supply)
+		print("supply spawned")
 	}
 	
 	func spawnBugs (_ num: Int) {

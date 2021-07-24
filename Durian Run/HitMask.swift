@@ -14,8 +14,5 @@ class HitMask {
 	static var platform: UInt32 = 0b0010
 	static var enemy: UInt32 = 0b0100
 	static var collectable: UInt32 = 0b1000
-    
-    static var WorldCategory    : UInt32 = 0x1 << 1
-    static var RainDropCategory : UInt32 = 0x1 << 2
-    static var FloorCategory    : UInt32 = 0x1 << 3
+	static var boundary : UInt32 = 0b10000
 }
