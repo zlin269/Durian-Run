@@ -116,7 +116,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("Inside Gameplay Scene")
             createBackground()
 		
-		season = .Spring
 		
 		let boundary = Boundary()
 		boundary.position = CGPoint(x: -300, y: -300)
@@ -173,7 +172,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		boostBar.name = "mana"
 		boostBar.position = CGPoint(x: 1800, y: 800)
 		boostBar.zPosition = 200
-		boostBar.setEmpty()
+		//boostBar.setEmpty()
 		self.addChild(boostBar)
 		
 		sun.name = "sun"
@@ -252,16 +251,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	
 	@objc func swipedUp (sender: UISwipeGestureRecognizer) {
+		
+	}
+    
+	@objc func swipedRight (sender: UISwipeGestureRecognizer) {
 		if durian.state != DurianState.boost && boostBar.isMoreThanOrEqualTo(100) {
 			durian.state = DurianState.boost
 			boostStartTime = self.lastUpdateTime
 			boostBar.setEmpty()
 			durian.run()
 		}
-	}
-    
-	@objc func swipedRight (sender: UISwipeGestureRecognizer) {
-		
 	}
 	
 	// MARK: --CONTACT DETECTION
@@ -291,9 +290,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				b.receiveDamage(1)
 				score += 500
 			} else {
-				sunshineBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
-				waterBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
-				boostBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
+				sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+				waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+				boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 			}
 		} else if contact.bodyB.node is Bug && contact.bodyA.node is Durian {
 			if durian.state == DurianState.boost {
@@ -301,9 +300,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				b.receiveDamage(1)
 				score += 500
 			} else {
-				sunshineBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
-				waterBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
-				boostBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
+				sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+				waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+				boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 			}
 		}
         
@@ -573,12 +572,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			if !sun.isOpen && seasonTimer > seasonInfo.sunSetTime! + seasonInfo.sunSetDuration! {
 				sun.open()
 			}
-			if seasonTimer > seasonInfo.rainStartTime[0] {
+			if seasonTimer > seasonInfo.rainStartTime[0] && seasonTimer < seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
 				isRaining = true
 			} else if seasonTimer > seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
 				isRaining = false
 			}
-			if seasonTimer > seasonInfo.rainStartTime[1] {
+			if seasonTimer > seasonInfo.rainStartTime[1] && seasonTimer < seasonInfo.rainStartTime[1] + seasonInfo.rainDuration! {
 				isRaining = true
 			} else if seasonTimer > seasonInfo.rainStartTime[1] + seasonInfo.rainDuration! {
 				isRaining = false

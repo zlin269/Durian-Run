@@ -147,17 +147,13 @@
 		623EB12626A167BC000628CB /* Durian Run */ = {
 			isa = PBXGroup;
 			children = (
+				629301AA26AEAA7200A087DA /* Helps & Extensions */,
 				623EB17826A66A50000628CB /* Nodes */,
 				623EB17026A54CF4000628CB /* Scenes */,
 				623EB15C26A16878000628CB /* BoostRun.atlas */,
 				623EB15A26A16860000628CB /* AbsorbRun.atlas */,
 				623EB15826A16844000628CB /* NormalRun.atlas */,
-				623EB12726A167BC000628CB /* AppDelegate.swift */,
-				623EB16226A187D4000628CB /* HitMask.swift */,
 				623EB12B26A167BC000628CB /* Actions.sks */,
-				623EB12F26A167BC000628CB /* GameViewController.swift */,
-				C64B299026A8326B006A1FEB /* Extension_1.swift */,
-				C64B299226A83289006A1FEB /* Extension_2.swift */,
 				623EB13126A167BC000628CB /* Main.storyboard */,
 				623EB13426A167BE000628CB /* Assets.xcassets */,
 				623EB13626A167BE000628CB /* Info.plist */,
@@ -188,8 +184,6 @@
 			children = (
 				623EB16E26A54CDF000628CB /* MenuScene.swift */,
 				623EB12D26A167BC000628CB /* GameScene.swift */,
-				629301A826AE47AA00A087DA /* SeasonInfo.swift */,
-				6270E12526ABB9A100011319 /* Boundary.swift */,
 				623EB16C26A54BFD000628CB /* GameOverScene.swift */,
 				623EB12926A167BC000628CB /* GameScene.sks */,
 			);
@@ -205,6 +199,7 @@
 				6270E11C26A7BBDB00011319 /* Environment */,
 				623EB15E26A16B0B000628CB /* Durian.swift */,
 				623EB16026A17D50000628CB /* Platform.swift */,
+				6270E12526ABB9A100011319 /* Boundary.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -246,6 +241,19 @@
 				6270E12126A976B800011319 /* Chaser.swift */,
 			);
 			path = Enemies;
+			sourceTree = "<group>";
+		};
+		629301AA26AEAA7200A087DA /* Helps & Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				623EB12726A167BC000628CB /* AppDelegate.swift */,
+				623EB16226A187D4000628CB /* HitMask.swift */,
+				623EB12F26A167BC000628CB /* GameViewController.swift */,
+				629301A826AE47AA00A087DA /* SeasonInfo.swift */,
+				C64B299026A8326B006A1FEB /* Extension_1.swift */,
+				C64B299226A83289006A1FEB /* Extension_2.swift */,
+			);
+			path = "Helps & Extensions";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
