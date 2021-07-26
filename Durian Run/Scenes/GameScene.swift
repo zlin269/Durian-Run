@@ -15,52 +15,46 @@ enum Season : Int {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+	// Season Info
+	private var seasonInfo = SeasonInfo()
+	
 	// time var
     private var lastUpdateTime : TimeInterval = 0
 	private var boostStartTime : TimeInterval = 0 // keep track of when boost will end
-	private var sunStartTime : TimeInterval = 0
 	private var justUnpaused : Bool = false // prevent loss of health during pause
 	private var gameTime : TimeInterval = 0
     private var currentRainDropSpawnTime : TimeInterval = 0
     private var rainDropSpawnRate : TimeInterval = 0.1
 	private var season : Season = Season.Spring {
 		didSet {
+			seasonInfo.nextSeason()
+			isRaining = false
 			switch season {
 			case .Spring:
 				score += 1500
 				difficulty += 1
 				seasonIndicator.color = UIColor.green
-				isRaining = true
+				sun.open()
 			case .Summer:
-				lightning()
 				seasonIndicator.color = UIColor.cyan
-				isRaining = true
+				sun.open()
 			case .Fall:
 				seasonIndicator.color = UIColor.yellow
-				isRaining = false
-				suppliesSpawned = 0
-				supplySpawnTime.removeAll()
-				supplySpawnTime.append(TimeInterval(arc4random_uniform(20)))
-				supplySpawnTime.append(TimeInterval(arc4random_uniform(20) + 20))
-			default:
+				sun.open()
+			default: // .Winter
 				seasonIndicator.color = UIColor.white
-				isRaining = false
-				suppliesSpawned = 0
-				supplySpawnTime.removeAll()
-				supplySpawnTime.append(TimeInterval(arc4random_uniform(20)))
-				supplySpawnTime.append(TimeInterval(arc4random_uniform(20) + 20))
+				sun.close()
 			}
 		}
 	}
 	private var seasonTimer : TimeInterval = 0 {
 		didSet {
-			if seasonTimer > 10 {
+			if seasonTimer > 40 {
 				nextSeason()
 				seasonTimer = 0
 			}
 		}
 	}
-	var supplySpawnTime = [TimeInterval]()
 	
 	// MARK: --Difficulty
 	var difficulty : Double = 1
@@ -75,8 +69,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
 	// Boolean & Tracker
 	var isRaining: Bool = false
-	var suppliesSpawned : Int = 0
-	var stormTime : TimeInterval = 0
+	var isStorming: Bool = false
     
 	// Big game elements
 	lazy var durian = Durian()
@@ -299,6 +292,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				score += 500
 			} else {
 				sunshineBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
+				waterBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
 				boostBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
 			}
 		} else if contact.bodyB.node is Bug && contact.bodyA.node is Durian {
@@ -308,6 +302,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				score += 500
 			} else {
 				sunshineBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
+				waterBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
 				boostBar.decrease(by: 30 + (CGFloat(difficulty) * 5))
 			}
 		}
@@ -514,7 +509,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 					sunshineBar.decrease(by: CGFloat(dt * 25))
 				}
 			}
-			
+			if isStorming {
+				sunshineBar.decrease(by: CGFloat(dt * 15))
+				waterBar.increase(by: CGFloat(dt * 30))
+			}
 		}
 		if durian.state == DurianState.boost {
 			sunshineBar.increase(by: CGFloat(dt * 20))
@@ -530,16 +528,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			raindrops.removeFirst()
 		}
 	
-		// Sun Timer
-		if sun.isOpen && currentTime - sunStartTime > 10 {
-			sun.close()
-		}
 		
 		// MARK: Random Events Generation
 		let epsilon = 0.1
 		if abs((Double(gameTime) - Double(Int(gameTime)))) < epsilon {
-			let num = arc4random_uniform(100)
-			
+			let num = arc4random_uniform(200)
+			if num <= 1 {
+				spawnFertilizer()
+				print("carrot spawned")
+			}
 			switch season {
 			case .Spring:
 				if 1 < num && num <= 5 {
@@ -547,46 +544,111 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				}
 				break
 			case .Summer:
-				if num <= 1 {
-					spawnFertilizer()
-					print("carrot spawned")
+				if 1 < num && num <= 5 {
+					spawnFactory()
 				}
 				break
 			case .Fall:
 				if 12 < num && num <= 20 && enemies.count == 0 {
 					spawnBugs(Int(arc4random_uniform(2)) + 1)
 				}
-				if seasonTimer > supplySpawnTime[0] && suppliesSpawned == 0 {
-					spawnSupply()
-				}
-				if seasonTimer > supplySpawnTime[1] && suppliesSpawned == 1 {
-					spawnSupply()
-				}
 				break
 			case .Winter:
-				
-				if (platformLevelPositionR < frame.width){
-					// create new platform
-					platformLevel = Platform()
-					platformLevel.create(number: levelLength + Int(arc4random_uniform(3)))
-					platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:460)
-					platformLevel.zPosition = 100
-					platformLevelPositionR = platformLevel.position.x + platformLevel.width
-					platformLevel.name = "platformLevel"
-					self.addChild(platformLevel)
-					platformLevels.append(platformLevel)
+				if 12 < num && num <= 20 && enemies.count == 0 {
+					spawnBugs(Int(arc4random_uniform(2)) + 1)
 				}
-				
 				break
 			default:
 				break
 			}
 			
-			if 5 < num && num <= 12 && !sun.isOpen {
-				sunStart()
-			}
 		}
 		
+		switch season {
+		case .Spring:
+			
+			if sun.isOpen && seasonTimer > seasonInfo.sunSetTime! && seasonTimer < seasonInfo.sunSetTime! + seasonInfo.sunSetDuration!  {
+				sun.close()
+			}
+			if !sun.isOpen && seasonTimer > seasonInfo.sunSetTime! + seasonInfo.sunSetDuration! {
+				sun.open()
+			}
+			if seasonTimer > seasonInfo.rainStartTime[0] {
+				isRaining = true
+			} else if seasonTimer > seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
+				isRaining = false
+			}
+			if seasonTimer > seasonInfo.rainStartTime[1] {
+				isRaining = true
+			} else if seasonTimer > seasonInfo.rainStartTime[1] + seasonInfo.rainDuration! {
+				isRaining = false
+			}
+			break
+		case .Summer:
+			if sun.isOpen && seasonTimer > seasonInfo.sunSetTime! && seasonTimer < seasonInfo.sunSetTime! + seasonInfo.sunSetDuration!  {
+				sun.close()
+			}
+			if !sun.isOpen && seasonTimer > seasonInfo.sunSetTime! + seasonInfo.sunSetDuration! && !isStorming {
+				sun.open()
+			}
+			if seasonTimer > seasonInfo.rainStartTime[0] && seasonTimer < seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
+				isRaining = true
+			} else if seasonTimer > seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! && !isStorming {
+				isRaining = false
+			}
+			if !isStorming && seasonTimer > seasonInfo.stormTime! && seasonTimer < seasonInfo.stormTime! + seasonInfo.stormDuration! {
+				startStorm()
+			}
+			break
+		case .Fall:
+			if sun.isOpen && seasonTimer > seasonInfo.sunSetTime! && seasonTimer < seasonInfo.sunSetTime! + seasonInfo.sunSetDuration!  {
+				sun.close()
+			}
+			if !sun.isOpen && seasonTimer > seasonInfo.sunSetTime! + seasonInfo.sunSetDuration! {
+				sun.open()
+			}
+			
+			if seasonTimer > seasonInfo.supplySpawnTime[0] && seasonInfo.suppliesSpawned == 0 {
+				spawnSupply()
+			}
+			if seasonTimer > seasonInfo.supplySpawnTime[1] && seasonInfo.suppliesSpawned == 1 {
+				spawnSupply()
+			}
+			if (platformLevelPositionR < frame.width){
+				// create new platform
+				platformLevel = Platform()
+				platformLevel.create(number: levelLength + Int(arc4random_uniform(3)))
+				platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:460)
+				platformLevel.zPosition = 100
+				platformLevelPositionR = platformLevel.position.x + platformLevel.width
+				platformLevel.name = "platformLevel"
+				self.addChild(platformLevel)
+				platformLevels.append(platformLevel)
+			}
+			break
+		case .Winter:
+			if seasonTimer > seasonInfo.supplySpawnTime[0] && seasonInfo.suppliesSpawned == 0 {
+				spawnSupply()
+			}
+			if seasonTimer > seasonInfo.supplySpawnTime[1] && seasonInfo.suppliesSpawned == 1 {
+				spawnSupply()
+			}
+			if (platformLevelPositionR < frame.width){
+				// create new platform
+				platformLevel = Platform()
+				platformLevel.create(number: levelLength + Int(arc4random_uniform(3)))
+				platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:460)
+				platformLevel.zPosition = 100
+				platformLevelPositionR = platformLevel.position.x + platformLevel.width
+				platformLevel.name = "platformLevel"
+				self.addChild(platformLevel)
+				platformLevels.append(platformLevel)
+			}
+			
+			break
+		default:
+			break
+		}
 		
 		if isRaining {
 			// Update the spawn timer
@@ -603,6 +665,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //		print("game time:", gameTime)
 //		print("durian state:", durian.state)
 //		print("in air:", durian.inAir)
+		print("Season Timer: ", seasonTimer)
 		
 		
         
@@ -619,11 +682,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		view?.presentScene(gameOverScene, transition: reveal)
 	}
 	
-	// MARK: --Manage Sun Behavior
-	func sunStart () {
-		sun.open()
-		sunStartTime = lastUpdateTime
-	}
 	
 	// MARK: --Manage Pollution
 	func spawnFactory () {
@@ -655,7 +713,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	
 	func spawnSupply () {
-		suppliesSpawned += 1
+		seasonInfo.suppliesSpawned += 1
 		supply = Supply()
 		supply.inGame = true
 		supply.position = CGPoint(x: self.frame.width + 400, y: 700)
@@ -703,7 +761,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(raindrop)
       }
 	
-	func lightning () {
+	func lightening () {
 		let flash = SKSpriteNode(color: UIColor.black, size: self.frame.size)
 		flash.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
 		flash.zPosition = 150
@@ -713,8 +771,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 									 SKAction.fadeAlpha(to: 0, duration: 0.1),
 									 SKAction.colorize(with: UIColor.white, colorBlendFactor: 0, duration: 0.1),
 									 SKAction.fadeAlpha(to: 1, duration: 0.1),
-									 SKAction.fadeAlpha(to: 0, duration: 0.8)]), completion: {
+									 SKAction.fadeAlpha(to: 0, duration: 0.7)]), completion: {
 										flash.removeFromParent()
+									})
+	}
+	
+	func startStorm () {
+		isStorming = true
+		isRaining = true
+		sun.close()
+		let flash = SKSpriteNode(color: UIColor.black, size: self.frame.size)
+		flash.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
+		flash.zPosition = 150
+		self.addChild(flash)
+		flash.alpha = 0
+		flash.run(SKAction.sequence([SKAction.fadeAlpha(to: 0.8, duration: 2),
+									 SKAction.fadeAlpha(to: 0, duration: 0.1),
+									 SKAction.colorize(with: UIColor.white, colorBlendFactor: 0, duration: 0.1),
+									 SKAction.fadeAlpha(to: 1, duration: 0.1),
+									 SKAction.fadeAlpha(to: 0, duration: 0.7),
+									 SKAction.colorize(with: UIColor.black, colorBlendFactor: 0, duration: 0),
+									 SKAction.fadeAlpha(to: 0.5, duration: 2),
+									 SKAction.fadeAlpha(to: 0.8, duration: 2),
+									 SKAction.fadeAlpha(to: 0, duration: 0.1),
+									 SKAction.colorize(with: UIColor.white, colorBlendFactor: 0, duration: 0.1),
+									 SKAction.fadeAlpha(to: 1, duration: 0.1),
+									 SKAction.fadeAlpha(to: 0, duration: 0.7),
+									 SKAction.colorize(with: UIColor.black, colorBlendFactor: 0, duration: 0),
+									 SKAction.fadeAlpha(to: 0.5, duration: 1),
+									 SKAction.fadeAlpha(by: 0, duration: 1)]), completion: {
+										flash.removeFromParent()
+										self.isStorming = false
+										self.isRaining = false
+										self.sun.open()
 									})
 	}
 }

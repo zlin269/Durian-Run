@@ -24,11 +24,11 @@ class Sun: SKNode {
 		sun.position = CGPoint(x: 0, y: 0)
 		sun.zPosition = 0
 		cloud1.position = CGPoint(x: -100, y: -30)
-		cloud1.zPosition = 100
+		cloud1.zPosition = 1
 		cloud2.position = CGPoint(x: 80, y: -30)
-		cloud2.zPosition = 200
+		cloud2.zPosition = 2
 		cloud3.position = CGPoint(x: 60, y: 20)
-		cloud3.zPosition = -100
+		cloud3.zPosition = -1
 		addChild(cloud3)
 		addChild(sun)
 		addChild(cloud1)
