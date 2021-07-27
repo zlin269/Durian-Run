@@ -178,8 +178,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		sun.name = "sun"
 		sun.position = CGPoint(x: 1300, y: 800)
 		sun.zPosition = 0
+		sun.open()
 		self.addChild(sun)
-		
 		
 		pauseButton.name = "pauseButton"
 		pauseButton.position = CGPoint(x: 80, y: 1100)
@@ -324,10 +324,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func touchDown(atPoint pos : CGPoint) {
 		// let touchedNode = atPoint(pos)
 		if isPaused  { return }
-		if durian.state == DurianState.boost {
-			// TODO: attack animation
-			durian.attack()
-		}
 	}
     
 //    // Not needed
@@ -348,7 +344,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			}
 		} else {
 			if !isPaused {
-				if durian.state == DurianState.normal {
+				if durian.state != DurianState.absorb {
 					if durian.inAir != 0 {
 						durian.jump()
 					} else {
@@ -470,7 +466,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		score += dt * Double(GameScene.platformSpeed) * 3
 		
 		// MARK: --Boost
-		if durian.state == DurianState.boost && currentTime - boostStartTime > 5 {
+		if durian.state == DurianState.boost && currentTime - boostStartTime > 10 {
 			durian.state = DurianState.normal
 			durian.run()
 		}
@@ -643,7 +639,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				self.addChild(platformLevel)
 				platformLevels.append(platformLevel)
 			}
-			
+			if !isStorming && seasonTimer > seasonInfo.stormTime! && seasonTimer < seasonInfo.stormTime! + seasonInfo.stormDuration! {
+				startStorm()
+			}
 			break
 		default:
 			break

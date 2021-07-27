@@ -61,7 +61,7 @@ class GameOverScene: MenuScene {
 				view?.presentScene(gameScene, transition: reveal)
 			}
 			if touchedNode.name == "home" {
-				let menuScene = MenuScene(size: size)
+				let menuScene = StartMenuScene(size: size)
 				menuScene.scaleMode = scaleMode
 				
 				let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
