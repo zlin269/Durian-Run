@@ -9,7 +9,7 @@ import SpriteKit
 import GameplayKit
 
 class GameOverScene: MenuScene {
-	override init(size: CGSize) {
+	init(size: CGSize, score: Double) {
 		super.init(size: size)
 		
 		let GOver = SKLabelNode(fontNamed: "Chalkduster")
@@ -18,11 +18,11 @@ class GameOverScene: MenuScene {
 		GOver.fontColor = SKColor.brown
 		GOver.position = CGPoint(x: frame.midX, y: frame.midY + 270)
 		
-		let restart = SKLabelNode(fontNamed: "Chalkduster")
-		restart.text = "Restart"
-		restart.fontSize = 200
-		restart.fontColor = SKColor.black
-		restart.position = CGPoint(x: frame.midX, y: frame.midY - 380)
+		let scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
+		scoreLabel.text = "Score: " + String(Int(score))
+		scoreLabel.fontSize = 200.0 * (3.0 / (floor( log10( CGFloat(score)) ) + 1))
+		scoreLabel.fontColor = SKColor.black
+		scoreLabel.position = CGPoint(x: frame.midX, y: frame.midY - 380)
 		
 		let restartIcon = SKSpriteNode(imageNamed: "restart")
 		restartIcon.name = "restart"
@@ -40,7 +40,7 @@ class GameOverScene: MenuScene {
 		
 		addChild(kule)
 		addChild(GOver)
-		addChild(restart)
+		addChild(scoreLabel)
 		addChild(restartIcon)
 		addChild(home)
 	}

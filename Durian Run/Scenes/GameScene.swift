@@ -251,7 +251,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	
 	@objc func swipedUp (sender: UISwipeGestureRecognizer) {
-		
+		if !isPaused {
+			if durian.state != DurianState.absorb {
+				if durian.inAir != 0 {
+					durian.jump()
+				} else {
+					if waterBar.isMoreThanOrEqualTo(90) {
+						durian.jump()
+						waterBar.decrease(by: 30)
+					}
+				}
+			}
+		}
 	}
     
 	@objc func swipedRight (sender: UISwipeGestureRecognizer) {
@@ -342,20 +353,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				isPaused = true
 				pauseButton.texture = SKTexture(imageNamed: "resume")
 			}
-		} else {
-			if !isPaused {
-				if durian.state != DurianState.absorb {
-					if durian.inAir != 0 {
-						durian.jump()
-					} else {
-						if waterBar.isMoreThanOrEqualTo(90) {
-							durian.jump()
-							waterBar.decrease(by: 30)
-						}
-					}
-				}
-			}
-		}
+		} 
 	}
     
 	// ------------ No Need to Modify Any of the Touches ------------
@@ -672,7 +670,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Creates a game over scene
 	func displayGameOver() {
 		
-		let gameOverScene = GameOverScene(size: size)
+		let gameOverScene = GameOverScene(size: size, score: score)
 		gameOverScene.scaleMode = scaleMode
 		
 		let reveal = SKTransition.flipHorizontal(withDuration: 0.5)

@@ -22,8 +22,8 @@ class Enemy: SKSpriteNode {
 	init(imageNamed imageName: String, withHealth health: Int, withSpeed speed: CGFloat) {
 		self.health = health
 		self.movementSpeed = speed
-		super.init(texture: SKTexture(imageNamed: imageName), color: UIColor.red, size: CGSize(width: 200, height: 200))
-		self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 200, height: 200))
+		super.init(texture: SKTexture(imageNamed: imageName), color: UIColor.red, size: CGSize(width: 150, height: 150))
+		self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 120, height: 150))
 		self.physicsBody?.isDynamic = true
 		self.physicsBody?.affectedByGravity = true
 		self.physicsBody?.allowsRotation = false
@@ -31,6 +31,7 @@ class Enemy: SKSpriteNode {
 		self.physicsBody?.categoryBitMask = HitMask.enemy
 		self.physicsBody?.contactTestBitMask = HitMask.durian
 		self.physicsBody?.collisionBitMask = HitMask.platform
+		
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

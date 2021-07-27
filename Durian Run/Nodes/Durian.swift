@@ -79,6 +79,8 @@ class Durian: SKSpriteNode {
 			boostRunTexture.append(boostRun.textureNamed("p3_walk0\(i+1)"))
 		}
 		
+		self.yScale = 0.8
+		
 	}
 	
 	func run() {
