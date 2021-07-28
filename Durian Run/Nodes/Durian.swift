@@ -6,12 +6,16 @@
 //
 
 import SpriteKit
+import AVFoundation
 
 enum DurianState: Int {
 	case run = 1, normal, absorb, boost
 }
 
 class Durian: SKSpriteNode {
+	
+	var sound = SKAudioNode(fileNamed: "jump.mp3")
+	var runSound = SKAudioNode(fileNamed: "run.mp3")
 	
 	var state: DurianState = DurianState.normal {
 		didSet {
@@ -34,8 +38,10 @@ class Durian: SKSpriteNode {
 					jumpTexture.append(SKTexture(imageNamed: "p3_jump"))
 				}
 				self.run(SKAction.animate(with: jumpTexture, timePerFrame: 0.1))
+				runSound.run(SKAction.stop())
 			} else {
 				self.run()
+				runSound.run(SKAction.play())
 			}
 		}
 	}
@@ -53,6 +59,11 @@ class Durian: SKSpriteNode {
 		
 		let stand = SKTexture(imageNamed: "stand")
 		super.init(texture: stand, color: UIColor.white, size: stand.size())
+		
+		runSound.autoplayLooped = true
+		self.addChild(runSound)
+		sound.autoplayLooped = false
+		self.addChild(sound)
 		
 		// physics body attributes
 		self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 200, height: 260), center: CGPoint(x: 0, y: 0))
@@ -114,6 +125,7 @@ class Durian: SKSpriteNode {
 			self.physicsBody?.isResting = true
 		}
 		self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1500))
+		sound.run(SKAction.play())
 	}
 	
 	func attack() {

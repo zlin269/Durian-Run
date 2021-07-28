@@ -6,6 +6,7 @@
 //
 //
 
+import AVKit
 import SpriteKit
 import GameplayKit
 
@@ -81,6 +82,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var sun = Sun()
 	lazy var fertilizer = Fertilizer()
 	lazy var supply = Supply()
+	lazy var soundNode = SKAudioNode(fileNamed: "inGameMusic.mp3")
     
 	
     lazy var platforms = [Platform]()
@@ -112,14 +114,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any physics node has 100 <= zPos < 200
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
-        
+		
+		nextSeason()
+		nextSeason()
+		
         print("Inside Gameplay Scene")
             createBackground()
 		
+		soundNode.autoplayLooped = true
+		self.addChild(soundNode)
 		
 		let boundary = Boundary()
 		boundary.position = CGPoint(x: -300, y: -300)
 		self.addChild(boundary)
+		
 
 		// long press gesture recognizer
 		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
@@ -353,7 +361,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				isPaused = true
 				pauseButton.texture = SKTexture(imageNamed: "resume")
 			}
-		} 
+		}
 	}
     
 	// ------------ No Need to Modify Any of the Touches ------------
@@ -669,6 +677,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
 	// Creates a game over scene
 	func displayGameOver() {
+		
+		soundNode.run(SKAction.stop())
 		
 		let gameOverScene = GameOverScene(size: size, score: score)
 		gameOverScene.scaleMode = scaleMode
