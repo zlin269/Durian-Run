@@ -82,7 +82,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var sun = Sun()
 	lazy var fertilizer = Fertilizer()
 	lazy var supply = Supply()
-	lazy var soundNode = SKAudioNode(fileNamed: "inGameMusic.mp3")
+	lazy var soundNode = SKAudioNode(fileNamed: "electronic.wav")
     
 	
     lazy var platforms = [Platform]()

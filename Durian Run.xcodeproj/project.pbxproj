@@ -38,10 +38,6 @@
 		629301A926AE47AA00A087DA /* SeasonInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629301A826AE47AA00A087DA /* SeasonInfo.swift */; };
 		629301AC26AEB70600A087DA /* StartMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629301AB26AEB70600A087DA /* StartMenuScene.swift */; };
 		629301B626B10BF500A087DA /* skywave.wav in Resources */ = {isa = PBXBuildFile; fileRef = 629301B026B10BF300A087DA /* skywave.wav */; };
-		629301B726B10BF500A087DA /* musicloop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 629301B126B10BF300A087DA /* musicloop.wav */; };
-		629301B826B10BF500A087DA /* desertbackground.wav in Resources */ = {isa = PBXBuildFile; fileRef = 629301B226B10BF400A087DA /* desertbackground.wav */; };
-		629301B926B10BF500A087DA /* inGameMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 629301B326B10BF400A087DA /* inGameMusic.mp3 */; };
-		629301BA26B10BF500A087DA /* eel. - yellow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 629301B426B10BF400A087DA /* eel. - yellow.mp3 */; };
 		629301BB26B10BF500A087DA /* electronic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 629301B526B10BF500A087DA /* electronic.wav */; };
 		629301BD26B1319A00A087DA /* jump.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 629301BC26B1319A00A087DA /* jump.mp3 */; };
 		629301BF26B1354600A087DA /* run.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 629301BE26B1354500A087DA /* run.mp3 */; };
@@ -105,10 +101,6 @@
 		629301A826AE47AA00A087DA /* SeasonInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeasonInfo.swift; sourceTree = "<group>"; };
 		629301AB26AEB70600A087DA /* StartMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenuScene.swift; sourceTree = "<group>"; };
 		629301B026B10BF300A087DA /* skywave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = skywave.wav; sourceTree = "<group>"; };
-		629301B126B10BF300A087DA /* musicloop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = musicloop.wav; sourceTree = "<group>"; };
-		629301B226B10BF400A087DA /* desertbackground.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = desertbackground.wav; sourceTree = "<group>"; };
-		629301B326B10BF400A087DA /* inGameMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = inGameMusic.mp3; sourceTree = "<group>"; };
-		629301B426B10BF400A087DA /* eel. - yellow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "eel. - yellow.mp3"; sourceTree = "<group>"; };
 		629301B526B10BF500A087DA /* electronic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = electronic.wav; sourceTree = "<group>"; };
 		629301BC26B1319A00A087DA /* jump.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = jump.mp3; sourceTree = "<group>"; };
 		629301BE26B1354500A087DA /* run.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = run.mp3; sourceTree = "<group>"; };
@@ -280,12 +272,8 @@
 			isa = PBXGroup;
 			children = (
 				629301BC26B1319A00A087DA /* jump.mp3 */,
-				629301B226B10BF400A087DA /* desertbackground.wav */,
-				629301B426B10BF400A087DA /* eel. - yellow.mp3 */,
 				629301B526B10BF500A087DA /* electronic.wav */,
-				629301B326B10BF400A087DA /* inGameMusic.mp3 */,
 				629301BE26B1354500A087DA /* run.mp3 */,
-				629301B126B10BF300A087DA /* musicloop.wav */,
 				629301B026B10BF300A087DA /* skywave.wav */,
 			);
 			path = Sounds;
@@ -395,20 +383,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				623EB13326A167BC000628CB /* Main.storyboard in Resources */,
-				629301B826B10BF500A087DA /* desertbackground.wav in Resources */,
 				629301B626B10BF500A087DA /* skywave.wav in Resources */,
 				623EB15926A16844000628CB /* NormalRun.atlas in Resources */,
-				629301BA26B10BF500A087DA /* eel. - yellow.mp3 in Resources */,
 				623EB12A26A167BC000628CB /* GameScene.sks in Resources */,
 				623EB15D26A16878000628CB /* BoostRun.atlas in Resources */,
 				623EB13526A167BE000628CB /* Assets.xcassets in Resources */,
 				629301BD26B1319A00A087DA /* jump.mp3 in Resources */,
 				629301BB26B10BF500A087DA /* electronic.wav in Resources */,
 				623EB15B26A16860000628CB /* AbsorbRun.atlas in Resources */,
-				629301B726B10BF500A087DA /* musicloop.wav in Resources */,
 				629301BF26B1354600A087DA /* run.mp3 in Resources */,
 				623EB12C26A167BC000628CB /* Actions.sks in Resources */,
-				629301B926B10BF500A087DA /* inGameMusic.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
