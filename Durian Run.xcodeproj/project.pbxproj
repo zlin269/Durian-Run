@@ -37,7 +37,6 @@
 		6270E12626ABB9A100011319 /* Boundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E12526ABB9A100011319 /* Boundary.swift */; };
 		629301A926AE47AA00A087DA /* SeasonInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629301A826AE47AA00A087DA /* SeasonInfo.swift */; };
 		629301AC26AEB70600A087DA /* StartMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629301AB26AEB70600A087DA /* StartMenuScene.swift */; };
-		629301B626B10BF500A087DA /* skywave.wav in Resources */ = {isa = PBXBuildFile; fileRef = 629301B026B10BF300A087DA /* skywave.wav */; };
 		629301BD26B1319A00A087DA /* jump.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 629301BC26B1319A00A087DA /* jump.mp3 */; };
 		629301BF26B1354600A087DA /* run.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 629301BE26B1354500A087DA /* run.mp3 */; };
 		C64B299126A8326B006A1FEB /* Extension_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B299026A8326B006A1FEB /* Extension_1.swift */; };
@@ -99,7 +98,6 @@
 		6270E12526ABB9A100011319 /* Boundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Boundary.swift; sourceTree = "<group>"; };
 		629301A826AE47AA00A087DA /* SeasonInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeasonInfo.swift; sourceTree = "<group>"; };
 		629301AB26AEB70600A087DA /* StartMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenuScene.swift; sourceTree = "<group>"; };
-		629301B026B10BF300A087DA /* skywave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = skywave.wav; sourceTree = "<group>"; };
 		629301BC26B1319A00A087DA /* jump.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = jump.mp3; sourceTree = "<group>"; };
 		629301BE26B1354500A087DA /* run.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = run.mp3; sourceTree = "<group>"; };
 		C64B299026A8326B006A1FEB /* Extension_1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_1.swift; sourceTree = "<group>"; };
@@ -271,7 +269,6 @@
 			children = (
 				629301BC26B1319A00A087DA /* jump.mp3 */,
 				629301BE26B1354500A087DA /* run.mp3 */,
-				629301B026B10BF300A087DA /* skywave.wav */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -380,7 +377,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				623EB13326A167BC000628CB /* Main.storyboard in Resources */,
-				629301B626B10BF500A087DA /* skywave.wav in Resources */,
 				623EB15926A16844000628CB /* NormalRun.atlas in Resources */,
 				623EB12A26A167BC000628CB /* GameScene.sks in Resources */,
 				623EB15D26A16878000628CB /* BoostRun.atlas in Resources */,
