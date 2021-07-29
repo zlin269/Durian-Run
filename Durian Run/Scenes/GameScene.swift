@@ -91,9 +91,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var raindrops = [Rain]()
 
 	// platforms
-	static var platformSpeed : CGFloat = 600
+	static var platformSpeed : CGFloat = 1000
     var platformLength = 10
-    var platformGap = 200
+	var platformGap : CGFloat {
+		return GameScene.platformSpeed / 4
+	}
     var platformPositionR: CGFloat = 0
     var levelLength = 2
     var levelGap = 2000
@@ -113,6 +115,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any physics node has 100 <= zPos < 200
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
+		
+		GameScene.platformSpeed = 1000
 		
         print("Inside Gameplay Scene")
             createBackground()
@@ -409,7 +413,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Calculate time since last update
         var dt = currentTime - self.lastUpdateTime
 		
-        
+		// Do not update status bars the first frame after unpause
+		// Otherwise health bar drops by a lot (because its based on dt)
+		// Unpaused
+		if justUnpaused {
+			justUnpaused = false
+			dt = 0
+		}
+		
 		// MARK: --Platforms
         // Platform move
         if(platforms[0].position.x + platforms[0].width < 0){
@@ -422,7 +433,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // create new platform
             platform = Platform()
 			platform.create(number: platformLength + Int(arc4random_uniform(20)))
-			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? CGFloat(platformGap + Int(arc4random_uniform(400))) : 0), y:50)
+			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(400))) : 0), y:50)
             platform.zPosition = 100
             platformPositionR = platform.position.x + platform.width
 			platform.name = "platform"
@@ -447,7 +458,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			pl.move(speed: GameScene.platformSpeed, dt)
 		}
 		
-		platformLevelPositionR = platformLevelPositionR - CGFloat(GameScene.platformSpeed)
+		platformLevelPositionR = platformLevelPositionR - CGFloat(dt) * GameScene.platformSpeed
 		
 		if fertilizer.inGame {
 			fertilizer.move(speed: GameScene.platformSpeed, dt)
@@ -467,15 +478,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			e.move(dt)
 		}
 		
-		
-		// Do not update status bars the first frame after unpause
-		// Otherwise health bar drops by a lot (because its based on dt)
-        // Unpaused
-		if justUnpaused {
-			justUnpaused = false
-			dt = 0
-		}
-		
 		gameTime += dt
 		if durian.state != DurianState.boost {
 			sunshineBar.decrease(by: CGFloat(dt * difficulty))
@@ -483,7 +485,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		
 		// Scoring Update
-		score += dt * Double(GameScene.platformSpeed) / 10
+		score += dt * Double(GameScene.platformSpeed) / 15
 		
 		// MARK: --Boost
 		if durian.state == DurianState.boost && currentTime - boostStartTime > 10 {
@@ -508,16 +510,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			self.displayGameOver()
 		} else if durian.position.x < 600 {
 			durian.run(SKAction.moveBy(x: 0.5, y: 0, duration: dt))
+		} else if durian.position.x > 600 {
+			durian.run(SKAction.moveBy(x: -2, y: 0, duration: dt))
 		}
         
 		
 		// MARK: --Absorbtion Related
 		if durian.state == DurianState.absorb {
 			if sun.isOpen {
-				sunshineBar.increase(by: CGFloat(dt * 20))
+				sunshineBar.increase(by: CGFloat(dt * 10))
 			}
 			if isRaining {
-				waterBar.increase(by: CGFloat(dt * 20))
+				waterBar.increase(by: CGFloat(dt * 10))
 			}
 			for f in factories {
 				if abs(f.position.x - durian.position.x) < 300 {
@@ -525,7 +529,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				}
 			}
 			if isStorming {
-				sunshineBar.decrease(by: CGFloat(dt * 15))
+				sunshineBar.decrease(by: CGFloat(dt * 10))
 				waterBar.increase(by: CGFloat(dt * 30))
 			}
 		}
@@ -684,7 +688,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //		print("in air:", durian.inAir)
 		print("Season Timer: ", seasonTimer)
 		
-		
+		GameScene.platformSpeed += CGFloat(dt * 2)
+		print("Speed: ", GameScene.platformSpeed)
+
         
         self.lastUpdateTime = currentTime
     }

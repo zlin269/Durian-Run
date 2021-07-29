@@ -24,7 +24,7 @@ class Boundary: SKNode {
 		self.physicsBody = SKPhysicsBody(bodies: [leftBoundary.physicsBody!, bottomBoundary.physicsBody!])
 		self.physicsBody?.isDynamic = false
 		self.physicsBody?.categoryBitMask = HitMask.boundary
-		self.physicsBody?.contactTestBitMask = 0xFFFFFFFF
+		self.physicsBody?.contactTestBitMask = 0xFFFFFFFF - HitMask.platform
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
