@@ -116,9 +116,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
 		
-		nextSeason()
-		nextSeason()
-		
 		GameScene.platformSpeed = 1000
 		
         print("Inside Gameplay Scene")
@@ -134,7 +131,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
 		// long press gesture recognizer
 		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
-		self.view?.addGestureRecognizer(recognizer)
+		// self.view?.addGestureRecognizer(recognizer)
 		recognizer.minimumPressDuration = 0.15
 		
 		let swipeUpRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedUp))
@@ -144,6 +141,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		let swipeRightRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedRight))
 		self.view?.addGestureRecognizer(swipeRightRecognizer)
 		swipeRightRecognizer.direction = .right
+		
+		let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedLeft))
+		self.view?.addGestureRecognizer(swipeLeftRecognizer)
+		swipeLeftRecognizer.direction = .left
 		
 		// MARK: --gravity
 		self.physicsWorld.contactDelegate = self
@@ -263,14 +264,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
 	@objc func swipedUp (sender: UISwipeGestureRecognizer) {
 		if !isPaused {
-			if durian.state != DurianState.absorb {
-				if durian.inAir != 0 {
+			if durian.inAir != 0 {
+				durian.jump()
+			} else {
+				if waterBar.isMoreThanOrEqualTo(90) {
 					durian.jump()
-				} else {
-					if waterBar.isMoreThanOrEqualTo(90) {
-						durian.jump()
-						waterBar.decrease(by: 30)
-					}
+					waterBar.decrease(by: 30)
 				}
 			}
 		}
@@ -288,6 +287,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			boostSound.run(SKAction.sequence([SKAction.play(),
 											   SKAction.wait(forDuration: 4),
 											   SKAction.removeFromParent()]))
+		}
+	}
+	
+	@objc func swipedLeft (sender: UISwipeGestureRecognizer) {
+		if durian.state != DurianState.boost {
+			let switchSound = SKAudioNode(fileNamed: "switch.wav")
+			switchSound.autoplayLooped = false
+			self.addChild(switchSound)
+			switchSound.run(SKAction.sequence([SKAction.play(), SKAction.wait(forDuration: 1)]) ,
+							completion: { switchSound.removeFromParent() })
+			if durian.state == .normal {
+				durian.state = .absorb
+			} else {
+				durian.state = .normal
+			}
 		}
 	}
 	

@@ -42,6 +42,8 @@
 		62CF787726B154FA00E573ED /* skywave.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF787426B154FA00E573ED /* skywave.wav */; };
 		62CF787926B2404800E573ED /* sword-attack.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF787826B2404800E573ED /* sword-attack.wav */; };
 		62CF787B26B242CE00E573ED /* powerup.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF787A26B242CE00E573ED /* powerup.wav */; };
+		62CF787D26B2891B00E573ED /* Fly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CF787C26B2891B00E573ED /* Fly.swift */; };
+		62CF788126B2988F00E573ED /* switch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788026B2988F00E573ED /* switch.wav */; };
 		C64B299126A8326B006A1FEB /* Extension_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B299026A8326B006A1FEB /* Extension_1.swift */; };
 		C64B299326A83289006A1FEB /* Extension_2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B299226A83289006A1FEB /* Extension_2.swift */; };
 		C64B29D226A9213B006A1FEB /* Rain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B29D126A9213B006A1FEB /* Rain.swift */; };
@@ -106,6 +108,8 @@
 		62CF787426B154FA00E573ED /* skywave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = skywave.wav; sourceTree = "<group>"; };
 		62CF787826B2404800E573ED /* sword-attack.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "sword-attack.wav"; sourceTree = "<group>"; };
 		62CF787A26B242CE00E573ED /* powerup.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = powerup.wav; sourceTree = "<group>"; };
+		62CF787C26B2891B00E573ED /* Fly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fly.swift; sourceTree = "<group>"; };
+		62CF788026B2988F00E573ED /* switch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = switch.wav; sourceTree = "<group>"; };
 		C64B299026A8326B006A1FEB /* Extension_1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_1.swift; sourceTree = "<group>"; };
 		C64B299226A83289006A1FEB /* Extension_2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_2.swift; sourceTree = "<group>"; };
 		C64B29D126A9213B006A1FEB /* Rain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rain.swift; sourceTree = "<group>"; };
@@ -253,6 +257,7 @@
 				6270E11A26A7BBD000011319 /* Bug.swift */,
 				6270E11326A6B31800011319 /* Enemy.swift */,
 				6270E12126A976B800011319 /* Chaser.swift */,
+				62CF787C26B2891B00E573ED /* Fly.swift */,
 			);
 			path = Enemies;
 			sourceTree = "<group>";
@@ -273,6 +278,7 @@
 		629301AF26B10B3400A087DA /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				62CF788026B2988F00E573ED /* switch.wav */,
 				62CF787A26B242CE00E573ED /* powerup.wav */,
 				62CF787826B2404800E573ED /* sword-attack.wav */,
 				62CF787226B154F900E573ED /* jump.mp3 */,
@@ -393,6 +399,7 @@
 				62CF787626B154FA00E573ED /* run.mp3 in Resources */,
 				623EB12A26A167BC000628CB /* GameScene.sks in Resources */,
 				623EB15D26A16878000628CB /* BoostRun.atlas in Resources */,
+				62CF788126B2988F00E573ED /* switch.wav in Resources */,
 				623EB13526A167BE000628CB /* Assets.xcassets in Resources */,
 				62CF787726B154FA00E573ED /* skywave.wav in Resources */,
 				623EB15B26A16860000628CB /* AbsorbRun.atlas in Resources */,
@@ -427,6 +434,7 @@
 				C64B29D226A9213B006A1FEB /* Rain.swift in Sources */,
 				6270E12226A976B800011319 /* Chaser.swift in Sources */,
 				6270E12626ABB9A100011319 /* Boundary.swift in Sources */,
+				62CF787D26B2891B00E573ED /* Fly.swift in Sources */,
 				623EB16726A52627000628CB /* Button.swift in Sources */,
 				623EB16126A17D50000628CB /* Platform.swift in Sources */,
 				6270E11B26A7BBD000011319 /* Bug.swift in Sources */,
@@ -612,15 +620,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2F7VL4ZM4F;
+				DEVELOPMENT_TEAM = 5RP3YJ7VKV;
 				INFOPLIST_FILE = "Durian Run/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = skellig;
+				PRODUCT_BUNDLE_IDENTIFIER = "Lin.Durian-Run";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
