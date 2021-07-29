@@ -22,15 +22,15 @@ class Enemy: SKSpriteNode {
 	init(imageNamed imageName: String, withHealth health: Int, withSpeed speed: CGFloat) {
 		self.health = health
 		self.movementSpeed = speed
-		super.init(texture: SKTexture(imageNamed: imageName), color: UIColor.red, size: CGSize(width: 150, height: 150))
-		self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 120, height: 150))
+		super.init(texture: SKTexture(imageNamed: imageName), color: UIColor.red, size: CGSize(width: 130, height: 130))
+		self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 120, height: 120))
 		self.physicsBody?.isDynamic = true
 		self.physicsBody?.affectedByGravity = true
 		self.physicsBody?.allowsRotation = false
 		self.physicsBody?.friction = 0
 		self.physicsBody?.categoryBitMask = HitMask.enemy
 		self.physicsBody?.contactTestBitMask = HitMask.durian
-		self.physicsBody?.collisionBitMask = HitMask.platform
+		self.physicsBody?.collisionBitMask = HitMask.platform | HitMask.enemy
 		
 	}
 	

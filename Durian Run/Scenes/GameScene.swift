@@ -144,7 +144,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		// MARK: --gravity
 		self.physicsWorld.contactDelegate = self
-		self.physicsWorld.gravity = CGVector(dx: 0, dy: -15)
+		self.physicsWorld.gravity = CGVector(dx: 0, dy: -30)
 		
 		// game elements
 		
@@ -558,23 +558,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			}
 			switch season {
 			case .Spring:
-				if 1 < num && num <= 5 {
+				if 1 < num && num <= 10 {
 					spawnFactory()
 				}
 				break
 			case .Summer:
-				if 1 < num && num <= 5 {
+				if 1 < num && num <= 8 {
 					spawnFactory()
 				}
 				break
 			case .Fall:
-				if 12 < num && num <= 20 && enemies.count == 0 {
-					spawnBugs(Int(arc4random_uniform(2)) + 1)
+				if 1 < num && num <= 20 && enemies.count == 0 {
+					spawnBugs(Int(arc4random_uniform(5)))
 				}
 				break
 			case .Winter:
-				if 12 < num && num <= 20 && enemies.count == 0 {
-					spawnBugs(Int(arc4random_uniform(2)) + 1)
+				if 1 < num && num <= 20 && enemies.count == 0 {
+					spawnBugs(Int(arc4random_uniform(5)))
 				}
 				break
 			default:
@@ -746,13 +746,52 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	
 	func spawnBugs (_ num: Int) {
-		for i in 1...num {
+		switch num {
+		case 0:
+			let bug1 = Bug()
+			bug1.position = CGPoint(x: self.frame.width + 0, y: 600)
+			bug1.zPosition = 100
+			enemies.append(bug1)
+			self.addChild(bug1)
+			let bug2 = Bug()
+			bug2.position = CGPoint(x: self.frame.width + 800, y: 600)
+			bug2.zPosition = 100
+			enemies.append(bug2)
+			self.addChild(bug2)
+			break
+		case 1:
+			let bug1 = Bug()
+			bug1.position = CGPoint(x: self.frame.width + 200, y: 600)
+			bug1.zPosition = 100
+			enemies.append(bug1)
+			self.addChild(bug1)
+			let bug2 = Bug()
+			bug2.position = CGPoint(x: self.frame.width + 400, y: 600)
+			bug2.zPosition = 100
+			enemies.append(bug2)
+			self.addChild(bug2)
+			break
+		case 2:
+			let bug1 = Bug()
+			bug1.position = CGPoint(x: self.frame.width + 200, y: 600)
+			bug1.zPosition = 100
+			enemies.append(bug1)
+			self.addChild(bug1)
+			let bug2 = Bug()
+			bug2.position = CGPoint(x: self.frame.width + 200, y: 900)
+			bug2.zPosition = 100
+			enemies.append(bug2)
+			self.addChild(bug2)
+			break
+		default:
 			let bug = Bug()
-			bug.position = CGPoint(x: self.frame.width + 200 * CGFloat(i), y: 600)
+			bug.position = CGPoint(x: self.frame.width + 200, y: 600)
 			bug.zPosition = 100
 			enemies.append(bug)
 			self.addChild(bug)
 		}
+			
+		
 	}
 	
 	func nextSeason() {
