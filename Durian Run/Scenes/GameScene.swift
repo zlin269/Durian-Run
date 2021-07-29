@@ -116,6 +116,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
 		
+		nextSeason()
+		nextSeason()
+		
 		GameScene.platformSpeed = 1000
 		
         print("Inside Gameplay Scene")
@@ -751,12 +754,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		switch num {
 		case 0:
 			let bug1 = Bug()
-			bug1.position = CGPoint(x: self.frame.width + 0, y: 600)
+			bug1.position = CGPoint(x: self.frame.width , y: 600)
 			bug1.zPosition = 100
 			enemies.append(bug1)
 			self.addChild(bug1)
 			let bug2 = Bug()
-			bug2.position = CGPoint(x: self.frame.width + 800, y: 600)
+			bug2.position = CGPoint(x: self.frame.width + 800 + GameScene.platformSpeed / 10, y: 600)
 			bug2.zPosition = 100
 			enemies.append(bug2)
 			self.addChild(bug2)
@@ -768,7 +771,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			enemies.append(bug1)
 			self.addChild(bug1)
 			let bug2 = Bug()
-			bug2.position = CGPoint(x: self.frame.width + 400, y: 600)
+			bug2.position = CGPoint(x: self.frame.width + 400 + GameScene.platformSpeed / 10, y: 600)
 			bug2.zPosition = 100
 			enemies.append(bug2)
 			self.addChild(bug2)
