@@ -36,7 +36,7 @@ class Collectable: SKSpriteNode {
 		inGame = false
 	}
 	
-	func move(speed: CGFloat){
-		self.position.x = self.position.x - speed
+	func move(speed: CGFloat, _ dt: TimeInterval){
+		self.position.x = self.position.x - speed * CGFloat(dt)
 	}
 }

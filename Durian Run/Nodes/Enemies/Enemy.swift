@@ -49,7 +49,7 @@ class Enemy: SKSpriteNode {
 		})
 	}
 	
-	func move(){
-		self.position.x = self.position.x - movementSpeed
+	func move(_ dt: TimeInterval){
+		self.position.x = self.position.x - movementSpeed * CGFloat(dt)
 	}
 }

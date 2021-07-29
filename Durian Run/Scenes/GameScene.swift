@@ -6,7 +6,6 @@
 //
 //
 
-import AVKit
 import SpriteKit
 import GameplayKit
 
@@ -92,9 +91,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var raindrops = [Rain]()
 
 	// platforms
-	static var platformSpeed : CGFloat = 12
+	static var platformSpeed : CGFloat = 600
     var platformLength = 10
-    var platformGap = 250
+    var platformGap = 200
     var platformPositionR: CGFloat = 0
     var levelLength = 2
     var levelGap = 2000
@@ -115,9 +114,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
 		
-		nextSeason()
-		nextSeason()
-		
         print("Inside Gameplay Scene")
             createBackground()
 		
@@ -132,7 +128,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		// long press gesture recognizer
 		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
 		self.view?.addGestureRecognizer(recognizer)
-		recognizer.minimumPressDuration = 0.2
+		recognizer.minimumPressDuration = 0.15
 		
 		let swipeUpRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedUp))
 		self.view?.addGestureRecognizer(swipeUpRecognizer)
@@ -426,7 +422,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // create new platform
             platform = Platform()
 			platform.create(number: platformLength + Int(arc4random_uniform(20)))
-			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? CGFloat(platformGap + Int(arc4random_uniform(500))) : 0), y:50)
+			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? CGFloat(platformGap + Int(arc4random_uniform(400))) : 0), y:50)
             platform.zPosition = 100
             platformPositionR = platform.position.x + platform.width
 			platform.name = "platform"
@@ -435,10 +431,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         for p in platforms{
-			p.move(speed: GameScene.platformSpeed)
+			p.move(speed: GameScene.platformSpeed, dt)
         }
         
-		platformPositionR = platformPositionR - CGFloat(GameScene.platformSpeed)
+		platformPositionR = platformPositionR - GameScene.platformSpeed * CGFloat(dt)
         
 		// PlatformLevel move
 		if !platformLevels.isEmpty && platformLevels[0].position.x + platformLevels[0].width < 0 {
@@ -448,17 +444,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		
 		for pl in platformLevels{
-			pl.move(speed: GameScene.platformSpeed)
+			pl.move(speed: GameScene.platformSpeed, dt)
 		}
 		
 		platformLevelPositionR = platformLevelPositionR - CGFloat(GameScene.platformSpeed)
 		
 		if fertilizer.inGame {
-			fertilizer.move(speed: GameScene.platformSpeed)
+			fertilizer.move(speed: GameScene.platformSpeed, dt)
 		}
 		
 		if supply.inGame {
-			supply.move(speed: GameScene.platformSpeed)
+			supply.move(speed: GameScene.platformSpeed, dt)
 		}
 		
 		
@@ -468,7 +464,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			enemies.removeFirst()
 		}
 		for e in enemies {
-			e.move()
+			e.move(dt)
 		}
 		
 		
@@ -487,7 +483,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		
 		// Scoring Update
-		score += dt * Double(GameScene.platformSpeed) * 3
+		score += dt * Double(GameScene.platformSpeed) / 10
 		
 		// MARK: --Boost
 		if durian.state == DurianState.boost && currentTime - boostStartTime > 10 {
@@ -717,7 +713,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		self.addChild(factory)
 		factories.append(factory)
-		factory.run(SKAction.moveTo(x: -200, duration: 5), completion: {
+		factory.run(SKAction.moveTo(x: -200, duration: TimeInterval((self.size.width + 400) / GameScene.platformSpeed)), completion: {
 			factory.removeFromParent()
 			self.factories.removeFirst()
 		})
