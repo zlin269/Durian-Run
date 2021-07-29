@@ -279,6 +279,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			boostStartTime = self.lastUpdateTime
 			boostBar.setEmpty()
 			durian.run()
+			let boostSound = SKAudioNode(fileNamed: "powerup.wav")
+			boostSound.autoplayLooped = false
+			self.addChild(boostSound)
+			boostSound.run(SKAction.sequence([SKAction.play(),
+											   SKAction.wait(forDuration: 4),
+											   SKAction.removeFromParent()]))
 		}
 	}
 	
@@ -308,6 +314,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				let b = contact.bodyA.node as! Bug
 				b.receiveDamage(1)
 				score += 500
+				let attackSound = SKAudioNode(fileNamed: "sword-attack.wav")
+				attackSound.autoplayLooped = false
+				self.addChild(attackSound)
+				attackSound.run(SKAction.sequence([SKAction.play(),
+												   SKAction.wait(forDuration: 1),
+												   SKAction.removeFromParent()]))
 			} else {
 				sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 				waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
@@ -318,6 +330,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				let b = contact.bodyB.node as! Bug
 				b.receiveDamage(1)
 				score += 500
+				let attackSound = SKAudioNode(fileNamed: "sword-attack.wav")
+				attackSound.autoplayLooped = false
+				self.addChild(attackSound)
+				attackSound.run(SKAction.sequence([SKAction.play(),
+												   SKAction.wait(forDuration: 1),
+												   SKAction.removeFromParent()]))
 			} else {
 				sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 				waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
@@ -699,7 +717,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		self.addChild(factory)
 		factories.append(factory)
-		factory.run(SKAction.moveTo(x: -200, duration: 10), completion: {
+		factory.run(SKAction.moveTo(x: -200, duration: 5), completion: {
 			factory.removeFromParent()
 			self.factories.removeFirst()
 		})
