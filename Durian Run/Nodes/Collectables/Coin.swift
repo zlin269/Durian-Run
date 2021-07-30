@@ -46,6 +46,30 @@ class Coin: Collectable {
 				c.removeFromParent()
 			})
 		}
-		
+	}
+	
+	static func spawnCoinsLine(_ count: Int, _ position: CGPoint, _ parent: SKNode) {
+		for i in 0..<count {
+			let c = Coin()
+			c.position = position
+			c.position.x += CGFloat(i) * 200
+			parent.addChild(c)
+			c.run(SKAction.moveTo(x: -100, duration: TimeInterval((c.position.x + CGFloat(100))/GameScene.platformSpeed)), completion: {
+				c.removeFromParent()
+			})
+		}
+	}
+	
+	static func spanwCoinsDrop(_ position: CGPoint, _ parent: SKNode) {
+		for i in 0...4 {
+			let c = Coin()
+			c.position = position
+			c.position.x += CGFloat(i) * 50
+			c.position.y -= CGFloat(i) * 200
+			parent.addChild(c)
+			c.run(SKAction.moveTo(x: -100, duration: TimeInterval((c.position.x + CGFloat(100))/GameScene.platformSpeed)), completion: {
+				c.removeFromParent()
+			})
+		}
 	}
 }

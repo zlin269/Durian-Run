@@ -48,6 +48,7 @@
 		62CF788A26B3E62000E573ED /* electronic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788926B3E62000E573ED /* electronic.wav */; };
 		62CF788C26B3E69200E573ED /* shield-guard.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788B26B3E69200E573ED /* shield-guard.wav */; };
 		62CF788E26B3E6B100E573ED /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788D26B3E6B100E573ED /* ding.wav */; };
+		62CF789026B3EADA00E573ED /* thunder.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788F26B3EADA00E573ED /* thunder.wav */; };
 		C64B299126A8326B006A1FEB /* Extension_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B299026A8326B006A1FEB /* Extension_1.swift */; };
 		C64B299326A83289006A1FEB /* Extension_2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B299226A83289006A1FEB /* Extension_2.swift */; };
 		C64B29D226A9213B006A1FEB /* Rain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B29D126A9213B006A1FEB /* Rain.swift */; };
@@ -119,6 +120,7 @@
 		62CF788926B3E62000E573ED /* electronic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = electronic.wav; sourceTree = "<group>"; };
 		62CF788B26B3E69200E573ED /* shield-guard.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "shield-guard.wav"; sourceTree = "<group>"; };
 		62CF788D26B3E6B100E573ED /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
+		62CF788F26B3EADA00E573ED /* thunder.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = thunder.wav; sourceTree = "<group>"; };
 		C64B299026A8326B006A1FEB /* Extension_1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_1.swift; sourceTree = "<group>"; };
 		C64B299226A83289006A1FEB /* Extension_2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_2.swift; sourceTree = "<group>"; };
 		C64B29D126A9213B006A1FEB /* Rain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rain.swift; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				62CF788B26B3E69200E573ED /* shield-guard.wav */,
 				62CF788926B3E62000E573ED /* electronic.wav */,
 				62CF788026B2988F00E573ED /* switch.wav */,
+				62CF788F26B3EADA00E573ED /* thunder.wav */,
 				62CF787A26B242CE00E573ED /* powerup.wav */,
 				62CF787826B2404800E573ED /* sword-attack.wav */,
 				62CF787226B154F900E573ED /* jump.mp3 */,
@@ -421,6 +424,7 @@
 				623EB13526A167BE000628CB /* Assets.xcassets in Resources */,
 				62CF787726B154FA00E573ED /* skywave.wav in Resources */,
 				623EB15B26A16860000628CB /* AbsorbRun.atlas in Resources */,
+				62CF789026B3EADA00E573ED /* thunder.wav in Resources */,
 				623EB12C26A167BC000628CB /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

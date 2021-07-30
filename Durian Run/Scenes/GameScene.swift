@@ -116,6 +116,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
 		
+		nextSeason()
+		nextSeason()
+		
 		GameScene.platformSpeed = 1000
 		
         print("Inside Gameplay Scene")
@@ -482,7 +485,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			platform.name = "platform"
             self.addChild(platform)
             platforms.append(platform)
-			Coin.spawnCoinsRainbow(CGPoint(x: platform.position.x - platformGap, y: 650), self)
+			if season == .Spring || season == .Summer {
+				Coin.spawnCoinsRainbow(CGPoint(x: platform.position.x - platformGap, y: 680), self)
+			}
+			Coin.spawnCoinsLine(5 ,CGPoint(x: platform.position.x + 400, y: 250), self)
         }
         
         for p in platforms{
@@ -686,6 +692,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				platformLevel.name = "platformLevel"
 				self.addChild(platformLevel)
 				platformLevels.append(platformLevel)
+				Coin.spawnCoinsLine(3 ,CGPoint(x: platformLevel.position.x + 100, y: 680), self)
+				Coin.spanwCoinsDrop(CGPoint(x: platformLevel.position.x + platformLevel.width + 200, y: 1100), self)
 			}
 			break
 		case .Winter:
@@ -892,7 +900,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		isStorming = true
 		isRaining = true
 		sun.close()
+		let thunder = SKAudioNode(fileNamed: "thunder.wav")
+		thunder.autoplayLooped = false
+		thunder.run(SKAction.changeVolume(to: Float(1), duration: 0))
 		let flash = SKSpriteNode(color: UIColor.black, size: self.frame.size)
+		flash.addChild(thunder)
+		thunder.run(SKAction.sequence([SKAction.play()]))
 		flash.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
 		flash.zPosition = 150
 		self.addChild(flash)
