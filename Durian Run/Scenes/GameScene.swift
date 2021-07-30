@@ -81,7 +81,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var sun = Sun()
 	lazy var fertilizer = Fertilizer()
 	lazy var supply = Supply()
-	lazy var soundNode = SKAudioNode(fileNamed: "skywave.wav")
+	lazy var soundNode = SKAudioNode(fileNamed: "electronic.wav")
     
 	
     lazy var platforms = [Platform]()
@@ -115,9 +115,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any physics node has 100 <= zPos < 200
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
-		
-		nextSeason()
-		nextSeason()
 		
 		GameScene.platformSpeed = 1000
 		
@@ -160,6 +157,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		// game elements
 		
 		durian.name = "durian"
+		durian.state = .absorb
 		durian.position = CGPoint(x: 600, y: 500)
 		durian.zPosition = 100
 		durian.size = CGSize(width: durian.size.width * 3, height: durian.size.height * 3)
@@ -357,7 +355,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				} else {
 					sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 					waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-					boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 				}
 			}
 		} else if contact.bodyB.node is Enemy && contact.bodyA.node is Durian {
@@ -377,7 +374,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				} else {
 					sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 					waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-					boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 				}
 			}
 		}
@@ -386,6 +382,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			contact.bodyB.node?.removeFromParent()
 		} else if contact.bodyB.node is Boundary {
 			contact.bodyA.node?.removeFromParent()
+		}
+		
+		if contact.bodyA.node is Coin {
+			let c = contact.bodyA.node as! Coin
+			c.getCollected()
+		} else if contact.bodyB.node is Coin {
+			let c = contact.bodyB.node as! Coin
+			c.getCollected()
 		}
 	}
 	
@@ -478,6 +482,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			platform.name = "platform"
             self.addChild(platform)
             platforms.append(platform)
+			Coin.spawnCoinsRainbow(CGPoint(x: platform.position.x - platformGap, y: 650), self)
         }
         
         for p in platforms{
@@ -593,7 +598,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			let num = arc4random_uniform(200)
 			if num <= 1 {
 				spawnFertilizer()
-				print("carrot spawned")
 			}
 			switch season {
 			case .Spring:
@@ -838,7 +842,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			self.addChild(bug)
 		}
 			
-		
 	}
 	
 	func nextSeason() {

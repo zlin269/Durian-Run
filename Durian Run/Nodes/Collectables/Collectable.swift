@@ -20,7 +20,7 @@ class Collectable: SKSpriteNode {
 		self.physicsBody?.friction = 0
 		self.physicsBody?.categoryBitMask = HitMask.collectable
 		self.physicsBody?.contactTestBitMask = HitMask.durian
-		self.physicsBody?.collisionBitMask = HitMask.platform
+		self.physicsBody?.collisionBitMask = HitMask.platform | HitMask.collectable
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
