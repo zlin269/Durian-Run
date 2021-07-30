@@ -116,6 +116,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
 		
+		nextSeason()
+		nextSeason()
+		
 		GameScene.platformSpeed = 1000
 		
         print("Inside Gameplay Scene")
@@ -337,9 +340,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			sunshineBar.setEmpty()
 		}
 
-		if contact.bodyA.node is Bug && contact.bodyB.node is Durian {
+		if contact.bodyA.node is Enemy && contact.bodyB.node is Durian {
 			if durian.state == DurianState.boost {
-				let b = contact.bodyA.node as! Bug
+				let b = contact.bodyA.node as! Enemy
 				b.receiveDamage(1)
 				score += 500
 				let attackSound = SKAudioNode(fileNamed: "sword-attack.wav")
@@ -357,9 +360,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 					boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 				}
 			}
-		} else if contact.bodyB.node is Bug && contact.bodyA.node is Durian {
+		} else if contact.bodyB.node is Enemy && contact.bodyA.node is Durian {
 			if durian.state == DurianState.boost {
-				let b = contact.bodyB.node as! Bug
+				let b = contact.bodyB.node as! Enemy
 				b.receiveDamage(1)
 				score += 500
 				let attackSound = SKAudioNode(fileNamed: "sword-attack.wav")
@@ -821,6 +824,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			enemies.append(bug2)
 			self.addChild(bug2)
 			break
+		case 3:
+			let fly = Fly()
+			fly.position = CGPoint(x: self.frame.width + 200, y: 800)
+			fly.zPosition = 100
+			enemies.append(fly)
+			self.addChild(fly)
 		default:
 			let bug = Bug()
 			bug.position = CGPoint(x: self.frame.width + 200, y: 600)
