@@ -13,9 +13,9 @@ enum DurianState: Int {
 }
 
 class Durian: SKSpriteNode {
-	
-	var sound = SKAudioNode(fileNamed: "jump.mp3")
-	var runSound = SKAudioNode(fileNamed: "run.mp3")
+
+	let sound = SKAudioNode(fileNamed: "jump.mp3")
+	let runSound = SKAudioNode(fileNamed: "run.mp3")
 	
 	var state: DurianState = DurianState.normal {
 		didSet {
@@ -45,15 +45,18 @@ class Durian: SKSpriteNode {
 			}
 		}
 	}
+	private var dropCD = false
+	private var attackCD = false
 	
 	// gathering assets
 	let normalRun = SKTextureAtlas(named: "NormalRun")
 	let absorbRun = SKTextureAtlas(named: "AbsorbRun")
 	let boostRun = SKTextureAtlas(named: "BoostRun")
 	
-	var normalRunTexture = [SKTexture]()
-	var absorbRunTexture = [SKTexture]()
-	var boostRunTexture = [SKTexture]()
+	private var normalRunTexture = [SKTexture]()
+	private var absorbRunTexture = [SKTexture]()
+	private var boostRunTexture = [SKTexture]()
+	
 	
 	init() {
 		
@@ -128,9 +131,25 @@ class Durian: SKSpriteNode {
 		sound.run(SKAction.play())
 	}
 	
+	func drop() {
+		if !dropCD {
+			self.physicsBody?.isResting = true
+			self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -2000))
+			dropCD = true
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+				self.dropCD = false
+			}
+		}
+	}
+	
 	func attack() {
-		// TODO: attack animation and effects
-		print("attack")
+		if !attackCD {
+			print("attack")
+			attackCD = true
+			DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+				self.attackCD = false
+			}
+		}
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

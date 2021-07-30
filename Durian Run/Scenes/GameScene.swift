@@ -116,6 +116,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
 		
+		nextSeason()
+		nextSeason()
+		
 		GameScene.platformSpeed = 1000
 		
         print("Inside Gameplay Scene")
@@ -137,6 +140,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		let swipeUpRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedUp))
 		self.view?.addGestureRecognizer(swipeUpRecognizer)
 		swipeUpRecognizer.direction = .up
+		
+		let swipeDownRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedDown))
+		self.view?.addGestureRecognizer(swipeDownRecognizer)
+		swipeDownRecognizer.direction = .down
 		
 		let swipeRightRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedRight))
 		self.view?.addGestureRecognizer(swipeRightRecognizer)
@@ -184,6 +191,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		boostBar.name = "mana"
 		boostBar.position = CGPoint(x: 1800, y: 800)
 		boostBar.zPosition = 200
+		boostBar.hasStacks = false
 		//boostBar.setEmpty()
 		self.addChild(boostBar)
 		
@@ -267,11 +275,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			if durian.inAir != 0 {
 				durian.jump()
 			} else {
-				if waterBar.isMoreThanOrEqualTo(90) {
+				if waterBar.stacks > 0 {
 					durian.jump()
-					waterBar.decrease(by: 30)
+					waterBar.stacks -= 1
 				}
 			}
+		}
+	}
+	
+	@objc func swipedDown (sender: UISwipeGestureRecognizer) {
+		if !isPaused {
+			durian.drop()
 		}
 	}
     
@@ -326,9 +340,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			sunshineBar.setEmpty()
 		}
 
-		if contact.bodyA.node is Bug && contact.bodyB.node is Durian {
+		if contact.bodyA.node is Enemy && contact.bodyB.node is Durian {
 			if durian.state == DurianState.boost {
-				let b = contact.bodyA.node as! Bug
+				let b = contact.bodyA.node as! Enemy
 				b.receiveDamage(1)
 				score += 500
 				let attackSound = SKAudioNode(fileNamed: "sword-attack.wav")
@@ -338,13 +352,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 												   SKAction.wait(forDuration: 1),
 												   SKAction.removeFromParent()]))
 			} else {
-				sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-				waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-				boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+				if sunshineBar.stacks > 0 {
+					sunshineBar.stacks -= 1
+				} else {
+					sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+					waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+					boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+				}
 			}
-		} else if contact.bodyB.node is Bug && contact.bodyA.node is Durian {
+		} else if contact.bodyB.node is Enemy && contact.bodyA.node is Durian {
 			if durian.state == DurianState.boost {
-				let b = contact.bodyB.node as! Bug
+				let b = contact.bodyB.node as! Enemy
 				b.receiveDamage(1)
 				score += 500
 				let attackSound = SKAudioNode(fileNamed: "sword-attack.wav")
@@ -354,9 +372,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 												   SKAction.wait(forDuration: 1),
 												   SKAction.removeFromParent()]))
 			} else {
-				sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-				waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-				boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+				if sunshineBar.stacks > 0 {
+					sunshineBar.stacks -= 1
+				} else {
+					sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+					waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+					boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+				}
 			}
 		}
         
@@ -802,6 +824,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			enemies.append(bug2)
 			self.addChild(bug2)
 			break
+		case 3:
+			let fly = Fly()
+			fly.position = CGPoint(x: self.frame.width + 200, y: 800)
+			fly.zPosition = 100
+			enemies.append(fly)
+			self.addChild(fly)
 		default:
 			let bug = Bug()
 			bug.position = CGPoint(x: self.frame.width + 200, y: 600)
