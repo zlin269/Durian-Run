@@ -54,7 +54,7 @@ class SeasonInfo {
 			sunSetDuration = 5
 			rainStartTime.append(TimeInterval(arc4random_uniform(30)))
 			rainDuration = 8
-			stormTime = TimeInterval(arc4random_uniform(30) + 10)
+			stormTime = TimeInterval(arc4random_uniform(20) + 10)
 			stormDuration = 10
 			break
 		case .Fall:
@@ -72,6 +72,8 @@ class SeasonInfo {
 			supplySpawnTime.append(TimeInterval(arc4random_uniform(20)))
 			supplySpawnTime.append(TimeInterval(arc4random_uniform(20) + 20))
 			enemiesSpawned = 0
+			stormTime = TimeInterval(arc4random_uniform(20) + 10)
+			stormDuration = 10
 			break
 		default:
 			break

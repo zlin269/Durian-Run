@@ -138,6 +138,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		self.view?.addGestureRecognizer(swipeUpRecognizer)
 		swipeUpRecognizer.direction = .up
 		
+		let swipeDownRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedDown))
+		self.view?.addGestureRecognizer(swipeDownRecognizer)
+		swipeDownRecognizer.direction = .down
+		
 		let swipeRightRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedRight))
 		self.view?.addGestureRecognizer(swipeRightRecognizer)
 		swipeRightRecognizer.direction = .right
@@ -184,6 +188,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		boostBar.name = "mana"
 		boostBar.position = CGPoint(x: 1800, y: 800)
 		boostBar.zPosition = 200
+		boostBar.hasStacks = false
 		//boostBar.setEmpty()
 		self.addChild(boostBar)
 		
@@ -267,11 +272,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			if durian.inAir != 0 {
 				durian.jump()
 			} else {
-				if waterBar.isMoreThanOrEqualTo(90) {
+				if waterBar.stacks > 0 {
 					durian.jump()
-					waterBar.decrease(by: 30)
+					waterBar.stacks -= 1
 				}
 			}
+		}
+	}
+	
+	@objc func swipedDown (sender: UISwipeGestureRecognizer) {
+		if !isPaused {
+			durian.drop()
 		}
 	}
     
@@ -338,9 +349,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 												   SKAction.wait(forDuration: 1),
 												   SKAction.removeFromParent()]))
 			} else {
-				sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-				waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-				boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+				if sunshineBar.stacks > 0 {
+					sunshineBar.stacks -= 1
+				} else {
+					sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+					waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+					boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+				}
 			}
 		} else if contact.bodyB.node is Bug && contact.bodyA.node is Durian {
 			if durian.state == DurianState.boost {
@@ -354,9 +369,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 												   SKAction.wait(forDuration: 1),
 												   SKAction.removeFromParent()]))
 			} else {
-				sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-				waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-				boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+				if sunshineBar.stacks > 0 {
+					sunshineBar.stacks -= 1
+				} else {
+					sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+					waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+					boostBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+				}
 			}
 		}
         
