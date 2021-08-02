@@ -19,14 +19,6 @@ class Coin: Collectable {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	override func getCollected() {
-		super.getCollected()
-		let sound = SKAudioNode(fileNamed: "coin.wav")
-		sound.autoplayLooped = false
-		self.addChild(sound)
-		sound.run(SKAction.play())
-	}
-	
 	static func spawnCoinsRainbow(_ position: CGPoint, _ parent: SKNode) {
 		let c_mid = Coin()
 		c_mid.position = position

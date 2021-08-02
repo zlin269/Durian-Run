@@ -82,6 +82,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var fertilizer = Fertilizer()
 	lazy var supply = Supply()
 	lazy var soundNode = SKAudioNode(fileNamed: "electronic.wav")
+	lazy var coinSound = SKAudioNode(fileNamed: "coin.wav")
+	
     
 	
     lazy var platforms = [Platform]()
@@ -123,6 +125,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		soundNode.autoplayLooped = true
 		self.addChild(soundNode)
+		
+		coinSound.autoplayLooped = false
+		self.addChild(coinSound)
 		
 		let boundary = Boundary()
 		boundary.position = CGPoint(x: -300, y: -300)
@@ -291,7 +296,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if durian.state != DurianState.boost && boostBar.isMoreThanOrEqualTo(100) {
 			durian.state = DurianState.boost
 			boostStartTime = self.lastUpdateTime
-			boostBar.setEmpty()
 			durian.run()
 			let boostSound = SKAudioNode(fileNamed: "powerup.wav")
 			boostSound.autoplayLooped = false
@@ -387,9 +391,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if contact.bodyA.node is Coin {
 			let c = contact.bodyA.node as! Coin
 			c.getCollected()
+			coinSound.run(SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false))
 		} else if contact.bodyB.node is Coin {
 			let c = contact.bodyB.node as! Coin
 			c.getCollected()
+			coinSound.run(SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false))
 		}
 	}
 	
@@ -534,9 +540,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		score += dt * Double(GameScene.platformSpeed) / 15
 		
 		// MARK: --Boost
-		if durian.state == DurianState.boost && currentTime - boostStartTime > 10 {
-			durian.state = DurianState.normal
-			durian.run()
+		if durian.state == DurianState.boost  {
+			boostBar.decrease(by: CGFloat(dt) * 10)
+			if boostBar.isEmpty() {
+				durian.state = .normal
+				durian.run()
+			}
 		}
 		
 		// MARK: --Season Change

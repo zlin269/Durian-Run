@@ -131,7 +131,7 @@ class Durian: SKSpriteNode {
 			self.physicsBody?.isResting = true
 			self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -2000))
 			dropCD = true
-			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
 				self.dropCD = false
 			}
 		}
