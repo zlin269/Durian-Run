@@ -44,14 +44,6 @@
             </objects>
             <point key="canvasLocation" x="-355.07246376811599" y="61.607142857142854"/>
         </scene>
-        <!--AV Player View Controller-->
-        <scene sceneID="BZY-qn-10X">
-            <objects>
-                <avPlayerViewController videoGravity="AVLayerVideoGravityResizeAspect" id="Z0r-6m-yCa" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="BK4-F6-Wv0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-190" y="-697"/>
-        </scene>
     </scenes>
     <resources>
         <image name="background2" width="800" height="600"/>
