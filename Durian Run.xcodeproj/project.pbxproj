@@ -49,6 +49,8 @@
 		62CF788C26B3E69200E573ED /* shield-guard.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788B26B3E69200E573ED /* shield-guard.wav */; };
 		62CF788E26B3E6B100E573ED /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788D26B3E6B100E573ED /* ding.wav */; };
 		62CF789026B3EADA00E573ED /* thunder.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788F26B3EADA00E573ED /* thunder.wav */; };
+		62CF789426B780E100E573ED /* coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF789326B780E100E573ED /* coin.wav */; };
+		62CF789626B785C600E573ED /* chewing.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF789526B785C600E573ED /* chewing.wav */; };
 		C64B299126A8326B006A1FEB /* Extension_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B299026A8326B006A1FEB /* Extension_1.swift */; };
 		C64B299326A83289006A1FEB /* Extension_2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B299226A83289006A1FEB /* Extension_2.swift */; };
 		C64B29D226A9213B006A1FEB /* Rain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B29D126A9213B006A1FEB /* Rain.swift */; };
@@ -121,6 +123,8 @@
 		62CF788B26B3E69200E573ED /* shield-guard.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "shield-guard.wav"; sourceTree = "<group>"; };
 		62CF788D26B3E6B100E573ED /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
 		62CF788F26B3EADA00E573ED /* thunder.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = thunder.wav; sourceTree = "<group>"; };
+		62CF789326B780E100E573ED /* coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = coin.wav; sourceTree = "<group>"; };
+		62CF789526B785C600E573ED /* chewing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = chewing.wav; sourceTree = "<group>"; };
 		C64B299026A8326B006A1FEB /* Extension_1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_1.swift; sourceTree = "<group>"; };
 		C64B299226A83289006A1FEB /* Extension_2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_2.swift; sourceTree = "<group>"; };
 		C64B29D126A9213B006A1FEB /* Rain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rain.swift; sourceTree = "<group>"; };
@@ -292,7 +296,9 @@
 		629301AF26B10B3400A087DA /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				62CF789526B785C600E573ED /* chewing.wav */,
 				62CF788D26B3E6B100E573ED /* ding.wav */,
+				62CF789326B780E100E573ED /* coin.wav */,
 				62CF788B26B3E69200E573ED /* shield-guard.wav */,
 				62CF788926B3E62000E573ED /* electronic.wav */,
 				62CF788026B2988F00E573ED /* switch.wav */,
@@ -424,8 +430,10 @@
 				623EB13526A167BE000628CB /* Assets.xcassets in Resources */,
 				62CF787726B154FA00E573ED /* skywave.wav in Resources */,
 				623EB15B26A16860000628CB /* AbsorbRun.atlas in Resources */,
+				62CF789426B780E100E573ED /* coin.wav in Resources */,
 				62CF789026B3EADA00E573ED /* thunder.wav in Resources */,
 				623EB12C26A167BC000628CB /* Actions.sks in Resources */,
+				62CF789626B785C600E573ED /* chewing.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

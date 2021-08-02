@@ -17,4 +17,11 @@ class Supply: Collectable {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	override func getCollected() {
+		super.getCollected()
+		let sound = SKAudioNode(fileNamed: "chewing.wav")
+		sound.autoplayLooped = false
+		self.addChild(sound)
+		sound.run(SKAction.play())
+	}
 }
