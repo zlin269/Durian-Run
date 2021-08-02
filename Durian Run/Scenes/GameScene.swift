@@ -73,7 +73,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	// Big game elements
 	lazy var durian = Durian()
-	lazy var platform = Platform()
+	lazy var platform = Platform(initial: true)
     lazy var platformLevel = Platform()
 	lazy var sunshineBar = StatusBar(UIColor.red)
 	lazy var waterBar = StatusBar(UIColor.blue)
@@ -158,7 +158,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		durian.name = "durian"
 		durian.state = .absorb
-		durian.position = CGPoint(x: 600, y: 500)
+		durian.position = CGPoint(x: 800, y: 500)
 		durian.zPosition = 100
 		durian.size = CGSize(width: durian.size.width * 3, height: durian.size.height * 3)
 		self.addChild(durian)
@@ -166,7 +166,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		platform.name = "platform"
 		platform.position = CGPoint(x: 0, y: 50)
 		platform.zPosition = 100
-		platform.create(number: 16)
+		platform.create(number: 30)
         platformPositionR = platform.position.x + platform.width
 		self.addChild(platform)
         platforms.append(platform)
@@ -475,8 +475,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (platformPositionR < frame.width){
         // create new platform
             platform = Platform()
-			platform.create(number: platformLength + Int(arc4random_uniform(20)))
-			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(400))) : 0), y:50)
+			platform.create(number: (platformLength + Int(arc4random_uniform(20))) * Int(arc4random_uniform(2)) + 2)
+			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(400))) : 0), y:CGFloat(50 * arc4random_uniform(3)) + 50)
             platform.zPosition = 100
             platformPositionR = platform.position.x + platform.width
 			platform.name = "platform"
@@ -485,7 +485,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			if season == .Spring || season == .Summer {
 				Coin.spawnCoinsRainbow(CGPoint(x: platform.position.x - platformGap, y: 680), self)
 			}
-			Coin.spawnCoinsLine(5 ,CGPoint(x: platform.position.x + 400, y: 250), self)
         }
         
         for p in platforms{
@@ -549,15 +548,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		
 		// MARK: --Death On Falling
-		if durian.position.y < 0 {
+		if durian.position.y < 0 || self.childNode(withName: "durian") == nil {
 			displayGameOver()
 		}
 		
 		if durian.position.x < 0 {
 			self.displayGameOver()
-		} else if durian.position.x < 600 {
+		} else if durian.position.x < 800 {
 			durian.run(SKAction.moveBy(x: 0.5, y: 0, duration: dt))
-		} else if durian.position.x > 600 {
+		} else if durian.position.x > 800 {
 			durian.run(SKAction.moveBy(x: -2, y: 0, duration: dt))
 		}
         

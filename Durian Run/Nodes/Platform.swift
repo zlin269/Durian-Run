@@ -10,12 +10,21 @@ import SpriteKit
 // A platform consists of many blocks of grass
 class Platform: SKNode {
 	
-	var width: CGFloat = 0 // used to decide where the next block should go
+	var width :CGFloat = 0
+	
+	private var isInitial : Bool = false
 	
 	override init() {
 		super.init()
 		self.physicsBody = SKPhysicsBody()
         
+	}
+	
+	init(initial: Bool) {
+		isInitial = initial
+		super.init()
+		self.physicsBody = SKPhysicsBody()
+		
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -24,36 +33,23 @@ class Platform: SKNode {
 	
 	func create (number: Int) {
 		
-		let grass_l = SKSpriteNode(imageNamed: "grassLeft")
-		grass_l.size = CGSize(width: grass_l.size.width * 2, height: grass_l.size.height * 2)
-		grass_l.anchorPoint = CGPoint(x: 0, y: 0)
-		grass_l.position.x = 0
-		width = grass_l.frame.width
-		self.addChild(grass_l)
-		
-		for _ in 0..<number {
-			let grass_m = SKSpriteNode(imageNamed: "grassMid")
-			grass_m.size = CGSize(width: grass_m.size.width * 2, height: grass_m.size.height * 2)
-			grass_m.anchorPoint = CGPoint(x: 0, y: 0)
-			grass_m.position.x = width
-			width += grass_m.frame.width
-			self.addChild(grass_m)
-		}
-		
-		let grass_r = SKSpriteNode(imageNamed: "grassRight")
-		grass_r.size = CGSize(width: grass_r.size.width * 2, height: grass_r.size.height * 2)
-		grass_r.anchorPoint = CGPoint(x: 0, y: 0)
-		grass_r.position.x = width
-		width += grass_r.frame.width
-		self.addChild(grass_r)
+		let grass_m = SKSpriteNode(imageNamed: "grassMid")
+		grass_m.size = CGSize(width: grass_m.size.width * CGFloat(number) * 2, height: grass_m.size.height * 2)
+		grass_m.anchorPoint = CGPoint(x: 0, y: 0)
+		width = grass_m.size.width
+		self.addChild(grass_m)
 		
 		
-		self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: width, height: grass_l.size.height), center: CGPoint(x: width/2, y: grass_l.size.height/2))
+		self.physicsBody = SKPhysicsBody(rectangleOf: grass_m.size, center: CGPoint(x: width / 2, y: grass_m.size.height / 2))
 		self.physicsBody?.isDynamic = false
 		self.physicsBody?.categoryBitMask = HitMask.platform
 		self.physicsBody?.contactTestBitMask = HitMask.durian 
 		self.physicsBody?.restitution = 0
 		self.physicsBody?.friction = 0
+		
+		if number > 10 && !isInitial {
+			Coin.spawnCoinsLine(number / 2, CGPoint(x: 200, y: 200), self)
+		}
 		
 	}
 	

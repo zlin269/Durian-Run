@@ -49,6 +49,42 @@ class GameOverScene: MenuScene {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+//	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//
+//		for t in touches {
+//			let touchedNode = atPoint(t.location(in: self))
+//			if touchedNode.name == "restart" {
+//				touchedNode.alpha = 0.7
+//				touchedNode.setScale(1.2)
+//			}
+//			if touchedNode.name == "home" {
+//				touchedNode.alpha = 0.7
+//				touchedNode.setScale(1.2)
+//			}
+//		}
+//
+//	}
+	
+	override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+		for t in touches {
+			let touchedNode = atPoint(t.location(in: self))
+			if touchedNode.name == "restart" {
+				touchedNode.alpha = 0.7
+				touchedNode.setScale(1.2)
+			} else {
+				self.childNode(withName: "restart")?.alpha = 1
+				self.childNode(withName: "restart")?.setScale(1)
+			}
+			if touchedNode.name == "home" {
+				touchedNode.alpha = 0.7
+				touchedNode.setScale(1.2)
+			} else {
+				self.childNode(withName: "home")?.alpha = 1
+				self.childNode(withName: "home")?.setScale(1)
+			}
+		}
+	}
+	
 	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 		
 		for t in touches {
@@ -61,11 +97,16 @@ class GameOverScene: MenuScene {
 				view?.presentScene(gameScene, transition: reveal)
 			}
 			if touchedNode.name == "home" {
-				let menuScene = StartMenuScene(size: size)
-				menuScene.scaleMode = scaleMode
-				
-				let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-				view?.presentScene(menuScene, transition: reveal)
+				let storyboard = UIStoryboard(name: "Main", bundle: nil)
+				let vc = storyboard.instantiateViewController(withIdentifier: "MainMenu")
+				vc.view.frame = (self.view?.frame)!
+				vc.view.layoutIfNeeded()
+				UIView.transition(with: self.view!, duration: 0.3, options: .transitionCrossDissolve, animations:
+									{
+										self.view?.window?.rootViewController = vc
+									}, completion: { completed in
+									})
+			
 			}
 		}
 		

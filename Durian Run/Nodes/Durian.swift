@@ -15,7 +15,6 @@ enum DurianState: Int {
 class Durian: SKSpriteNode {
 
 	let sound = SKAudioNode(fileNamed: "jump.mp3")
-	let runSound = SKAudioNode(fileNamed: "run.mp3")
 	
 	var state: DurianState = DurianState.normal {
 		didSet {
@@ -38,10 +37,8 @@ class Durian: SKSpriteNode {
 					jumpTexture.append(SKTexture(imageNamed: "p3_jump"))
 				}
 				self.run(SKAction.animate(with: jumpTexture, timePerFrame: 0.1))
-				runSound.run(SKAction.stop())
 			} else {
 				self.run()
-				runSound.run(SKAction.play())
 			}
 		}
 	}
@@ -63,8 +60,6 @@ class Durian: SKSpriteNode {
 		let stand = SKTexture(imageNamed: "stand")
 		super.init(texture: stand, color: UIColor.white, size: stand.size())
 		
-		runSound.autoplayLooped = true
-		self.addChild(runSound)
 		sound.autoplayLooped = false
 		self.addChild(sound)
 		

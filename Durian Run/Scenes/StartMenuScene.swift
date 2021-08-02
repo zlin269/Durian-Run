@@ -13,7 +13,7 @@ class StartMenuScene: MenuScene {
 		
 		let hello = SKLabelNode(fontNamed: "Chalkduster")
 		hello.text = "Welcome! Little Durian."
-		hello.fontSize = 180
+		hello.fontSize = 100
 		hello.fontColor = SKColor.brown
 		hello.position = CGPoint(x: frame.midX, y: frame.midY + 200)
 		
