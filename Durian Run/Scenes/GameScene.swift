@@ -11,7 +11,25 @@ import GameplayKit
 
 enum Season : Int {
 	case season = 0, Spring, Summer, Fall, Winter
+
+	var description: String {
+		get {
+			switch self {
+			case .Spring:
+				return "Spring"
+			case .Summer:
+				return "Summer"
+			case .Fall:
+				return "Fall"
+			case .Winter:
+				return "Winter"
+			default:
+				return String(rawValue)
+			}
+		}
+	}
 }
+
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 	
@@ -31,6 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			isRaining = false
 			switch season {
 			case .Spring:
+				scoreChangeIndicate("New Year +1500", yPos: frame.height - 700)
 				score += 1500
 				difficulty += 1
 				seasonIndicator.color = UIColor.green
@@ -66,6 +85,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 	}
 	lazy var scoreLabel = SKLabelNode(text: String(Int(score)))
+	var seasonsPassed : Int = 0
+	var coins : Int = 0 {
+		didSet {
+			coinLabel.text = String(coins)
+		}
+	}
+	lazy var coinLabel = SKLabelNode(text: String(coins))
 	
 	// Boolean & Tracker
 	var isRaining: Bool = false
@@ -83,8 +109,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var supply = Supply()
 	lazy var soundNode = SKAudioNode(fileNamed: "electronic.wav")
 	lazy var coinSound = SKAudioNode(fileNamed: "coin.wav")
-	
-    
 	
     lazy var platforms = [Platform]()
     lazy var platformLevels = [Platform]()
@@ -118,8 +142,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
 		
-		nextSeason()
-		nextSeason()
 		
 		GameScene.platformSpeed = 1000
 		
@@ -227,7 +249,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		scoreLabel.zPosition = 200
 		self.addChild(scoreLabel)
 		
-		
+		coinLabel.fontName = "Italic"
+		coinLabel.fontSize = 100
+		coinLabel.fontColor = UIColor.orange
+		coinLabel.position = CGPoint(x: 400, y: frame.height - 200)
+		coinLabel.zPosition = 200
+		self.addChild(coinLabel)
     }
     
     func createBackground() {
@@ -333,11 +360,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (contact.bodyA.node is Fertilizer && contact.bodyB.node is Durian) || (contact.bodyB.node is Fertilizer && contact.bodyA.node is Durian) {
 			fertilizer.getCollected()
 			score += 100
+			scoreChangeIndicate("Fertilizer Collected +100", yPos: frame.height - 500)
 			boostBar.increase(by: 20)
         }
 		if (contact.bodyA.node is Supply && contact.bodyB.node is Durian) || (contact.bodyB.node is Supply && contact.bodyA.node is Durian) {
 			supply.getCollected()
 			score += 100
+			scoreChangeIndicate("Supply Collected +100", yPos: frame.height - 500)
 			sunshineBar.increase(by: 20)
 			waterBar.increase(by: 20)
 		}
@@ -350,6 +379,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				let b = contact.bodyA.node as! Enemy
 				b.receiveDamage(1)
 				score += 500
+				scoreChangeIndicate("Eliminate Enemy +500", yPos: frame.height - 500)
 				let attackSound = SKAudioNode(fileNamed: "sword-attack.wav")
 				attackSound.autoplayLooped = false
 				self.addChild(attackSound)
@@ -369,6 +399,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				let b = contact.bodyB.node as! Enemy
 				b.receiveDamage(1)
 				score += 500
+				scoreChangeIndicate("Eliminate Enemy +500", yPos: frame.height - 500)
 				let attackSound = SKAudioNode(fileNamed: "sword-attack.wav")
 				attackSound.autoplayLooped = false
 				self.addChild(attackSound)
@@ -395,10 +426,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			let c = contact.bodyA.node as! Coin
 			c.getCollected()
 			coinSound.run(SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false))
+			coins += 1
 		} else if contact.bodyB.node is Coin {
 			let c = contact.bodyB.node as! Coin
 			c.getCollected()
 			coinSound.run(SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false))
+			coins += 1
 		}
 		
 		if contact.bodyA.node?.name == "detector" {
@@ -523,12 +556,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		if fertilizer.inGame {
 			fertilizer.move(speed: GameScene.platformSpeed, dt)
-		}
-		
-		if supply.inGame {
-			supply.move(speed: GameScene.platformSpeed, dt)
-		}
-		
+		}		
 		
 		// MARK: --Enemies
 		if	!enemies.isEmpty && (enemies[0].position.x < -200 || enemies[0].position.y < -200) {
@@ -765,7 +793,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		soundNode.run(SKAction.stop())
 		
-		let gameOverScene = GameOverScene(size: size, score: score)
+		let gameOverScene = GameOverScene(size: size, score: score, seasons: seasonsPassed, coins: coins)
 		gameOverScene.scaleMode = scaleMode
 		
 		let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
@@ -808,6 +836,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		supply.inGame = true
 		supply.position = CGPoint(x: self.frame.width + 400, y: 700)
 		supply.zPosition = 100
+		supply.run(SKAction.moveTo(x: -200, duration: TimeInterval((self.size.width + 400) / GameScene.platformSpeed)), completion: {
+			self.supply.removeFromParent()
+		})
 		self.addChild(supply)
 		print("supply spawned")
 	}
@@ -868,6 +899,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
 	func nextSeason() {
 		score += 800
+		scoreChangeIndicate("New Season +800", yPos: frame.height - 500)
+		seasonsPassed += 1
 		if season == .Spring {
 			season = .Summer
 		} else if season == .Summer {
@@ -945,5 +978,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 										self.sun.open()
 									})
 	}
+	
+	func scoreChangeIndicate (_ text: String, yPos: CGFloat) {
+		let scoreChangeLabel = SKLabelNode(text: text)
+		scoreChangeLabel.fontName = "Chalkduster"
+		scoreChangeLabel.fontSize = 100
+		scoreChangeLabel.fontColor = UIColor.red
+		scoreChangeLabel.position = CGPoint(x: frame.width / 2, y: yPos)
+		scoreChangeLabel.zPosition = 200
+		self.addChild(scoreChangeLabel)
+		scoreChangeLabel.run(SKAction.moveTo(y: frame.height - 300, duration: 1))
+		scoreChangeLabel.run(SKAction.fadeOut(withDuration: 1), completion: {
+			scoreChangeLabel.removeFromParent()
+		})
+	}
 }
-
