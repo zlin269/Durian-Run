@@ -48,7 +48,7 @@ class Platform: SKNode {
 		self.physicsBody?.friction = 0
 		
 		if number > 10 && !isInitial {
-			Coin.spawnCoinsLine(number / 2, CGPoint(x: 200, y: 200), self)
+			// Coin.spawnCoinsLine(number / 2, CGPoint(x: 200, y: 200), self)
 		}
 		
 	}

@@ -129,9 +129,9 @@ class Durian: SKSpriteNode {
 	func drop() {
 		if !dropCD {
 			self.physicsBody?.isResting = true
-			self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -2000))
+			self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -3000))
 			dropCD = true
-			DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
 				self.dropCD = false
 			}
 		}

@@ -17,7 +17,7 @@ class Enemy: SKSpriteNode {
 		}
 	}
 	
-	private var movementSpeed: CGFloat
+	var movementSpeed: CGFloat
 	
 	init(imageNamed imageName: String, withHealth health: Int, withSpeed speed: CGFloat) {
 		self.health = health

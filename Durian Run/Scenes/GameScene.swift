@@ -14,7 +14,7 @@ enum Season : Int {
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
+	
 	// Season Info
 	private var seasonInfo = SeasonInfo()
 	
@@ -117,6 +117,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any physics node has 100 <= zPos < 200
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
+		
+		nextSeason()
+		nextSeason()
 		
 		GameScene.platformSpeed = 1000
 		
@@ -397,6 +400,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			c.getCollected()
 			coinSound.run(SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false))
 		}
+		
+		if contact.bodyA.node?.name == "detector" {
+			contact.bodyA.node?.parent?.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000))
+		} else if contact.bodyB.node?.name == "detector" {
+			contact.bodyB.node?.parent?.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000))
+		}
 	}
 	
 	func didEnd(_ contact: SKPhysicsContact) {
@@ -482,7 +491,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // create new platform
             platform = Platform()
 			platform.create(number: (platformLength + Int(arc4random_uniform(20))) * Int(arc4random_uniform(2)) + 2)
-			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(400))) : 0), y:CGFloat(50 * arc4random_uniform(3)) + 50)
+			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(400))) : 0), y: ((season == .Spring || season == .Summer) ? CGFloat(arc4random_uniform(100)) : 0) + 50)
             platform.zPosition = 100
             platformPositionR = platform.position.x + platform.width
 			platform.name = "platform"
@@ -690,8 +699,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			if (platformLevelPositionR < frame.width){
 				// create new platform
 				platformLevel = Platform()
-				platformLevel.create(number: levelLength + Int(arc4random_uniform(3)))
-				platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:460)
+				platformLevel.create(number: levelLength + Int(arc4random_uniform(5)))
+				platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:500)
 				platformLevel.zPosition = 100
 				platformLevelPositionR = platformLevel.position.x + platformLevel.width
 				platformLevel.name = "platformLevel"

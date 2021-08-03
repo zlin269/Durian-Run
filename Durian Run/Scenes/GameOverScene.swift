@@ -49,21 +49,21 @@ class GameOverScene: MenuScene {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-//	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//
-//		for t in touches {
-//			let touchedNode = atPoint(t.location(in: self))
-//			if touchedNode.name == "restart" {
-//				touchedNode.alpha = 0.7
-//				touchedNode.setScale(1.2)
-//			}
-//			if touchedNode.name == "home" {
-//				touchedNode.alpha = 0.7
-//				touchedNode.setScale(1.2)
-//			}
-//		}
-//
-//	}
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+		for t in touches {
+			let touchedNode = atPoint(t.location(in: self))
+			if touchedNode.name == "restart" {
+				touchedNode.alpha = 0.7
+				touchedNode.setScale(1.2)
+			}
+			if touchedNode.name == "home" {
+				touchedNode.alpha = 0.7
+				touchedNode.setScale(1.2)
+			}
+		}
+
+	}
 	
 	override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 		for t in touches {
