@@ -12,6 +12,14 @@ class GameOverScene: MenuScene {
 	init(size: CGSize, score: Double, seasons: Int, coins: Int) {
 		super.init(size: size)
 		
+		if Int(score) > UserDefaults.int(forKey: .highScore) ?? 0 {
+			UserDefaults.set(value: Int(score), forKey: .highScore)
+		}
+		if seasons > UserDefaults.int(forKey: .mostSeasons) ?? 0 {
+			UserDefaults.set(value: seasons, forKey: .mostSeasons)
+		}
+		UserDefaults.set(value: UserDefaults.int(forKey: .coins) ?? 0 + coins, forKey: .coins)
+		
 		let scoreLabel = SKLabelNode(fontNamed: "ChalkboardSE-Bold")
 		scoreLabel.text = "Score: " + String(Int(score))
 		scoreLabel.fontSize = 200
