@@ -107,8 +107,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var sun = Sun()
 	lazy var fertilizer = Fertilizer()
 	lazy var supply = Supply()
-	lazy var soundNode = SKAudioNode(fileNamed: "electronic.wav")
-	lazy var coinSound = SKAudioNode(fileNamed: "coin.wav")
+	lazy var musicNode = SKAudioNode(fileNamed: "electronic.wav")
+	lazy var gameSound = SKAudioNode(fileNamed: "coin.wav")
 	
     lazy var platforms = [Platform]()
     lazy var platformLevels = [Platform]()
@@ -148,11 +148,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("Inside Gameplay Scene")
             createBackground()
 		
-		soundNode.autoplayLooped = true
-		self.addChild(soundNode)
+		musicNode.autoplayLooped = true
+		musicNode.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume) ?? 1), duration: 0))
+		self.addChild(musicNode)
 		
-		coinSound.autoplayLooped = false
-		self.addChild(coinSound)
+		gameSound.autoplayLooped = false
+		gameSound.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0))
+		self.addChild(gameSound)
 		
 		let boundary = Boundary()
 		boundary.position = CGPoint(x: -300, y: -300)
@@ -327,22 +329,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			durian.state = DurianState.boost
 			boostStartTime = self.lastUpdateTime
 			durian.run()
-			let boostSound = SKAudioNode(fileNamed: "powerup.wav")
-			boostSound.autoplayLooped = false
-			self.addChild(boostSound)
-			boostSound.run(SKAction.sequence([SKAction.play(),
-											   SKAction.wait(forDuration: 4),
-											   SKAction.removeFromParent()]))
+			gameSound.run(SKAction.playSoundFileNamed("powerup.wav", waitForCompletion: false))
 		}
 	}
 	
 	@objc func swipedLeft (sender: UISwipeGestureRecognizer) {
 		if durian.state != DurianState.boost {
-			let switchSound = SKAudioNode(fileNamed: "switch.wav")
-			switchSound.autoplayLooped = false
-			self.addChild(switchSound)
-			switchSound.run(SKAction.sequence([SKAction.play(), SKAction.wait(forDuration: 1)]) ,
-							completion: { switchSound.removeFromParent() })
+			gameSound.run(SKAction.playSoundFileNamed("switch.wav", waitForCompletion: false))
 			if durian.state == .normal {
 				durian.state = .absorb
 			} else {
@@ -380,12 +373,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				b.receiveDamage(1)
 				score += 500
 				scoreChangeIndicate("Eliminate Enemy +500", yPos: frame.height - 500)
-				let attackSound = SKAudioNode(fileNamed: "sword-attack.wav")
-				attackSound.autoplayLooped = false
-				self.addChild(attackSound)
-				attackSound.run(SKAction.sequence([SKAction.play(),
-												   SKAction.wait(forDuration: 1),
-												   SKAction.removeFromParent()]))
+				gameSound.run(SKAction.playSoundFileNamed("sword-attack.wav", waitForCompletion: false))
 			} else {
 				if sunshineBar.stacks > 0 {
 					sunshineBar.stacks -= 1
@@ -400,12 +388,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				b.receiveDamage(1)
 				score += 500
 				scoreChangeIndicate("Eliminate Enemy +500", yPos: frame.height - 500)
-				let attackSound = SKAudioNode(fileNamed: "sword-attack.wav")
-				attackSound.autoplayLooped = false
-				self.addChild(attackSound)
-				attackSound.run(SKAction.sequence([SKAction.play(),
-												   SKAction.wait(forDuration: 1),
-												   SKAction.removeFromParent()]))
+				gameSound.run(SKAction.playSoundFileNamed("sword-attack.wav", waitForCompletion: false))
 			} else {
 				if sunshineBar.stacks > 0 {
 					sunshineBar.stacks -= 1
@@ -425,12 +408,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if contact.bodyA.node is Coin {
 			let c = contact.bodyA.node as! Coin
 			c.getCollected()
-			coinSound.run(SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false))
+			gameSound.run(SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false))
 			coins += 1
 		} else if contact.bodyB.node is Coin {
 			let c = contact.bodyB.node as! Coin
 			c.getCollected()
-			coinSound.run(SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false))
+			gameSound.run(SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false))
 			coins += 1
 		}
 		
@@ -791,7 +774,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Creates a game over scene
 	func displayGameOver() {
 		
-		soundNode.run(SKAction.stop())
+		musicNode.run(SKAction.stop())
 		
 		let gameOverScene = GameOverScene(size: size, score: score, seasons: seasonsPassed, coins: coins)
 		gameOverScene.scaleMode = scaleMode
@@ -949,7 +932,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		sun.close()
 		let thunder = SKAudioNode(fileNamed: "thunder.wav")
 		thunder.autoplayLooped = false
-		thunder.run(SKAction.changeVolume(to: Float(1), duration: 0))
+		thunder.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume) ?? 0), duration: 0))
 		let flash = SKSpriteNode(color: UIColor.black, size: self.frame.size)
 		flash.addChild(thunder)
 		thunder.run(SKAction.sequence([SKAction.play()]))

@@ -61,6 +61,7 @@ class Durian: SKSpriteNode {
 		super.init(texture: stand, color: UIColor.white, size: stand.size())
 		
 		sound.autoplayLooped = false
+		sound.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0))
 		self.addChild(sound)
 		
 		// physics body attributes
