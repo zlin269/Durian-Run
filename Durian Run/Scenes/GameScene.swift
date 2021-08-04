@@ -935,7 +935,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		thunder.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume) ?? 0), duration: 0))
 		let flash = SKSpriteNode(color: UIColor.black, size: self.frame.size)
 		flash.addChild(thunder)
-		thunder.run(SKAction.sequence([SKAction.play()]))
+		thunder.run(SKAction.play())
 		flash.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
 		flash.zPosition = 150
 		self.addChild(flash)

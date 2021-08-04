@@ -25,7 +25,7 @@ class GameOverScene: MenuScene {
 		if seasons > UserDefaults.int(forKey: .mostSeasons) ?? 0 {
 			UserDefaults.set(value: seasons, forKey: .mostSeasons)
 		}
-		UserDefaults.set(value: UserDefaults.int(forKey: .coins) ?? 0 + coins, forKey: .coins)
+		UserDefaults.set(value: (UserDefaults.int(forKey: .coins) ?? 0) + coins, forKey: .coins)
 		
 		let scoreLabel = SKLabelNode(fontNamed: "ChalkboardSE-Bold")
 		scoreLabel.text = "Score: " + String(Int(score))
