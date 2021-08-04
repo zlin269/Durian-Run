@@ -14,6 +14,13 @@ class GameOverScene: MenuScene {
 		
 		if Int(score) > UserDefaults.int(forKey: .highScore) ?? 0 {
 			UserDefaults.set(value: Int(score), forKey: .highScore)
+			let newRecord = SKLabelNode(fontNamed: "Zapfino")
+			newRecord.text = "New Record!"
+			newRecord.fontColor = .red
+			newRecord.fontSize = 70
+			newRecord.position = CGPoint(x: 300, y: frame.height - 300)
+			newRecord.zRotation = .pi / 4
+			self.addChild(newRecord)
 		}
 		if seasons > UserDefaults.int(forKey: .mostSeasons) ?? 0 {
 			UserDefaults.set(value: seasons, forKey: .mostSeasons)
@@ -23,7 +30,7 @@ class GameOverScene: MenuScene {
 		let scoreLabel = SKLabelNode(fontNamed: "ChalkboardSE-Bold")
 		scoreLabel.text = "Score: " + String(Int(score))
 		scoreLabel.fontSize = 200
-		scoreLabel.fontColor = SKColor.black
+		scoreLabel.fontColor = .black
 		adjustLabelFontSizeToFitRect(labelNode: scoreLabel, rect: CGRect(origin: CGPoint(x: self.frame.midX, y: self.frame.midY + 270), size: CGSize(width: self.frame.width * 0.6, height: self.frame.height * 0.2)))
 		scoreLabel.horizontalAlignmentMode = .center
 		
@@ -59,6 +66,7 @@ class GameOverScene: MenuScene {
 		home.name = "home"
 		home.position = CGPoint(x: frame.width - 300, y: 200)
 		home.size = CGSize(width: 300, height: 300)
+		
 		
 		addChild(seasonLabelIntro)
 		addChild(seasonLabel)
