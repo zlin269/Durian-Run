@@ -20,7 +20,7 @@ class Supply: Collectable {
 	override func getCollected() {
 		super.getCollected()
 		let sound = SKAudioNode(fileNamed: "chewing.wav")
-		sound.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 0), duration: 0))
+		sound.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0))
 		sound.autoplayLooped = false
 		self.addChild(sound)
 		sound.run(SKAction.play())

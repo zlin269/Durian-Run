@@ -373,7 +373,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				b.receiveDamage(1)
 				score += 500
 				scoreChangeIndicate("Eliminate Enemy +500", yPos: frame.height - 500)
-				gameSound.run(SKAction.playSoundFileNamed("sword-attack.wav", waitForCompletion: false))
+				let tempAudioNode = SKAudioNode(fileNamed: "sword-attack.wav")
+				tempAudioNode.autoplayLooped = false
+				self.addChild(tempAudioNode)
+				tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
 			} else {
 				if sunshineBar.stacks > 0 {
 					sunshineBar.stacks -= 1
@@ -388,7 +391,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				b.receiveDamage(1)
 				score += 500
 				scoreChangeIndicate("Eliminate Enemy +500", yPos: frame.height - 500)
-				gameSound.run(SKAction.playSoundFileNamed("sword-attack.wav", waitForCompletion: false))
+				let tempAudioNode = SKAudioNode(fileNamed: "sword-attack.wav")
+				tempAudioNode.autoplayLooped = false
+				self.addChild(tempAudioNode)
+				tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
 			} else {
 				if sunshineBar.stacks > 0 {
 					sunshineBar.stacks -= 1
@@ -408,20 +414,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if contact.bodyA.node is Coin {
 			let c = contact.bodyA.node as! Coin
 			c.getCollected()
-			gameSound.run(SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false))
+			gameSound.run(SKAction.play())
 			coins += 1
 		} else if contact.bodyB.node is Coin {
 			let c = contact.bodyB.node as! Coin
 			c.getCollected()
-			gameSound.run(SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false))
+			gameSound.run(SKAction.play())
 			coins += 1
 		}
 		
-		if contact.bodyA.node?.name == "detector" {
-			contact.bodyA.node?.parent?.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000))
-		} else if contact.bodyB.node?.name == "detector" {
-			contact.bodyB.node?.parent?.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000))
-		}
 	}
 	
 	func didEnd(_ contact: SKPhysicsContact) {
