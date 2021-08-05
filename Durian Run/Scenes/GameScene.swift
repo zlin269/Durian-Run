@@ -165,7 +165,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		self.addChild(gameSound)
 		
 		let boundary = Boundary()
-		boundary.position = CGPoint(x: -300, y: -300)
+		boundary.position = CGPoint(x: -500, y: -300)
 		self.addChild(boundary)
 		
 
@@ -390,6 +390,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 
 		if contact.bodyA.node is Enemy && contact.bodyB.node is Durian {
+			if contact.bodyA.node is Wall {
+				return
+			}
 			if durian.state == DurianState.boost {
 				let b = contact.bodyA.node as! Enemy
 				b.receiveDamage(1)
@@ -402,12 +405,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			} else {
 				if sunshineBar.stacks > 0 {
 					sunshineBar.stacks -= 1
+					if let b = contact.bodyA.node as? Dasher {
+						b.selfDestruction()
+						durian.physicsBody?.isResting = true
+					}
 				} else {
 					sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 					waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 				}
 			}
 		} else if contact.bodyB.node is Enemy && contact.bodyA.node is Durian {
+			if contact.bodyB.node is Wall {
+				return
+			}
 			if durian.state == DurianState.boost {
 				let b = contact.bodyB.node as! Enemy
 				b.receiveDamage(1)
@@ -420,6 +430,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			} else {
 				if sunshineBar.stacks > 0 {
 					sunshineBar.stacks -= 1
+					if let b = contact.bodyB.node as? Dasher {
+						b.selfDestruction()
+						durian.physicsBody?.isResting = true
+					}
 				} else {
 					sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 					waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
@@ -591,7 +605,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}		
 		
 		// MARK: --Enemies
-		if	!enemies.isEmpty && (enemies[0].position.x < -100 || enemies[0].position.y < -100) {
+		if	!enemies.isEmpty && (enemies[0].position.x < -200 || enemies[0].position.y < -100) {
 			enemies[0].selfDestruction()
 			enemies.removeFirst()
 		}
@@ -692,12 +706,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				break
 			case .Fall:
 				if 1 < num && num <= 20 && enemies.count == 0 {
-					spawnBugs(Int(arc4random_uniform(5)) + 20)
+					spawnBugs(Int(arc4random_uniform(5)))
 				}
 				break
 			case .Winter:
 				if 1 < num && num <= 20 && enemies.count == 0 {
-					spawnBugs(Int(arc4random_uniform(5)))
+					spawnBugs(Int(arc4random_uniform(7)))
 				}
 				break
 			default:
@@ -935,8 +949,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			dasher.zPosition = 100
 			enemies.append(dasher)
 			self.addChild(dasher)
+		case 6:
+			let wall = Wall()
+			wall.position = CGPoint(x: self.frame.width + 200, y: 600)
+			wall.zPosition = 100
+			enemies.append(wall)
+			self.addChild(wall)
 		default:
-			let bug = Wall()
+			let bug = Bug()
 			bug.position = CGPoint(x: self.frame.width + 200, y: 600)
 			bug.zPosition = 100
 			enemies.append(bug)
@@ -993,7 +1013,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
 	func startStorm () {
 		isStorming = true
-		isRaining = true
+		if season == .Summer {
+				isRaining = true
+		}
 		sun.close()
 		let thunder = SKAudioNode(fileNamed: "thunder.wav")
 		thunder.autoplayLooped = false
@@ -1023,7 +1045,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 										flash.removeFromParent()
 										self.isStorming = false
 										self.isRaining = false
-										self.sun.open()
+										if self.season == .Summer {
+											self.sun.open()
+										}
 									})
 	}
 	

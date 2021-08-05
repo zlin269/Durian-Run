@@ -33,7 +33,12 @@ class Dasher: Enemy {
 	}
 	
 	func dash () {
-		self.physicsBody?.velocity = CGVector(dx: -GameScene.platformSpeed * 4, dy: 0)
+		let sound = SKAudioNode(fileNamed: "warning.wav")
+		sound.autoplayLooped = false
+		self.addChild(sound)
+		sound.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1)]), completion: {
+			self.physicsBody?.velocity = CGVector(dx: -GameScene.platformSpeed * 4, dy: 0)
+		})
 	}
 	
 }

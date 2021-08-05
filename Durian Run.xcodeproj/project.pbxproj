@@ -34,6 +34,7 @@
 		6269390126BBBB3D003E968F /* Waver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6269390026BBBB3D003E968F /* Waver.swift */; };
 		6269390326BBC0A8003E968F /* Dasher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6269390226BBC0A8003E968F /* Dasher.swift */; };
 		6269390526BBD2B4003E968F /* Wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6269390426BBD2B4003E968F /* Wall.swift */; };
+		6269390826BC0E14003E968F /* warning.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6269390726BC0E14003E968F /* warning.wav */; };
 		6270E11226A67FC300011319 /* Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E11126A67FC300011319 /* Factory.swift */; };
 		6270E11426A6B31800011319 /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E11326A6B31800011319 /* Enemy.swift */; };
 		6270E11726A6B61800011319 /* Collectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E11626A6B61800011319 /* Collectable.swift */; };
@@ -117,6 +118,7 @@
 		6269390026BBBB3D003E968F /* Waver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waver.swift; sourceTree = "<group>"; };
 		6269390226BBC0A8003E968F /* Dasher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dasher.swift; sourceTree = "<group>"; };
 		6269390426BBD2B4003E968F /* Wall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wall.swift; sourceTree = "<group>"; };
+		6269390726BC0E14003E968F /* warning.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = warning.wav; sourceTree = "<group>"; };
 		6270E11126A67FC300011319 /* Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factory.swift; sourceTree = "<group>"; };
 		6270E11326A6B31800011319 /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
 		6270E11626A6B61800011319 /* Collectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collectable.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 		629301AF26B10B3400A087DA /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				6269390726BC0E14003E968F /* warning.wav */,
 				62CF789526B785C600E573ED /* chewing.wav */,
 				62CF788D26B3E6B100E573ED /* ding.wav */,
 				62CF789326B780E100E573ED /* coin.wav */,
@@ -456,6 +459,7 @@
 				623EB15926A16844000628CB /* NormalRun.atlas in Resources */,
 				62CF787526B154FA00E573ED /* jump.mp3 in Resources */,
 				62CF787B26B242CE00E573ED /* powerup.wav in Resources */,
+				6269390826BC0E14003E968F /* warning.wav in Resources */,
 				62CF788E26B3E6B100E573ED /* ding.wav in Resources */,
 				62CF787626B154FA00E573ED /* run.mp3 in Resources */,
 				623EB12A26A167BC000628CB /* GameScene.sks in Resources */,
