@@ -7,8 +7,9 @@
 
 import Foundation
 import UIKit
+import GameKit
 
-class StatsViewController: UIViewController {
+class StatsViewController: UIViewController, GKGameCenterControllerDelegate {
 	
 	var totalDistance: Int = 0
 	var totalCoins: Int = 0
@@ -21,6 +22,7 @@ class StatsViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		authenticatePlayer()
 		
 		let allSubviews = view.subviews
 		for v in allSubviews {
@@ -49,4 +51,36 @@ class StatsViewController: UIViewController {
 		}
 	}
 
+	func authenticatePlayer () {
+		let localPlayer = GKLocalPlayer.local
+		localPlayer.authenticateHandler =  {
+			(view, error) in
+			if view != nil {
+				self.present(view!, animated: true, completion: nil)
+			} else {
+				print(GKLocalPlayer.local.isAuthenticated)
+			}
+		}
+	}
+	
+	func saveHighScore (number : Int) {
+		if GKLocalPlayer.local.isAuthenticated {
+			GKLeaderboard.submitScore(number, context: 0, player: GKLocalPlayer.local, leaderboardIDs: [""], completionHandler: {_ in })
+			
+		}
+	}
+	
+	func showGameCenter () {
+		let viewController = self.view.window?.rootViewController
+		let gcvc = GKGameCenterViewController()
+		gcvc.gameCenterDelegate = self
+		viewController?.present(gcvc, animated: true, completion: nil)
+	}
+	
+	func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+		gameCenterViewController.dismiss(animated: true, completion: nil)
+	}
+	
+	
+	
 }
