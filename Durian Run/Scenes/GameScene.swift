@@ -33,6 +33,8 @@ enum Season : Int {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 	
+	static var sharedInstance = GameScene()
+	
 	// Season Info
 	private var seasonInfo = SeasonInfo()
 	
@@ -96,6 +98,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Boolean & Tracker
 	var isRaining: Bool = false
 	var isStorming: Bool = false
+	var isActuallyPaused = false
     
 	// Big game elements
 	lazy var durian = Durian()
@@ -142,6 +145,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
 		
+		GameScene.sharedInstance = self
 		
 		GameScene.platformSpeed = 1000
 		
@@ -329,13 +333,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			durian.state = DurianState.boost
 			boostStartTime = self.lastUpdateTime
 			durian.run()
-			gameSound.run(SKAction.playSoundFileNamed("powerup.wav", waitForCompletion: false))
+			let tempAudioNode = SKAudioNode(fileNamed: "powerup.wav")
+			tempAudioNode.autoplayLooped = false
+			self.addChild(tempAudioNode)
+			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 3), SKAction.removeFromParent()]))
 		}
 	}
 	
 	@objc func swipedLeft (sender: UISwipeGestureRecognizer) {
 		if durian.state != DurianState.boost {
-			gameSound.run(SKAction.playSoundFileNamed("switch.wav", waitForCompletion: false))
+			let tempAudioNode = SKAudioNode(fileNamed: "switch.wav")
+			tempAudioNode.autoplayLooped = false
+			self.addChild(tempAudioNode)
+			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
 			if durian.state == .normal {
 				durian.state = .absorb
 			} else {
@@ -411,15 +421,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			contact.bodyA.node?.removeFromParent()
 		}
 		
-		if contact.bodyA.node is Coin {
+		if contact.bodyA.node is Coin && contact.bodyB.node is Durian {
 			let c = contact.bodyA.node as! Coin
 			c.getCollected()
-			gameSound.run(SKAction.play())
+			let tempAudioNode = SKAudioNode(fileNamed: "coin.wav")
+			tempAudioNode.autoplayLooped = false
+			self.addChild(tempAudioNode)
+			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
 			coins += 1
-		} else if contact.bodyB.node is Coin {
+		} else if contact.bodyB.node is Coin && contact.bodyA.node is Durian{
 			let c = contact.bodyB.node as! Coin
 			c.getCollected()
-			gameSound.run(SKAction.play())
+			let tempAudioNode = SKAudioNode(fileNamed: "coin.wav")
+			tempAudioNode.autoplayLooped = false
+			self.addChild(tempAudioNode)
+			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
 			coins += 1
 		}
 		
@@ -447,14 +463,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		let touchedNode = atPoint(pos)
 		if touchedNode.name == "pauseButton" {
 			if isPaused {
-				isPaused = false
-				pauseButton.texture = SKTexture(imageNamed: "pause")
-				justUnpaused = true
+				unpause()
 			} else {
-				isPaused = true
-				pauseButton.texture = SKTexture(imageNamed: "resume")
+				pause()
 			}
 		}
+	}
+	
+	func pause() {
+		print("Pausing")
+		isActuallyPaused = true
+		isPaused = true
+		pauseButton.texture = SKTexture(imageNamed: "resume")
+		justUnpaused = true
+	}
+	
+	func unpause() {
+		print("Unpausing")
+		isActuallyPaused = false
+		isPaused = false
+		pauseButton.texture = SKTexture(imageNamed: "pause")
+		justUnpaused = true
 	}
     
 	// ------------ No Need to Modify Any of the Touches ------------
@@ -479,6 +508,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+		if isActuallyPaused {
+			pause()
+		}
         
         // Initialize _lastUpdateTime if it has not already been
         if (self.lastUpdateTime == 0) {
