@@ -132,6 +132,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	// buttons
 	var pauseButton = Button(imageNamed: "pause")
+	var homeButton = Button(imageNamed: "home")
 	
 	// Season Indicator
 	var seasonIndicator = SKSpriteNode()
@@ -144,6 +145,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any physics node has 100 <= zPos < 200
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
+		
+		nextSeason()
+		nextSeason()
 		
 		GameScene.sharedInstance = self
 		
@@ -241,6 +245,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		pauseButton.size = CGSize(width: 200, height: 200)
 		pauseButton.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
 		self.addChild(pauseButton)
+		
+		homeButton.name = "exitButton"
+		homeButton.position = CGPoint(x: 600, y: 1100)
+		homeButton.zPosition = 200
+		homeButton.size = CGSize(width: 200, height: 200)
+		homeButton.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
+		self.addChild(homeButton)
+		homeButton.isHidden = true
 		
 		seasonIndicator = SKSpriteNode(color: UIColor.green, size: CGSize(width: 200, height: 200))
 		seasonIndicator.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
@@ -467,6 +479,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			} else {
 				pause()
 			}
+		} else if touchedNode.name == "exitButton" {
+			displayGameOver()
 		}
 	}
 	
@@ -476,6 +490,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		isPaused = true
 		pauseButton.texture = SKTexture(imageNamed: "resume")
 		justUnpaused = true
+		homeButton.isHidden = false
 	}
 	
 	func unpause() {
@@ -484,6 +499,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		isPaused = false
 		pauseButton.texture = SKTexture(imageNamed: "pause")
 		justUnpaused = true
+		homeButton.isHidden = true
 	}
     
 	// ------------ No Need to Modify Any of the Touches ------------
@@ -575,7 +591,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}		
 		
 		// MARK: --Enemies
-		if	!enemies.isEmpty && (enemies[0].position.x < -200 || enemies[0].position.y < -200) {
+		if	!enemies.isEmpty && (enemies[0].position.x < -100 || enemies[0].position.y < -100) {
 			enemies[0].selfDestruction()
 			enemies.removeFirst()
 		}
@@ -676,7 +692,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				break
 			case .Fall:
 				if 1 < num && num <= 20 && enemies.count == 0 {
-					spawnBugs(Int(arc4random_uniform(5)))
+					spawnBugs(Int(arc4random_uniform(5)) + 20)
 				}
 				break
 			case .Winter:
@@ -795,6 +811,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //		print("game time:", gameTime)
 //		print("durian state:", durian.state)
 //		print("in air:", durian.inAir)
+		print(enemies.count)
+		if !enemies.isEmpty {
+			print(enemies[0].position)
+		}
 		print("Season Timer: ", seasonTimer)
 		
 		GameScene.platformSpeed += CGFloat(dt * 2)
@@ -903,8 +923,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			fly.zPosition = 100
 			enemies.append(fly)
 			self.addChild(fly)
+		case 4:
+			let waver = Waver()
+			waver.position = CGPoint(x: self.frame.width + 200 + CGFloat(arc4random_uniform(500)), y: 600)
+			waver.zPosition = 100
+			enemies.append(waver)
+			self.addChild(waver)
+		case 5:
+			let dasher = Dasher()
+			dasher.position = CGPoint(x: self.frame.width + 200, y: 300)
+			dasher.zPosition = 100
+			enemies.append(dasher)
+			self.addChild(dasher)
 		default:
-			let bug = Bug()
+			let bug = Wall()
 			bug.position = CGPoint(x: self.frame.width + 200, y: 600)
 			bug.zPosition = 100
 			enemies.append(bug)

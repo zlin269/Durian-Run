@@ -19,6 +19,11 @@ class Durian: SKSpriteNode {
 	var state: DurianState = DurianState.normal {
 		didSet {
 			run() // every time the state changes, execute run() function to update texture
+			if state == .boost {
+				self.physicsBody?.collisionBitMask = HitMask.platform
+			} else {
+				self.physicsBody?.collisionBitMask = HitMask.platform | HitMask.dasher
+			}
 		}
 	}
 	// this variable is used for texture update and jump determination
@@ -71,8 +76,7 @@ class Durian: SKSpriteNode {
 		self.physicsBody?.isDynamic = true
 		self.physicsBody?.categoryBitMask = HitMask.durian
 		self.physicsBody?.contactTestBitMask = HitMask.collectable
-		self.physicsBody?.collisionBitMask = HitMask.platform
-        self.physicsBody?.categoryBitMask = HitMask.durian
+		self.physicsBody?.collisionBitMask = HitMask.platform | HitMask.dasher
 		self.physicsBody?.mass = 1
 		self.physicsBody?.restitution = 0
 		self.physicsBody?.friction = 0
