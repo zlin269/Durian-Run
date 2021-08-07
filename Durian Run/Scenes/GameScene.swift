@@ -146,9 +146,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
 		
-		nextSeason()
-		nextSeason()
-		
 		GameScene.sharedInstance = self
 		
 		GameScene.platformSpeed = 1000

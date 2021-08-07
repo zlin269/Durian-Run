@@ -29,7 +29,6 @@
 		623EB17626A66A3A000628CB /* Sun.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB17526A66A3A000628CB /* Sun.swift */; };
 		626938F926B96E05003E968F /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626938F826B96E05003E968F /* StatsViewController.swift */; };
 		626938FB26BA282A003E968F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626938FA26BA282A003E968F /* SettingsViewController.swift */; };
-		626938FD26BA6A51003E968F /* GameCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626938FC26BA6A51003E968F /* GameCenter.swift */; };
 		626938FF26BA75D0003E968F /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626938FE26BA75D0003E968F /* ShopViewController.swift */; };
 		6269390126BBBB3D003E968F /* Waver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6269390026BBBB3D003E968F /* Waver.swift */; };
 		6269390326BBC0A8003E968F /* Dasher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6269390226BBC0A8003E968F /* Dasher.swift */; };
@@ -113,7 +112,6 @@
 		623EB17526A66A3A000628CB /* Sun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sun.swift; sourceTree = "<group>"; };
 		626938F826B96E05003E968F /* StatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
 		626938FA26BA282A003E968F /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		626938FC26BA6A51003E968F /* GameCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenter.swift; sourceTree = "<group>"; };
 		626938FE26BA75D0003E968F /* ShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		6269390026BBBB3D003E968F /* Waver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waver.swift; sourceTree = "<group>"; };
 		6269390226BBC0A8003E968F /* Dasher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dasher.swift; sourceTree = "<group>"; };
@@ -325,7 +323,6 @@
 				C64B299026A8326B006A1FEB /* Extension_1.swift */,
 				C64B299226A83289006A1FEB /* Extension_2.swift */,
 				62CF789A26B9257B00E573ED /* UserDefaultsExtension.swift */,
-				626938FC26BA6A51003E968F /* GameCenter.swift */,
 			);
 			path = "Helps & Extensions";
 			sourceTree = "<group>";
@@ -508,7 +505,6 @@
 				62CF787D26B2891B00E573ED /* Fly.swift in Sources */,
 				623EB16726A52627000628CB /* Button.swift in Sources */,
 				C6A5A8C426B29FFD0025B2B4 /* ViewController.swift in Sources */,
-				626938FD26BA6A51003E968F /* GameCenter.swift in Sources */,
 				626938F926B96E05003E968F /* StatsViewController.swift in Sources */,
 				62CF788326B3BECE00E573ED /* Coin.swift in Sources */,
 				626938FF26BA75D0003E968F /* ShopViewController.swift in Sources */,
