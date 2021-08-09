@@ -27,6 +27,9 @@
 		623EB16D26A54BFD000628CB /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB16C26A54BFD000628CB /* GameOverScene.swift */; };
 		623EB16F26A54CDF000628CB /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB16E26A54CDF000628CB /* MenuScene.swift */; };
 		623EB17626A66A3A000628CB /* Sun.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623EB17526A66A3A000628CB /* Sun.swift */; };
+		6255523F26C1020C00BA28AD /* DurianWithAttack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255523E26C1020C00BA28AD /* DurianWithAttack.swift */; };
+		6255524126C10ABE00BA28AD /* DurianWithDash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255524026C10ABE00BA28AD /* DurianWithDash.swift */; };
+		6255524326C110A200BA28AD /* DurianWithGun.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255524226C110A200BA28AD /* DurianWithGun.swift */; };
 		626938F926B96E05003E968F /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626938F826B96E05003E968F /* StatsViewController.swift */; };
 		626938FB26BA282A003E968F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626938FA26BA282A003E968F /* SettingsViewController.swift */; };
 		626938FF26BA75D0003E968F /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626938FE26BA75D0003E968F /* ShopViewController.swift */; };
@@ -111,6 +114,9 @@
 		623EB16C26A54BFD000628CB /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		623EB16E26A54CDF000628CB /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		623EB17526A66A3A000628CB /* Sun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sun.swift; sourceTree = "<group>"; };
+		6255523E26C1020C00BA28AD /* DurianWithAttack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurianWithAttack.swift; sourceTree = "<group>"; };
+		6255524026C10ABE00BA28AD /* DurianWithDash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurianWithDash.swift; sourceTree = "<group>"; };
+		6255524226C110A200BA28AD /* DurianWithGun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurianWithGun.swift; sourceTree = "<group>"; };
 		626938F826B96E05003E968F /* StatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
 		626938FA26BA282A003E968F /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		626938FE26BA75D0003E968F /* ShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
@@ -249,15 +255,26 @@
 		623EB17826A66A50000628CB /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
+				6255523D26C101C400BA28AD /* Players */,
 				6270E11F26A7BC1F00011319 /* Enemies */,
 				6270E11E26A7BC0600011319 /* Collectables */,
 				6270E11D26A7BBF200011319 /* UI */,
 				6270E11C26A7BBDB00011319 /* Environment */,
-				623EB15E26A16B0B000628CB /* Durian.swift */,
 				623EB16026A17D50000628CB /* Platform.swift */,
 				6270E12526ABB9A100011319 /* Boundary.swift */,
 			);
 			path = Nodes;
+			sourceTree = "<group>";
+		};
+		6255523D26C101C400BA28AD /* Players */ = {
+			isa = PBXGroup;
+			children = (
+				623EB15E26A16B0B000628CB /* Durian.swift */,
+				6255523E26C1020C00BA28AD /* DurianWithAttack.swift */,
+				6255524026C10ABE00BA28AD /* DurianWithDash.swift */,
+				6255524226C110A200BA28AD /* DurianWithGun.swift */,
+			);
+			path = Players;
 			sourceTree = "<group>";
 		};
 		626938F726B96989003E968F /* ViewControllers */ = {
@@ -502,13 +519,16 @@
 				6270E12426AA9D5600011319 /* Supply.swift in Sources */,
 				6269390526BBD2B4003E968F /* Wall.swift in Sources */,
 				629301A926AE47AA00A087DA /* SeasonInfo.swift in Sources */,
+				6255523F26C1020C00BA28AD /* DurianWithAttack.swift in Sources */,
 				C64B29D226A9213B006A1FEB /* Rain.swift in Sources */,
 				6270E12226A976B800011319 /* Chaser.swift in Sources */,
 				6270E12626ABB9A100011319 /* Boundary.swift in Sources */,
 				62B0505226C0C6500017EC75 /* CreditViewController.swift in Sources */,
 				62CF787D26B2891B00E573ED /* Fly.swift in Sources */,
 				623EB16726A52627000628CB /* Button.swift in Sources */,
+				6255524126C10ABE00BA28AD /* DurianWithDash.swift in Sources */,
 				C6A5A8C426B29FFD0025B2B4 /* ViewController.swift in Sources */,
+				6255524326C110A200BA28AD /* DurianWithGun.swift in Sources */,
 				626938F926B96E05003E968F /* StatsViewController.swift in Sources */,
 				62CF788326B3BECE00E573ED /* Coin.swift in Sources */,
 				626938FF26BA75D0003E968F /* ShopViewController.swift in Sources */,

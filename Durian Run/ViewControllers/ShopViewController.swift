@@ -49,9 +49,6 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
 		scrView.alpha = 0.5
 		scrView.isPagingEnabled = true
 		
-		pageControl.numberOfPages = pageCount
-		pageControl.currentPage = 0
-		
 		for i in (0..<pageCount) {
 			
 			arrLabels[i].frame = CGRect(x: i * Int(scrView.frame.size.width) , y: 0 , width:
@@ -63,6 +60,12 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
 		let width1 = (Float(arrLabels.count) * Float(scrView.frame.size.width))
 		scrView.contentSize = CGSize(width: CGFloat(width1), height: scrView.frame.size.height)
 		
+        
+        
+        pageControl.numberOfPages = pageCount
+        pageControl.currentPage = UserDefaults.int(forKey: .selectedCharacter) ?? 0
+        scrView.setContentOffset(CGPoint(x: CGFloat(pageControl.currentPage) * scrView.frame.size.width, y: 0), animated: false)
+
 		self.view.addSubview(scrView)
 		self.pageControl.addTarget(self, action: #selector(self.pageChanged(sender:)), for: UIControl.Event.valueChanged)
 		
@@ -96,13 +99,15 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
 		pageControl.currentPage = Int(pageNumber)
 		print(pageNumber)
 		
-		
+        
+        UserDefaults.set(value: Int(pageNumber), forKey: .selectedCharacter)
 	}
 	
 	@objc func pageChanged(sender:AnyObject)
 	{
 		let xVal = CGFloat(pageControl.currentPage) * scrView.frame.size.width
 		scrView.setContentOffset(CGPoint(x: xVal, y: 0), animated: true)
-		
+        
+        UserDefaults.set(value: Int(xVal), forKey: .selectedCharacter)
 	}
 }

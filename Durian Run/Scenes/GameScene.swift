@@ -145,6 +145,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any physics node has 100 <= zPos < 200
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
+        
+        switch UserDefaults.int(forKey: .selectedCharacter) {
+        case 1:
+            durian = DurianWithAttack()
+        case 2:
+            durian = DurianWithDash()
+        case 3:
+            durian = DurianWithGun()
+        default:
+            break
+        }
+        
+        nextSeason()
+        nextSeason()
 		
 		GameScene.sharedInstance = self
 		
@@ -346,7 +360,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			tempAudioNode.autoplayLooped = false
 			self.addChild(tempAudioNode)
 			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 3), SKAction.removeFromParent()]))
-		}
+        } else if durian.state == .boost {
+            durian.attack()
+        }
 	}
 	
 	@objc func swipedLeft (sender: UISwipeGestureRecognizer) {
@@ -416,6 +432,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				return
 			}
 			if durian.state == DurianState.boost {
+                /*
 				let b = contact.bodyB.node as! Enemy
 				b.receiveDamage(1)
 				score += 500
@@ -424,6 +441,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				tempAudioNode.autoplayLooped = false
 				self.addChild(tempAudioNode)
 				tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
+ */
 			} else {
 				if sunshineBar.stacks > 0 {
 					sunshineBar.stacks -= 1
@@ -461,6 +479,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
 			coins += 1
 		}
+        if contact.bodyA.node?.name == "bullet" {
+            let enemy = contact.bodyB.node as! Enemy
+            enemy.receiveDamage(1)
+        } else if contact.bodyB.node?.name == "bullet" {
+            let enemy = contact.bodyA.node as! Enemy
+            enemy.receiveDamage(1)
+        }
 		
 	}
 	
@@ -641,12 +666,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			displayGameOver()
 		}
 		
+        // MARK: --Position Adjustment
 		if durian.position.x < 0 {
 			self.displayGameOver()
 		} else if durian.position.x < 800 {
 			durian.run(SKAction.moveBy(x: 0.5, y: 0, duration: dt))
 		} else if durian.position.x > 800 {
-			durian.run(SKAction.moveBy(x: -2, y: 0, duration: dt))
+			durian.run(SKAction.moveBy(x: -5, y: 0, duration: dt))
 		}
         
 		

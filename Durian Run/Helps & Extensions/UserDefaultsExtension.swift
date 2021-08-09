@@ -15,6 +15,7 @@ extension UserDefaults {
 		case coins
 		case highScore
 		case mostSeasons
+        case selectedCharacter
 	}
 	
 	static func set(value: String, forKey key: AccountKeys) {
