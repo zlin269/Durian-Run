@@ -48,8 +48,6 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
 		scrView.backgroundColor = UIColor.cyan
 		scrView.alpha = 0.5
 		scrView.isPagingEnabled = true
-		scrView.showsHorizontalScrollIndicator = true
-		scrView.showsVerticalScrollIndicator = false
 		
 		pageControl.numberOfPages = pageCount
 		pageControl.currentPage = 0

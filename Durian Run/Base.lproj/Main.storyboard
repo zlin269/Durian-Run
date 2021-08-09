@@ -24,17 +24,17 @@
             </objects>
             <point key="canvasLocation" x="407" y="62"/>
         </scene>
-        <!--View Controller-->
+        <!--Credit View Controller-->
         <scene sceneID="pn8-Eu-ehe">
             <objects>
-                <viewController id="6Fv-H7-2ua" sceneMemberID="viewController">
+                <viewController id="6Fv-H7-2ua" customClass="CreditViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="V1b-Wr-cfN">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Zm-2h-O22">
                                 <rect key="frame" x="754" y="312" width="82" height="81"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <state key="normal" image="home"/>
                                 <connections>
                                     <segue destination="n7s-q0-5nW" kind="showDetail" animates="NO" id="QiT-PO-HBB"/>
@@ -47,23 +47,32 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="zN6-69-ONW">
-                                <rect key="frame" x="123" y="81" width="650" height="237"/>
+                            <wkWebView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cn2-Zv-YYm">
+                                <rect key="frame" x="192" y="77" width="512" height="260"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <color key="textColor" systemColor="labelColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Loading...Please Wait..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rCD-bS-j5W">
+                                <rect key="frame" x="314" y="189" width="295" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="TC3-A5-s6A"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="rCD-bS-j5W" firstAttribute="centerY" secondItem="TC3-A5-s6A" secondAttribute="centerY" id="REd-Pb-TQo"/>
+                            <constraint firstItem="rCD-bS-j5W" firstAttribute="centerX" secondItem="TC3-A5-s6A" secondAttribute="centerX" id="y6M-z4-CHE"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WFv-fj-co2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-807.58928571428567" y="991.304347826087"/>
+            <point key="canvasLocation" x="-777.45535714285711" y="976.81159420289862"/>
         </scene>
         <!--Shop View Controller-->
         <scene sceneID="k2b-ft-ng2">
@@ -102,7 +111,7 @@
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="aF9-fw-6XX">
                                 <rect key="frame" x="387" y="339" width="122" height="28"/>
                             </pageControl>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" restorationIdentifier="scrView" translatesAutoresizingMaskIntoConstraints="NO" id="EQd-Hq-TJb">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" restorationIdentifier="scrView" layoutMarginsFollowReadableWidth="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQd-Hq-TJb">
                                 <rect key="frame" x="155" y="84" width="587" height="247"/>
                                 <viewLayoutGuide key="contentLayoutGuide" id="jg4-2z-4Ap"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="FuO-fl-Rp5"/>
@@ -330,7 +339,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="JTH-tG-w1G"/>
+        <segue reference="QiT-PO-HBB"/>
         <segue reference="qWp-aw-rou"/>
     </inferredMetricsTieBreakers>
     <resources>

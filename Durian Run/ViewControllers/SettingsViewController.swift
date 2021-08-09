@@ -36,9 +36,7 @@ class SettingsViewController: UIViewController {
 		viewInScrollView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
 		viewInScrollView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: 0).isActive = true
         
-		if UserDefaults.double(forKey: .gameVolume) != nil {
-			volume = UserDefaults.double(forKey: .gameVolume)!
-        }
+		volume = UserDefaults.double(forKey: .gameVolume) ?? 1
 	
         let volumeName = UILabel()
 		volumeName.translatesAutoresizingMaskIntoConstraints = false
@@ -69,9 +67,7 @@ class SettingsViewController: UIViewController {
         volumeLabel.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 100).isActive = true
         volumeLabel.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 100).isActive = true
         
-		if UserDefaults.double(forKey: .musicVolume) != nil {
-			music = UserDefaults.double(forKey: .musicVolume)!
-        }
+		music = UserDefaults.double(forKey: .musicVolume) ?? 1
 		
 		let musicName = UILabel()
 		musicName.translatesAutoresizingMaskIntoConstraints = false
