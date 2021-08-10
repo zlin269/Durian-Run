@@ -48,7 +48,7 @@ class Durian: SKSpriteNode {
 		}
 	}
 	private var dropCD = false
-	private var attackCD = false
+    var invincible = false
 	
 	// gathering assets
 	let normalRun = SKTextureAtlas(named: "NormalRun")
@@ -98,7 +98,6 @@ class Durian: SKSpriteNode {
 	}
 	
 	func run() {
-		self.removeAllActions()
 		var runTexture = [SKTexture]()
 		if state == DurianState.normal {
 			runTexture = normalRunTexture
@@ -143,13 +142,7 @@ class Durian: SKSpriteNode {
 	}
 	
 	func attack() {
-		if !attackCD {
-			print("attack")
-			attackCD = true
-			DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-				self.attackCD = false
-			}
-		}
+		print("attack")
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

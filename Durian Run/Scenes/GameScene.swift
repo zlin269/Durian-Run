@@ -385,65 +385,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             (contact.bodyB.node is Platform && contact.bodyA.node is Durian) {
 			durian.inAir += 1
 		}
-        if (contact.bodyA.node is Fertilizer && contact.bodyB.node is Durian) || (contact.bodyB.node is Fertilizer && contact.bodyA.node is Durian) {
+        if (contact.bodyA.node is Durian && contact.bodyB.node is Fertilizer) {
 			fertilizer.getCollected()
 			score += 100
 			scoreChangeIndicate("Fertilizer Collected +100", yPos: frame.height - 500)
 			boostBar.increase(by: 20)
         }
-		if (contact.bodyA.node is Supply && contact.bodyB.node is Durian) || (contact.bodyB.node is Supply && contact.bodyA.node is Durian) {
+		if (contact.bodyA.node is Durian && contact.bodyB.node is Supply)  {
 			supply.getCollected()
 			score += 100
 			scoreChangeIndicate("Supply Collected +100", yPos: frame.height - 500)
 			sunshineBar.increase(by: 20)
 			waterBar.increase(by: 20)
 		}
-		if (contact.bodyA.node is Chaser && contact.bodyB.node is Durian) || (contact.bodyB.node is Chaser && contact.bodyA.node is Durian) {
-			sunshineBar.setEmpty()
-		}
 
-		if contact.bodyA.node is Enemy && contact.bodyB.node is Durian {
-			if contact.bodyA.node is Wall {
-				return
-			}
-			if durian.state == DurianState.boost {
-				let b = contact.bodyA.node as! Enemy
-				b.receiveDamage(1)
-				score += 500
-				scoreChangeIndicate("Eliminate Enemy +500", yPos: frame.height - 500)
-				let tempAudioNode = SKAudioNode(fileNamed: "sword-attack.wav")
-				tempAudioNode.autoplayLooped = false
-				self.addChild(tempAudioNode)
-				tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
-			} else {
-				if sunshineBar.stacks > 0 {
-					sunshineBar.stacks -= 1
-					if let b = contact.bodyA.node as? Dasher {
-						b.selfDestruction()
-						durian.physicsBody?.isResting = true
-					}
-				} else {
-					sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-					waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-				}
-			}
-		} else if contact.bodyB.node is Enemy && contact.bodyA.node is Durian {
+		if contact.bodyA.node is Durian && contact.bodyB.node is Enemy {
 			if contact.bodyB.node is Wall {
 				return
 			}
-			if durian.state == DurianState.boost {
-                /*
-				let b = contact.bodyB.node as! Enemy
-				b.receiveDamage(1)
-				score += 500
-				scoreChangeIndicate("Eliminate Enemy +500", yPos: frame.height - 500)
-				let tempAudioNode = SKAudioNode(fileNamed: "sword-attack.wav")
-				tempAudioNode.autoplayLooped = false
-				self.addChild(tempAudioNode)
-				tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
- */
-			} else {
-				if sunshineBar.stacks > 0 {
+            if !durian.invincible {
+               if sunshineBar.stacks > 0 {
 					sunshineBar.stacks -= 1
 					if let b = contact.bodyB.node as? Dasher {
 						b.selfDestruction()
@@ -462,15 +423,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			contact.bodyA.node?.removeFromParent()
 		}
 		
-		if contact.bodyA.node is Coin && contact.bodyB.node is Durian {
-			let c = contact.bodyA.node as! Coin
-			c.getCollected()
-			let tempAudioNode = SKAudioNode(fileNamed: "coin.wav")
-			tempAudioNode.autoplayLooped = false
-			self.addChild(tempAudioNode)
-			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
-			coins += 1
-		} else if contact.bodyB.node is Coin && contact.bodyA.node is Durian{
+		if contact.bodyA.node is Durian && contact.bodyB.node is Coin {
 			let c = contact.bodyB.node as! Coin
 			c.getCollected()
 			let tempAudioNode = SKAudioNode(fileNamed: "coin.wav")
@@ -479,12 +432,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
 			coins += 1
 		}
-        if contact.bodyA.node?.name == "bullet" {
-            let enemy = contact.bodyB.node as! Enemy
-            enemy.receiveDamage(1)
-        } else if contact.bodyB.node?.name == "bullet" {
-            let enemy = contact.bodyA.node as! Enemy
-            enemy.receiveDamage(1)
+        if contact.bodyB.node?.name == "bullet" {
+            if let enemy = contact.bodyA.node as? Enemy {
+                enemy.receiveDamage(1)
+                score += 500
+                scoreChangeIndicate("Eliminate Enemy +500", yPos: frame.height - 500)
+                let tempAudioNode = SKAudioNode(fileNamed: "sword-attack.wav")
+                tempAudioNode.autoplayLooped = false
+                self.addChild(tempAudioNode)
+                tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
+            }
         }
 		
 	}
