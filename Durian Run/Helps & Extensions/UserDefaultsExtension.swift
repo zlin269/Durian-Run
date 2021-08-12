@@ -17,6 +17,7 @@ extension UserDefaults {
 		case mostSeasons
         case selectedCharacter
         case charactersOwned
+        case language
 	}
 	
 	static func set(value: String, forKey key: AccountKeys) {
@@ -58,4 +59,19 @@ extension UserDefaults {
         let key = key.rawValue
         return UserDefaults.standard.array(forKey: key)
     }
+}
+
+extension String {
+    func toLanguageIndex () -> Int {
+        if self == "Chinese" {
+            return 0
+        } else if self == "English" {
+            return 1
+        } else if self == "Thai" {
+            return 2
+        } else {
+            return 1
+        }
+    }
+    
 }

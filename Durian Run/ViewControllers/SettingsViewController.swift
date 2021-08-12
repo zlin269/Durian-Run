@@ -18,20 +18,32 @@ class SettingsViewController: UIViewController {
     var volumeLabel: UILabel!
     var musicSlider: UISlider!
     var musicLabel: UILabel!
+    var languageSegmentedControl: UISegmentedControl!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
 		let allSubviews = view.subviews
-		for subview in allSubviews where subview is UIScrollView {
-			scrollView = subview as? UIScrollView
+		for subview in allSubviews {
+            if subview is UIScrollView {
+                scrollView = subview as? UIScrollView
+            }
+            if subview.restorationIdentifier == "Title" {
+                (subview as! UILabel).text = {()-> String in switch UserDefaults.string(forKey: .language) {
+                case "Chinese": return "设置"
+                case "English": return "Settings"
+                case "Thai": return "การตั้งค่า"
+                default: return "Settings"
+                }}()
+                (subview as! UILabel).adjustsFontSizeToFitWidth = true
+            }
 		}
 		scrollView.isScrollEnabled = true
 		scrollView.bounces = true
 		scrollView.showsVerticalScrollIndicator = true
 		scrollView.contentSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height * 3)
 		
-		let viewInScrollView = UIView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width, height: scrollView.frame.height * 2))
+		let viewInScrollView = UIView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width, height: scrollView.frame.height * 3))
 		scrollView.addSubview(viewInScrollView)
 		viewInScrollView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
 		viewInScrollView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: 0).isActive = true
@@ -40,9 +52,14 @@ class SettingsViewController: UIViewController {
 	
         let volumeName = UILabel()
 		volumeName.translatesAutoresizingMaskIntoConstraints = false
-		volumeName.text = "Game Volume"
+        volumeName.text = {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "游戏音量"
+        case "English": return "Game Volume"
+        case "Thai": return "ปริมาณเกม"
+        default: return "Game Volume"
+        }}()
 		viewInScrollView.addSubview(volumeName)
-		volumeName.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 50).isActive = true
+		volumeName.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 20).isActive = true
 		volumeName.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
 		
         volumeSlider = UISlider()
@@ -53,8 +70,8 @@ class SettingsViewController: UIViewController {
         volumeSlider.addTarget(self, action: #selector(adjustVolume(_:)), for: .valueChanged)
 		volumeSlider.value = Float(volume)
 		viewInScrollView.addSubview(volumeSlider)
-        volumeSlider.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 100).isActive = true
-        volumeSlider.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: -10).isActive = true
+        volumeSlider.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 70).isActive = true
+        volumeSlider.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: -25).isActive = true
         volumeSlider.widthAnchor.constraint(equalToConstant: 150).isActive = true
         volumeSlider.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
@@ -64,16 +81,21 @@ class SettingsViewController: UIViewController {
 		viewInScrollView.addSubview(volumeLabel)
 		
 		
-        volumeLabel.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 100).isActive = true
-        volumeLabel.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 100).isActive = true
+        volumeLabel.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 70).isActive = true
+        volumeLabel.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 85).isActive = true
         
 		music = UserDefaults.double(forKey: .musicVolume) ?? 1
 		
 		let musicName = UILabel()
 		musicName.translatesAutoresizingMaskIntoConstraints = false
-		musicName.text = "Music Volume"
+		musicName.text = {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "音乐音量"
+        case "English": return "Music Volume"
+        case "Thai": return "ระดับเสียงเพลง"
+        default: return "Music Volume"
+        }}()
 		viewInScrollView.addSubview(musicName)
-		musicName.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 150).isActive = true
+		musicName.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 120).isActive = true
 		musicName.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
         
         musicSlider = UISlider()
@@ -84,8 +106,8 @@ class SettingsViewController: UIViewController {
         musicSlider.addTarget(self, action: #selector(adjustMusicVolume(_:)), for: .valueChanged)
 		musicSlider.value = Float(music)
 		viewInScrollView.addSubview(musicSlider)
-        musicSlider.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 200).isActive = true
-        musicSlider.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: -10).isActive = true
+        musicSlider.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 170).isActive = true
+        musicSlider.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: -25).isActive = true
         musicSlider.widthAnchor.constraint(equalToConstant: 150).isActive = true
         musicSlider.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
@@ -93,15 +115,28 @@ class SettingsViewController: UIViewController {
         musicLabel.translatesAutoresizingMaskIntoConstraints = false
         musicLabel.text = String(format: "%.2f", music)
 		viewInScrollView.addSubview(musicLabel)
-        musicLabel.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 200).isActive = true
-        musicLabel.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 100).isActive = true
+        musicLabel.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 170).isActive = true
+        musicLabel.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 85).isActive = true
 		
-		let moreSettings1 = UILabel()
-		moreSettings1.translatesAutoresizingMaskIntoConstraints = false
-		moreSettings1.text = "Something"
-		viewInScrollView.addSubview(moreSettings1)
-		moreSettings1.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 300).isActive = true
-		moreSettings1.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
+		let languageLabel = UILabel()
+		languageLabel.translatesAutoresizingMaskIntoConstraints = false
+		languageLabel.text = {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "语言"
+        case "English": return "Language"
+        case "Thai": return "ภาษา"
+        default: return "Language"
+        }}()
+		viewInScrollView.addSubview(languageLabel)
+		languageLabel.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 220).isActive = true
+		languageLabel.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
+        
+        languageSegmentedControl = UISegmentedControl(items: ["中文", "English", "ไทย"])
+        languageSegmentedControl.selectedSegmentIndex = UserDefaults.string(forKey: .language)?.toLanguageIndex() ?? 1
+        languageSegmentedControl.addTarget(self, action: #selector(changeLanguage(_:)), for: .valueChanged)
+        viewInScrollView.addSubview(languageSegmentedControl)
+        languageSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        languageSegmentedControl.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 270).isActive = true
+        languageSegmentedControl.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
 		
 		let moreSettings2 = UILabel()
 		moreSettings2.translatesAutoresizingMaskIntoConstraints = false
@@ -126,6 +161,36 @@ class SettingsViewController: UIViewController {
 		UserDefaults.set(value: music, forKey: .musicVolume)
     }
     
+    @objc func changeLanguage (_ sender: UISegmentedControl!) {
+        var language : String
+        var title : String
+        var message : String
+        switch languageSegmentedControl.selectedSegmentIndex {
+        case 0:
+            language = "Chinese"
+            title = "语言已设置"
+            message = "新的语言设置将会在下一次打开新的页面时启用"
+        case 1:
+            language = "English"
+            title = "Language Set"
+            message = "The new language setting will be applied when a new page is opened."
+        case 2:
+            language = "Thai"
+            title = "ภาษาถูกตั้งค่า"
+            message = "การตั้งค่าภาษาใหม่จะเปิดใช้งานในครั้งต่อไปที่คุณเปิดหน้าใหม่"
+        default:
+            language = "English"
+            title = "Language Set"
+            message = "The new language setting will be applied when a new page is opened."
+        }
+        UserDefaults.set(value: language, forKey: .language)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+        NSLog("The \"OK\" alert occured.")
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     override var shouldAutorotate: Bool {
         return true
     }
@@ -133,6 +198,7 @@ class SettingsViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return false
     }
+    
 
     /*
     // MARK: - Navigation

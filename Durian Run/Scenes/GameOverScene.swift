@@ -15,7 +15,12 @@ class GameOverScene: MenuScene {
 		if Int(score) > UserDefaults.int(forKey: .highScore) ?? 0 {
 			UserDefaults.set(value: Int(score), forKey: .highScore)
 			let newRecord = SKLabelNode(fontNamed: "Zapfino")
-			newRecord.text = "New Record!"
+			newRecord.text = {()->String in switch UserDefaults.string(forKey: .language) {
+            case "Chinese": return "新纪录！"
+            case "English": return "New Record!"
+            case "Thai": return "สถิติใหม่!"
+            default: return "New Record!"
+            }}()
 			newRecord.fontColor = .red
 			newRecord.fontSize = 70
 			newRecord.position = CGPoint(x: 300, y: frame.height - 300)
@@ -28,28 +33,48 @@ class GameOverScene: MenuScene {
 		UserDefaults.set(value: (UserDefaults.int(forKey: .coins) ?? 0) + coins, forKey: .coins)
 		
 		let scoreLabel = SKLabelNode(fontNamed: "ChalkboardSE-Bold")
-		scoreLabel.text = "Score: " + String(Int(score))
+		scoreLabel.text = {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "分数："
+        case "English": return "Score: "
+        case "Thai": return "คะแนน: "
+        default: return "Score: "
+        }}() + String(Int(score))
 		scoreLabel.fontSize = 200
 		scoreLabel.fontColor = .black
 		adjustLabelFontSizeToFitRect(labelNode: scoreLabel, rect: CGRect(origin: CGPoint(x: self.frame.midX, y: self.frame.midY + 270), size: CGSize(width: self.frame.width * 0.6, height: self.frame.height * 0.2)))
 		scoreLabel.horizontalAlignmentMode = .center
 		
 		let coinLabel = SKLabelNode(fontNamed: "ChalkboardSE-Light")
-		coinLabel.text = "Coins Collected: " + String(coins)
+		coinLabel.text = {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "收集到金币："
+        case "English": return "Coins Collected: "
+        case "Thai": return "เหรียญสะสม: "
+        default: return "Coins Collected: "
+        }}() + String(coins)
 		coinLabel.fontSize = 120
 		coinLabel.fontColor = SKColor.black
 		coinLabel.position = CGPoint(x: frame.midX + scoreLabel.frame.width/2 - coinLabel.frame.width/2 - 5, y: frame.midY + 30)
 		
 		let seasonLabelIntro = SKLabelNode(fontNamed: "ChalkboardSE-Regular")
-		seasonLabelIntro.text = "Survived To The"
+		seasonLabelIntro.text = {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "生存到"
+        case "English": return "Survived To The"
+        case "Thai": return "เอาชีวิตรอดไปยัง"
+        default: return "Survived To The"
+        }}()
 		seasonLabelIntro.fontSize = 120
 		seasonLabelIntro.fontColor = SKColor.black
 		seasonLabelIntro.position = CGPoint(x: frame.midX + scoreLabel.frame.width/2 - seasonLabelIntro.frame.width/2 - 5, y: frame.midY - 160)
 		
 		let seasonLabel = SKLabelNode(fontNamed: "SnellRoundhand-Black")
-		let season = Season.init(rawValue: seasons%4)?.description
+        let season = Season.init(rawValue: seasons%4)
 		let year = String(seasons / 4 + Calendar.current.component(.year, from: Date()))
-		seasonLabel.text = season! + " of " + year
+		seasonLabel.text = {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return year + "年的" + season!.chinese
+        case "English": return season!.description + " of " + year
+        case "Thai": return season!.thai + " " + year
+        default: return season!.description + " of " + year
+        }}()
 		seasonLabel.fontSize = 180
 		seasonLabel.fontColor = SKColor.black
 		seasonLabel.position = CGPoint(x: frame.midX + scoreLabel.frame.width/2 - seasonLabel.frame.width/2 - 5, y: frame.midY - 350)

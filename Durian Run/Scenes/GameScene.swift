@@ -26,6 +26,36 @@ enum Season : Int {
 			}
 		}
 	}
+    
+    var chinese: String {
+        get {
+            switch self {
+            case .Spring:
+                return "春天"
+            case .Summer:
+                return "夏天"
+            case .Fall:
+                return "秋天"
+            case .Winter:
+                return "冬天"
+            }
+        }
+    }
+    
+    var thai: String {
+        get {
+            switch self {
+            case .Spring:
+                return "ฤดูใบไม้ผลิ"
+            case .Summer:
+                return "ฤดูร้อน"
+            case .Fall:
+                return "ฤดูใบไม้ร่วง"
+            case .Winter:
+                return "ฤดูหนาว"
+            }
+        }
+    }
 }
 
 
@@ -49,7 +79,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			isRaining = false
 			switch season {
 			case .Spring:
-				scoreChangeIndicate("New Year +1500", yPos: frame.height - 700)
+                let text = {()->String in switch UserDefaults.string(forKey: .language) {
+                case "Chinese": return "新的一年 "
+                case "English": return "New Year "
+                case "Thai": return "ปีใหม่ "
+                default: return "ปีใหม่ "
+                }}() + "+1500"
+				scoreChangeIndicate(text, yPos: frame.height - 700)
 				score += 1500
 				difficulty += 1
 				seasonIndicator.color = UIColor.green
@@ -375,13 +411,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (contact.bodyA.node is Durian && contact.bodyB.node is Fertilizer) {
 			fertilizer.getCollected()
 			score += 100
-			scoreChangeIndicate("Fertilizer Collected +100", yPos: frame.height - 500)
+            let text = {()->String in switch UserDefaults.string(forKey: .language) {
+            case "Chinese": return "收集到肥料"
+            case "English": return "Fertilizer Collected"
+            case "Thai": return "เก็บปุ๋ย"
+            default: return "Fertilizer Collected"
+            }}() + " +100"
+			scoreChangeIndicate(text, yPos: frame.height - 500)
 			boostBar.increase(by: 20)
         }
 		if (contact.bodyA.node is Durian && contact.bodyB.node is Supply)  {
 			supply.getCollected()
 			score += 100
-			scoreChangeIndicate("Supply Collected +100", yPos: frame.height - 500)
+            let text = {()->String in switch UserDefaults.string(forKey: .language) {
+            case "Chinese": return "收集到补给"
+            case "English": return "Supply Collected"
+            case "Thai": return "รวบรวมเสบียง"
+            default: return "Supply Collected"
+            }}() + " +100"
+			scoreChangeIndicate(text, yPos: frame.height - 500)
 			sunshineBar.increase(by: 20)
 			waterBar.increase(by: 20)
 		}
@@ -423,7 +471,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if let enemy = contact.bodyA.node as? Enemy {
                 enemy.receiveDamage(1)
                 score += 500
-                scoreChangeIndicate("Eliminate Enemy +500", yPos: frame.height - 500)
+                let text = {()->String in switch UserDefaults.string(forKey: .language) {
+                case "Chinese": return "消灭敌人"
+                case "English": return "Enemy Eliminated"
+                case "Thai": return "ทำลายศัตรู"
+                default: return "Enemy Eliminated"
+                }}() + " +500"
+                scoreChangeIndicate(text, yPos: frame.height - 500)
                 let tempAudioNode = SKAudioNode(fileNamed: "sword-attack.wav")
                 tempAudioNode.autoplayLooped = false
                 self.addChild(tempAudioNode)
@@ -681,8 +735,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 					spawnBugs(Int(arc4random_uniform(7)))
 				}
 				break
-			default:
-				break
 			}
 			
 		}
@@ -772,8 +824,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			if !isStorming && seasonTimer > seasonInfo.stormTime! && seasonTimer < seasonInfo.stormTime! + seasonInfo.stormDuration! {
 				startStorm()
 			}
-			break
-		default:
 			break
 		}
 		
@@ -934,7 +984,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
 	func nextSeason() {
 		score += 800
-		scoreChangeIndicate("New Season +800", yPos: frame.height - 500)
+        let text = {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "季节更替"
+        case "English": return "Season Changed"
+        case "Thai": return "ฤดูกาลเปลี่ยน"
+        default: return "ฤดูกาลเปลี่ยน"
+        }}() + " +800"
+		scoreChangeIndicate(text, yPos: frame.height - 500)
 		seasonsPassed += 1
 		if season == .Spring {
 			season = .Summer
