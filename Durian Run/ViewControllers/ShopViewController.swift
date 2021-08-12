@@ -12,16 +12,30 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
 	var arrLabels : [UILabel] = []
 
 	var coins: Int = UserDefaults.int(forKey: .coins) ?? 0
+    var coinLabel: UILabel!
+    
+    var equipButton: UIButton!
+    var purchaseButton: UIButton!
+    
+    var price: UILabel!
 	
 	override func viewDidLoad() {
-		
-		for i in 1...5 {
+        
+        if UserDefaults.array(forKey: .charactersOwned) == nil {
+            var arr = Array<Bool>(repeating: false, count: 16)
+            arr[0] = true
+            UserDefaults.set(value: arr, forKey: .charactersOwned)
+        }
+        
+        var i : Int = 0
+        while let player =  PlayerModelInfo(rawValue: i) {
 			let label = UILabel()
 			label.backgroundColor = UIColor.yellow
-			label.text = "Coming Soon \(i)"
+            label.text = player.name
 			label.adjustsFontSizeToFitWidth = true
 			label.textAlignment = .center
 			arrLabels.append(label)
+            i += 1
 		}
 		super.viewDidLoad()
 		let allSubviews = view.subviews
@@ -30,17 +44,43 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
 				let sv = subview as! UILabel
 				sv.text = "Coins: " + String(coins)
 				sv.adjustsFontSizeToFitWidth = true
+                coinLabel = subview as? UILabel
 			}
+            if subview.restorationIdentifier == "equipButton" {
+                let sv = subview as! UIButton
+                equipButton = sv
+            }
+            if subview.restorationIdentifier == "purchaseButton" {
+                let sv = subview as! UIButton
+                purchaseButton = sv
+            }
+            if subview.restorationIdentifier == "PriceLabel" {
+                price = subview as? UILabel
+                price.text = "Equipped"
+            }
 		}
 		
 		pageControl.backgroundStyle = .automatic
 		pageControl.backgroundColor = UIColor.gray
+        
+        
+        self.equipButton.addTarget(self, action: #selector(self.equip(_:)), for: UIControl.Event.touchUpInside)
+        self.purchaseButton.addTarget(self, action: #selector(self.purchase(_:)), for: UIControl.Event.touchUpInside)
 		// Do any additional setup after loading the view.
+        
+        self.pageControl.addTarget(self, action: #selector(self.pageChanged(sender:)), for: UIControl.Event.valueChanged)
+        
+        let width1 = (Float(arrLabels.count) * Float(scrView.frame.size.width))
+        scrView.contentSize = CGSize(width: CGFloat(width1), height: scrView.frame.size.height)
+        pageControl.numberOfPages = arrLabels.count
+        pageControl.currentPage = UserDefaults.int(forKey: .selectedCharacter) ?? 0
+        
 	}
-	
-	override func viewDidLayoutSubviews() {
-		self.loadScrollView()
-	}
+    
+    override func viewDidLayoutSubviews() {
+        self.loadScrollView()
+        scrView.setContentOffset(CGPoint(x: CGFloat(pageControl.currentPage) * scrView.frame.size.width, y: 0), animated: true)
+    }
 	
 	func loadScrollView() {
 		let pageCount = arrLabels.count
@@ -57,19 +97,8 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
 			self.scrView.addSubview(arrLabels[i])
 		}
 		
-		let width1 = (Float(arrLabels.count) * Float(scrView.frame.size.width))
-		scrView.contentSize = CGSize(width: CGFloat(width1), height: scrView.frame.size.height)
-		
-        
-        
-        pageControl.numberOfPages = pageCount
-        pageControl.currentPage = UserDefaults.int(forKey: .selectedCharacter) ?? 0
-        scrView.setContentOffset(CGPoint(x: CGFloat(pageControl.currentPage) * scrView.frame.size.width, y: 0), animated: false)
 
-		self.view.addSubview(scrView)
-		self.pageControl.addTarget(self, action: #selector(self.pageChanged(sender:)), for: UIControl.Event.valueChanged)
-		
-		self.view.addSubview(pageControl)
+        
 	}
 	
 	override var shouldAutorotate: Bool {
@@ -91,7 +120,7 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
 	*/
 	@IBOutlet weak var scrView: UIScrollView!
 	@IBOutlet weak var pageControl: UIPageControl!
-	
+    
 	
 	//MARK: UIScrollViewDelegate
 	func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -99,15 +128,60 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
 		pageControl.currentPage = Int(pageNumber)
 		print(pageNumber)
 		
-        
-        UserDefaults.set(value: Int(pageNumber), forKey: .selectedCharacter)
+        if UserDefaults.array(forKey: .charactersOwned)![pageControl.currentPage] as! Bool {
+            equipButton.isHidden = false
+            purchaseButton.isHidden = true
+            price.text = "Owned"
+            if UserDefaults.int(forKey: .selectedCharacter) == pageControl.currentPage {
+                equipButton.isHidden = true
+                price.text = "Equipped"
+            }
+        } else {
+            equipButton.isHidden = true
+            purchaseButton.isHidden = false
+            price.text = "\(PlayerModelInfo(rawValue: pageControl.currentPage)!.cost)"
+        }
 	}
 	
 	@objc func pageChanged(sender:AnyObject)
 	{
 		let xVal = CGFloat(pageControl.currentPage) * scrView.frame.size.width
 		scrView.setContentOffset(CGPoint(x: xVal, y: 0), animated: true)
-        
-        UserDefaults.set(value: Int(xVal), forKey: .selectedCharacter)
+        print(pageControl.currentPage)
+        if UserDefaults.array(forKey: .charactersOwned)![pageControl.currentPage] as! Bool {
+            equipButton.isHidden = false
+            purchaseButton.isHidden = true
+            price.text = "Owned"
+            if UserDefaults.int(forKey: .selectedCharacter) == pageControl.currentPage {
+                equipButton.isHidden = true
+                price.text = "Equipped"
+            }
+        } else {
+            equipButton.isHidden = true
+            purchaseButton.isHidden = false
+            price.text = "\(PlayerModelInfo(rawValue: pageControl.currentPage)!.cost)"
+        }
 	}
+
+    @objc func equip(_ sender: UIButton!) {
+        UserDefaults.set(value: pageControl.currentPage, forKey: .selectedCharacter)
+        equipButton.isHidden = true
+        price.text = "Equipped"
+    }
+
+    @objc func purchase(_ sender: UIButton!) {
+        print("purchasing")
+        if UserDefaults.int(forKey: .coins)! >= 1000 {
+            print("purchased Success")
+            var arr = UserDefaults.array(forKey: .charactersOwned)!
+            arr[pageControl.currentPage] = true
+            UserDefaults.set(value: arr, forKey: .charactersOwned)
+            UserDefaults.set(value: UserDefaults.int(forKey: .coins)! - 1000, forKey: .coins)
+            coins -= 1000
+            coinLabel.text = "Coins: " + String(coins)
+            equipButton.isHidden = false
+            purchaseButton.isHidden = true
+            price.text = "Owned"
+        }
+    }
 }

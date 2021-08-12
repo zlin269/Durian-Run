@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 enum Season : Int {
-	case season = 0, Spring, Summer, Fall, Winter
+	case Spring, Summer, Fall, Winter
 
 	var description: String {
 		get {
@@ -23,8 +23,6 @@ enum Season : Int {
 				return "Fall"
 			case .Winter:
 				return "Winter"
-			default:
-				return String(rawValue)
 			}
 		}
 	}
@@ -101,7 +99,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	var isActuallyPaused = false
     
 	// Big game elements
-	lazy var durian = Durian()
+	lazy var durian = PlayerModelInfo(rawValue: UserDefaults.int(forKey: .selectedCharacter) ?? 0)!.model
 	lazy var platform = Platform(initial: true)
     lazy var platformLevel = Platform()
 	lazy var sunshineBar = StatusBar(UIColor.red)
@@ -145,17 +143,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any physics node has 100 <= zPos < 200
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
-        
-        switch UserDefaults.int(forKey: .selectedCharacter) {
-        case 1:
-            durian = DurianWithAttack()
-        case 2:
-            durian = DurianWithDash()
-        case 3:
-            durian = DurianWithGun()
-        default:
-            break
-        }
         
         nextSeason()
         nextSeason()

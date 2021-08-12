@@ -16,6 +16,7 @@ extension UserDefaults {
 		case highScore
 		case mostSeasons
         case selectedCharacter
+        case charactersOwned
 	}
 	
 	static func set(value: String, forKey key: AccountKeys) {
@@ -32,6 +33,11 @@ extension UserDefaults {
 		let key = key.rawValue
 		UserDefaults.standard.set(value, forKey: key)
 	}
+    
+    static func set(value: [Any], forKey key: AccountKeys) {
+        let key = key.rawValue
+        UserDefaults.standard.set(value, forKey: key)
+    }
 	
 	static func string(forKey key: AccountKeys) -> String? {
 		let key = key.rawValue
@@ -47,4 +53,9 @@ extension UserDefaults {
 		let key = key.rawValue
 		return UserDefaults.standard.double(forKey: key)
 	}
+    
+    static func array(forKey key: AccountKeys) -> [Any]? {
+        let key = key.rawValue
+        return UserDefaults.standard.array(forKey: key)
+    }
 }

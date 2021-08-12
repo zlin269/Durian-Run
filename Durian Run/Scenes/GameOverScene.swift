@@ -47,7 +47,7 @@ class GameOverScene: MenuScene {
 		seasonLabelIntro.position = CGPoint(x: frame.midX + scoreLabel.frame.width/2 - seasonLabelIntro.frame.width/2 - 5, y: frame.midY - 160)
 		
 		let seasonLabel = SKLabelNode(fontNamed: "SnellRoundhand-Black")
-		let season = Season.init(rawValue: seasons%4 + 1)?.description
+		let season = Season.init(rawValue: seasons%4)?.description
 		let year = String(seasons / 4 + Calendar.current.component(.year, from: Date()))
 		seasonLabel.text = season! + " of " + year
 		seasonLabel.fontSize = 180

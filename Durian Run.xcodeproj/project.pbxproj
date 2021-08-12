@@ -30,6 +30,7 @@
 		6255523F26C1020C00BA28AD /* DurianWithAttack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255523E26C1020C00BA28AD /* DurianWithAttack.swift */; };
 		6255524126C10ABE00BA28AD /* DurianWithDash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255524026C10ABE00BA28AD /* DurianWithDash.swift */; };
 		6255524326C110A200BA28AD /* DurianWithGun.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255524226C110A200BA28AD /* DurianWithGun.swift */; };
+		6255524526C380EF00BA28AD /* PlayerModelInfoEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255524426C380EF00BA28AD /* PlayerModelInfoEnum.swift */; };
 		626938F926B96E05003E968F /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626938F826B96E05003E968F /* StatsViewController.swift */; };
 		626938FB26BA282A003E968F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626938FA26BA282A003E968F /* SettingsViewController.swift */; };
 		626938FF26BA75D0003E968F /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626938FE26BA75D0003E968F /* ShopViewController.swift */; };
@@ -117,6 +118,7 @@
 		6255523E26C1020C00BA28AD /* DurianWithAttack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurianWithAttack.swift; sourceTree = "<group>"; };
 		6255524026C10ABE00BA28AD /* DurianWithDash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurianWithDash.swift; sourceTree = "<group>"; };
 		6255524226C110A200BA28AD /* DurianWithGun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurianWithGun.swift; sourceTree = "<group>"; };
+		6255524426C380EF00BA28AD /* PlayerModelInfoEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerModelInfoEnum.swift; sourceTree = "<group>"; };
 		626938F826B96E05003E968F /* StatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
 		626938FA26BA282A003E968F /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		626938FE26BA75D0003E968F /* ShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				623EB15E26A16B0B000628CB /* Durian.swift */,
+				6255524426C380EF00BA28AD /* PlayerModelInfoEnum.swift */,
 				6255523E26C1020C00BA28AD /* DurianWithAttack.swift */,
 				6255524026C10ABE00BA28AD /* DurianWithDash.swift */,
 				6255524226C110A200BA28AD /* DurianWithGun.swift */,
@@ -532,6 +535,7 @@
 				626938F926B96E05003E968F /* StatsViewController.swift in Sources */,
 				62CF788326B3BECE00E573ED /* Coin.swift in Sources */,
 				626938FF26BA75D0003E968F /* ShopViewController.swift in Sources */,
+				6255524526C380EF00BA28AD /* PlayerModelInfoEnum.swift in Sources */,
 				623EB16126A17D50000628CB /* Platform.swift in Sources */,
 				6270E11B26A7BBD000011319 /* Bug.swift in Sources */,
 				C64B299326A83289006A1FEB /* Extension_2.swift in Sources */,
