@@ -715,118 +715,69 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				spawnFertilizer()
 			}
 			switch season {
-			case .Spring:
+			case .Spring, .Summer:
 				if 1 < num && num <= 10 {
 					spawnFactory()
 				}
 				break
-			case .Summer:
-				if 1 < num && num <= 8 {
-					spawnFactory()
-				}
-				break
-			case .Fall:
-				if 1 < num && num <= 20 && enemies.count == 0 {
-					spawnBugs(Int(arc4random_uniform(5)))
-				}
-				break
-			case .Winter:
-				if 1 < num && num <= 20 && enemies.count == 0 {
-					spawnBugs(Int(arc4random_uniform(7)))
-				}
-				break
+//			case .Fall, .Winter:
+//				if 1 < num && num <= 20 && enemies.count == 0 {
+//                    spawnBugs(Int(arc4random_uniform(4) + ((season == .Winter) ? arc4random_uniform(4) : 0)))
+//				}
+//				break
+            default: break
 			}
-			
+            
 		}
 		
-		switch season {
-		case .Spring:
-			
-			if sun.isOpen && seasonTimer > seasonInfo.sunSetTime! && seasonTimer < seasonInfo.sunSetTime! + seasonInfo.sunSetDuration!  {
+        // MARK: --Seasonal Events
+		if sun.isOpen && seasonTimer > seasonInfo.sunSetTime! && seasonTimer < seasonInfo.sunSetTime! + seasonInfo.sunSetDuration!  {
 				sun.close()
-			}
-			if !sun.isOpen && seasonTimer > seasonInfo.sunSetTime! + seasonInfo.sunSetDuration! {
-				sun.open()
-			}
-			if seasonTimer > seasonInfo.rainStartTime[0] && seasonTimer < seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
-				isRaining = true
-			} else if seasonTimer > seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
-				isRaining = false
-			}
-			if seasonTimer > seasonInfo.rainStartTime[1] && seasonTimer < seasonInfo.rainStartTime[1] + seasonInfo.rainDuration! {
-				isRaining = true
-			} else if seasonTimer > seasonInfo.rainStartTime[1] + seasonInfo.rainDuration! {
-				isRaining = false
-			}
-			break
-		case .Summer:
-			if sun.isOpen && seasonTimer > seasonInfo.sunSetTime! && seasonTimer < seasonInfo.sunSetTime! + seasonInfo.sunSetDuration!  {
-				sun.close()
-			}
-			if !sun.isOpen && seasonTimer > seasonInfo.sunSetTime! + seasonInfo.sunSetDuration! && !isStorming {
-				sun.open()
-			}
-			if seasonTimer > seasonInfo.rainStartTime[0] && seasonTimer < seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
-				isRaining = true
-			} else if seasonTimer > seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! && !isStorming {
-				isRaining = false
-			}
-			if !isStorming && seasonTimer > seasonInfo.stormTime! && seasonTimer < seasonInfo.stormTime! + seasonInfo.stormDuration! {
-				startStorm()
-			}
-			break
-		case .Fall:
-			if sun.isOpen && seasonTimer > seasonInfo.sunSetTime! && seasonTimer < seasonInfo.sunSetTime! + seasonInfo.sunSetDuration!  {
-				sun.close()
-			}
-			if !sun.isOpen && seasonTimer > seasonInfo.sunSetTime! + seasonInfo.sunSetDuration! {
-				sun.open()
-			}
-			
-			if seasonTimer > seasonInfo.supplySpawnTime[0] && seasonInfo.suppliesSpawned == 0 {
-				spawnSupply()
-			}
-			if seasonTimer > seasonInfo.supplySpawnTime[1] && seasonInfo.suppliesSpawned == 1 {
-				spawnSupply()
-			}
-			if (platformLevelPositionR < frame.width){
-				// create new platform
-				platformLevel = Platform()
-				platformLevel.create(number: levelLength + Int(arc4random_uniform(5)))
-				platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:500)
-				platformLevel.zPosition = 100
-				platformLevelPositionR = platformLevel.position.x + platformLevel.width
-				platformLevel.name = "platformLevel"
-				self.addChild(platformLevel)
-				platformLevels.append(platformLevel)
-				Coin.spawnCoinsLine(3 ,CGPoint(x: platformLevel.position.x + 100, y: 680), self)
-				Coin.spanwCoinsDrop(CGPoint(x: platformLevel.position.x + platformLevel.width + 200, y: 1100), self)
-			}
-			break
-		case .Winter:
-			if seasonTimer > seasonInfo.supplySpawnTime[0] && seasonInfo.suppliesSpawned == 0 {
-				spawnSupply()
-			}
-			if seasonTimer > seasonInfo.supplySpawnTime[1] && seasonInfo.suppliesSpawned == 1 {
-				spawnSupply()
-			}
-			if (platformLevelPositionR < frame.width){
-				// create new platform
-				platformLevel = Platform()
-				platformLevel.create(number: levelLength + Int(arc4random_uniform(3)))
-				platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:460)
-				platformLevel.zPosition = 100
-				platformLevelPositionR = platformLevel.position.x + platformLevel.width
-				platformLevel.name = "platformLevel"
-				self.addChild(platformLevel)
-				platformLevels.append(platformLevel)
-			}
-			if !isStorming && seasonTimer > seasonInfo.stormTime! && seasonTimer < seasonInfo.stormTime! + seasonInfo.stormDuration! {
-				startStorm()
-			}
-			break
-		}
+        }
+        if !sun.isOpen && seasonTimer > seasonInfo.sunSetTime! + seasonInfo.sunSetDuration! {
+            sun.open()
+        }
+        if seasonTimer > seasonInfo.rainStartTime[0] && seasonTimer < seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
+            isRaining = true
+        } else if seasonTimer > seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
+            isRaining = false
+        }
+        if seasonTimer > seasonInfo.rainStartTime[1] && seasonTimer < seasonInfo.rainStartTime[1] + seasonInfo.rainDuration! {
+            isRaining = true
+        } else if seasonTimer > seasonInfo.rainStartTime[1] + seasonInfo.rainDuration! {
+            isRaining = false
+        }
+        if !isStorming && seasonTimer > seasonInfo.stormTime! && seasonTimer < seasonInfo.stormTime! + seasonInfo.stormDuration! {
+            startStorm()
+        }
+        if seasonTimer > seasonInfo.supplySpawnTime[0] && seasonInfo.suppliesSpawned == 0 {
+            spawnSupply()
+        }
+        if seasonTimer > seasonInfo.supplySpawnTime[1] && seasonInfo.suppliesSpawned == 1 {
+            spawnSupply()
+        }
+        
 		
+        if season == .Fall || season == .Winter {
+            if (platformLevelPositionR < frame.width){
+                // create new platform
+                platformLevel = Platform()
+                platformLevel.create(number: levelLength + Int(arc4random_uniform(5)))
+                platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:500)
+                platformLevel.zPosition = 100
+                platformLevelPositionR = platformLevel.position.x + platformLevel.width
+                platformLevel.name = "platformLevel"
+                self.addChild(platformLevel)
+                platformLevels.append(platformLevel)
+                Coin.spawnCoinsLine(3 ,CGPoint(x: platformLevel.position.x + 100, y: 680), self)
+                Coin.spanwCoinsDrop(CGPoint(x: platformLevel.position.x + platformLevel.width + 200, y: 1100), self)
+            }
+            if Int(seasonTimer) >= (5 + 10 * seasonInfo.enemiesSpawned) {
+                seasonInfo.enemiesSpawned += 1
+                spawnBugs(Int(arc4random_uniform(season == .Fall ? 4 : 7)))
+            }
+        }
+        
 		if isRaining {
 			// Update the spawn timer
 			currentRainDropSpawnTime += dt

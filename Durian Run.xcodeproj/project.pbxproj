@@ -326,8 +326,8 @@
 		6270E11F26A7BC1F00011319 /* Enemies */ = {
 			isa = PBXGroup;
 			children = (
-				6270E11A26A7BBD000011319 /* Bug.swift */,
 				6270E11326A6B31800011319 /* Enemy.swift */,
+				6270E11A26A7BBD000011319 /* Bug.swift */,
 				6270E12126A976B800011319 /* Chaser.swift */,
 				62CF787C26B2891B00E573ED /* Fly.swift */,
 				6269390026BBBB3D003E968F /* Waver.swift */,

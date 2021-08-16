@@ -41,42 +41,42 @@ class SeasonInfo {
 		} else if season == .Winter {
 			season = .Spring
 		}
+        enemiesSpawned = 0
 		switch season {
 		case .Spring:
 			sunSetTime = TimeInterval(arc4random_uniform(15) + 10)
 			sunSetDuration = 15
-			rainStartTime.append(TimeInterval(arc4random_uniform(8)))
-			rainStartTime.append(TimeInterval(arc4random_uniform(12)) + 20)
+			rainStartTime = [TimeInterval(arc4random_uniform(8)), TimeInterval(arc4random_uniform(12)) + 20]
 			rainDuration = 8
+            supplySpawnTime = [.infinity, .infinity]
+            stormTime = .infinity
 			break
 		case .Summer:
 			sunSetTime = TimeInterval(arc4random_uniform(25) + 10)
 			sunSetDuration = 5
-			rainStartTime.append(TimeInterval(arc4random_uniform(30)))
+            rainStartTime = [TimeInterval(arc4random_uniform(30)), .infinity]
 			rainDuration = 8
 			stormTime = TimeInterval(arc4random_uniform(20) + 10)
 			stormDuration = 10
+            supplySpawnTime = [.infinity, .infinity]
 			break
 		case .Fall:
 			sunSetTime = TimeInterval(arc4random_uniform(25) + 10)
 			sunSetTime = 15
 			suppliesSpawned = 0
-			supplySpawnTime.removeAll()
-			supplySpawnTime.append(TimeInterval(arc4random_uniform(20)))
-			supplySpawnTime.append(TimeInterval(arc4random_uniform(20) + 20))
-			enemiesSpawned = 0
+            rainStartTime = [.infinity, .infinity]
+			supplySpawnTime = [TimeInterval(arc4random_uniform(20)), TimeInterval(arc4random_uniform(20) + 20)]
+            stormTime = .infinity
 			break
 		case .Winter:
+            sunSetTime = 0
+            sunSetDuration = .infinity
+            rainStartTime = [.infinity, .infinity]
 			suppliesSpawned = 0
-			supplySpawnTime.removeAll()
-			supplySpawnTime.append(TimeInterval(arc4random_uniform(20)))
-			supplySpawnTime.append(TimeInterval(arc4random_uniform(20) + 20))
-			enemiesSpawned = 0
+            supplySpawnTime = [TimeInterval(arc4random_uniform(20)), TimeInterval(arc4random_uniform(20) + 20)]
 			stormTime = TimeInterval(arc4random_uniform(20) + 10)
 			stormDuration = 10
 			break
-		default:
-			break
-		}
+        }
 	}
 }
