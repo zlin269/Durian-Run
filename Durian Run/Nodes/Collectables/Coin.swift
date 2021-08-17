@@ -22,6 +22,7 @@ class Coin: Collectable {
 	static func spawnCoinsRainbow(_ position: CGPoint, _ parent: SKNode) {
 		let c_mid = Coin()
 		c_mid.position = position
+        c_mid.zPosition = 150
 		c_mid.run(SKAction.moveBy(x: -parent.frame.width - 500, y: 0, duration: TimeInterval((parent.frame.width + 500) / GameScene.platformSpeed)), completion: {
 			c_mid.removeFromParent()
 		})
@@ -29,6 +30,7 @@ class Coin: Collectable {
 		for i in 1...2 {
 			let c = Coin()
 			c.position = position
+            c.zPosition = 150
 			c.position.x -= sqrt(CGFloat(i)) * 200
 			c.position.y -= 50 * pow(CGFloat(i), 2)
 			c.run(SKAction.moveBy(x: -parent.frame.width - 500, y: 0, duration: TimeInterval((parent.frame.width + 500) / GameScene.platformSpeed)), completion: {
@@ -39,6 +41,7 @@ class Coin: Collectable {
 		for i in 1...2 {
 			let c = Coin()
 			c.position = position
+            c.zPosition = 150
 			c.position.x += sqrt(CGFloat(i)) * 200
 			c.position.y -= 50 * pow(CGFloat(i), 2)
 			parent.addChild(c)

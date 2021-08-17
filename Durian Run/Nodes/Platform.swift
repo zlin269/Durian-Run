@@ -7,10 +7,13 @@
 
 import SpriteKit
 
-// A platform consists of many blocks of grass
+
 class Platform: SKNode {
 	
 	var width :CGFloat = 0
+    var height : CGFloat = 0
+    
+    var isCity : Bool = false
 	
 	private var isInitial : Bool = false
 	
@@ -24,7 +27,7 @@ class Platform: SKNode {
 		isInitial = initial
 		super.init()
 		self.physicsBody = SKPhysicsBody()
-		
+		create(number: 0)
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -32,24 +35,41 @@ class Platform: SKNode {
 	}
 	
 	func create (number: Int) {
-		
-		let grass_m = SKSpriteNode(imageNamed: "grassMid")
-		grass_m.size = CGSize(width: grass_m.size.width * CGFloat(number) * 2, height: grass_m.size.height * 2)
-		grass_m.anchorPoint = CGPoint(x: 0, y: 0)
-		width = grass_m.size.width
-		self.addChild(grass_m)
-		
-		
-		self.physicsBody = SKPhysicsBody(rectangleOf: grass_m.size, center: CGPoint(x: width / 2, y: grass_m.size.height / 2))
-		self.physicsBody?.isDynamic = false
-		self.physicsBody?.categoryBitMask = HitMask.platform
-		self.physicsBody?.contactTestBitMask = HitMask.durian 
-		self.physicsBody?.restitution = 0
-		self.physicsBody?.friction = 0
-		
-		if number > 10 && !isInitial {
-			// Coin.spawnCoinsLine(number / 2, CGPoint(x: 200, y: 200), self)
-		}
+        var texture = SKTexture()
+        
+        switch number {
+        case 0:
+            texture = SKTexture(imageNamed: "city_long")
+            isCity = true
+        case 1:
+            texture = SKTexture(imageNamed: "grass_long")
+        case 2:
+            texture = SKTexture(imageNamed: "grass_medium\(arc4random_uniform(2) + 1)")
+            
+        case 3:
+            texture = SKTexture(imageNamed: "grass_short\(arc4random_uniform(2) + 1)")
+            
+        case 4:
+            texture = SKTexture(imageNamed: "city_short")
+            isCity = true
+        case 5:
+            texture = SKTexture(imageNamed: "city_long")
+            
+            isCity = true
+        default:
+            break
+        }
+        let grass_m = SKSpriteNode(texture: texture, size: CGSize(width: texture.size().width * 3, height: texture.size().height * 3))
+        grass_m.anchorPoint = CGPoint(x: 0, y: 0)
+        width = grass_m.size.width
+        height = grass_m.size.height
+        self.addChild(grass_m)
+        self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: grass_m.size.width, height: grass_m.size.height / 2), center: CGPoint(x: width / 2, y: grass_m.size.height / 4))
+        self.physicsBody?.isDynamic = false
+        self.physicsBody?.categoryBitMask = HitMask.platform
+        self.physicsBody?.contactTestBitMask = HitMask.durian
+        self.physicsBody?.restitution = 0
+        self.physicsBody?.friction = 0
 		
 	}
 	

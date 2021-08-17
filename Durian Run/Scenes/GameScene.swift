@@ -88,17 +88,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				scoreChangeIndicate(text, yPos: frame.height - 700)
 				score += 1500
 				difficulty += 1
-				seasonIndicator.color = UIColor.green
-				sun.open()
-			case .Summer:
-				seasonIndicator.color = UIColor.cyan
-				sun.open()
-			case .Fall:
-				seasonIndicator.color = UIColor.yellow
-				sun.open()
 			default: // .Winter
-				seasonIndicator.color = UIColor.white
-				sun.close()
+				break
 			}
 		}
 	}
@@ -138,10 +129,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var durian = PlayerModelInfo(rawValue: UserDefaults.int(forKey: .selectedCharacter) ?? 0)!.model
 	lazy var platform = Platform(initial: true)
     lazy var platformLevel = Platform()
-	lazy var sunshineBar = StatusBar(UIColor.red)
-	lazy var waterBar = StatusBar(UIColor.blue)
-	lazy var boostBar = StatusBar(UIColor.purple)
-	lazy var sun = Sun()
+	lazy var healthBar = StatusBar(UIColor.red)
+    
 	lazy var fertilizer = Fertilizer()
 	lazy var supply = Supply()
 	lazy var musicNode = SKAudioNode(fileNamed: "electronic.wav")
@@ -149,7 +138,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
     lazy var platforms = [Platform]()
     lazy var platformLevels = [Platform]()
-	lazy var factories = [Factory]()
+	lazy var fences = [Fence]()
 	lazy var enemies = [Enemy]()
 	lazy var raindrops = [Rain]()
 
@@ -168,8 +157,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	var pauseButton = Button(imageNamed: "pause")
 	var homeButton = Button(imageNamed: "home")
 	
-	// Season Indicator
-	var seasonIndicator = SKSpriteNode()
 	
 	// MARK: --Layers in Scene
 	// Layers of nodes in the scene are determined by their zPosition
@@ -180,9 +167,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
         
-        nextSeason()
-        nextSeason()
-		
 		GameScene.sharedInstance = self
 		
 		GameScene.platformSpeed = 1000
@@ -228,71 +212,53 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		self.physicsWorld.contactDelegate = self
 		self.physicsWorld.gravity = CGVector(dx: 0, dy: -30)
 		
-		// game elements
-		
+		// MARK: -- game elements
+        
+        let buildings = SKSpriteNode(texture: SKTexture(imageNamed: "Shanghai"), size: self.size)
+        buildings.zPosition = -100
+        buildings.anchorPoint = .zero
+        buildings.position = .zero
+        self.addChild(buildings)
+        
 		durian.name = "durian"
-		durian.state = .absorb
-		durian.position = CGPoint(x: 800, y: 500)
+		durian.state = .normal
+		durian.position = CGPoint(x: 600, y: 450)
 		durian.zPosition = 100
 		durian.size = CGSize(width: durian.size.width * 3, height: durian.size.height * 3)
 		self.addChild(durian)
 		
 		platform.name = "platform"
-		platform.position = CGPoint(x: 0, y: 50)
-		platform.zPosition = 100
-		platform.create(number: 30)
+		platform.position = CGPoint(x: 500, y: 0)
+		platform.zPosition = 50
         platformPositionR = platform.position.x + platform.width
 		self.addChild(platform)
         platforms.append(platform)
         
 		
-		sunshineBar.name = "health"
-		sunshineBar.position = CGPoint(x: 1800, y: 1000)
-		sunshineBar.zPosition = 200
-		sunshineBar.setEmpty()
-		sunshineBar.increase(by: 30)
-		self.addChild(sunshineBar)
+		healthBar.name = "health"
+		healthBar.position = CGPoint(x: 80, y: 1000)
+		healthBar.zPosition = 200
+		healthBar.setEmpty()
+		healthBar.increase(by: 30)
+        healthBar.alpha = 0.8
+		self.addChild(healthBar)
 		
-		waterBar.name = "water"
-		waterBar.position = CGPoint(x: 1800, y: 900)
-		waterBar.zPosition = 200
-		waterBar.setEmpty()
-		waterBar.increase(by: 30)
-		self.addChild(waterBar)
-		
-		boostBar.name = "mana"
-		boostBar.position = CGPoint(x: 1800, y: 800)
-		boostBar.zPosition = 200
-		boostBar.hasStacks = false
-		//boostBar.setEmpty()
-		self.addChild(boostBar)
-		
-		sun.name = "sun"
-		sun.position = CGPoint(x: 1300, y: 800)
-		sun.zPosition = 0
-		sun.open()
-		self.addChild(sun)
 		
 		pauseButton.name = "pauseButton"
-		pauseButton.position = CGPoint(x: 80, y: 1100)
+        pauseButton.size = CGSize(width: 200, height: 200)
+        pauseButton.position = CGPoint(x: self.size.width - pauseButton.size.width - 80, y: 1100)
 		pauseButton.zPosition = 200
-		pauseButton.size = CGSize(width: 200, height: 200)
 		pauseButton.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
 		self.addChild(pauseButton)
 		
 		homeButton.name = "exitButton"
-		homeButton.position = CGPoint(x: 600, y: 1100)
+        homeButton.size = CGSize(width: 200, height: 200)
+        homeButton.position = CGPoint(x: frame.width - 600 - homeButton.size.width, y: 1100)
 		homeButton.zPosition = 200
-		homeButton.size = CGSize(width: 200, height: 200)
 		homeButton.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
 		self.addChild(homeButton)
 		homeButton.isHidden = true
 		
-		seasonIndicator = SKSpriteNode(color: UIColor.green, size: CGSize(width: 200, height: 200))
-		seasonIndicator.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
-		seasonIndicator.position = CGPoint(x: 80, y: 800)
-		seasonIndicator.zPosition = 200
-		self.addChild(seasonIndicator)
 		
 		scoreLabel.fontName = "Chalkduster"
 		scoreLabel.fontSize = 200
@@ -304,42 +270,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		coinLabel.fontName = "Italic"
 		coinLabel.fontSize = 100
 		coinLabel.fontColor = UIColor.orange
-		coinLabel.position = CGPoint(x: 400, y: frame.height - 200)
+        coinLabel.position = CGPoint(x: frame.width - 450, y: frame.height - 200)
 		coinLabel.zPosition = 200
 		self.addChild(coinLabel)
     }
     
     func createBackground() {
-        let backgroundTexture = SKTexture(imageNamed: "background2")
+        let backgroundTexture = SKTexture(imageNamed: "clouds")
         
         for i in 0 ... 3 {
-            let background = SKSpriteNode(texture: backgroundTexture)
-            background.zPosition = -100
+            let background = SKSpriteNode(texture: backgroundTexture, size: self.size)
+            background.zPosition = -200
             
             background.anchorPoint = CGPoint.zero
             
-            background.position = CGPoint(x: (backgroundTexture.size().width * CGFloat(i)) - CGFloat(1 * i), y: 0)
+            background.position = CGPoint(x: (self.size.width * CGFloat(i)) - CGFloat(1 * i), y: 0)
             addChild(background)
             
-            let moveLeft = SKAction.moveBy(x: -backgroundTexture.size().width, y: 0, duration: 15)
-            let moveReset = SKAction.moveBy(x: backgroundTexture.size().width, y: 0, duration: 0)
-            let moveLoop = SKAction.sequence([moveLeft, moveReset])
-            let moveForever = SKAction.repeatForever(moveLoop)
-            
-            background.run(moveForever)
-        }
-        
-        for i in 0 ... 3 {
-            let background = SKSpriteNode(texture: backgroundTexture)
-            background.zPosition = -100
-            
-            background.anchorPoint = CGPoint.zero
-            
-            background.position = CGPoint(x: (backgroundTexture.size().width * CGFloat(i)) - CGFloat(1 * i), y: 550)
-            addChild(background)
-            
-            let moveLeft = SKAction.moveBy(x: -backgroundTexture.size().width, y: 0, duration: 50)
-            let moveReset = SKAction.moveBy(x: backgroundTexture.size().width, y: 0, duration: 0)
+            let moveLeft = SKAction.moveBy(x: -self.size.width, y: 0, duration: 30)
+            let moveReset = SKAction.moveBy(x: self.size.width, y: 0, duration: 0)
             let moveLoop = SKAction.sequence([moveLeft, moveReset])
             let moveForever = SKAction.repeatForever(moveLoop)
             
@@ -359,11 +308,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if !isPaused {
 			if durian.inAir != 0 {
 				durian.jump()
-			} else {
-				if waterBar.stacks > 0 {
-					durian.jump()
-					waterBar.stacks -= 1
-				}
 			}
 		}
 	}
@@ -375,7 +319,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
     
 	@objc func swipedRight (sender: UISwipeGestureRecognizer) {
-		if durian.state != DurianState.boost && boostBar.isMoreThanOrEqualTo(100) {
+		if durian.state != DurianState.boost && healthBar.secondaryIsMoreThanOrEqualTo(100) {
 			durian.state = DurianState.boost
 			boostStartTime = self.lastUpdateTime
 			durian.run()
@@ -404,8 +348,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
 	// MARK: --CONTACT DETECTION
 	func didBegin(_ contact: SKPhysicsContact) {
-		if (contact.bodyA.node is Platform && contact.bodyB.node is Durian) ||
-            (contact.bodyB.node is Platform && contact.bodyA.node is Durian) {
+		if ((contact.bodyA.node is Platform || contact.bodyA.node is Fence) && contact.bodyB.node is Durian) ||
+            ((contact.bodyB.node is Platform || contact.bodyB.node is Fence) && contact.bodyA.node is Durian) {
 			durian.inAir += 1
 		}
         if (contact.bodyA.node is Durian && contact.bodyB.node is Fertilizer) {
@@ -418,7 +362,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             default: return "Fertilizer Collected"
             }}() + " +100"
 			scoreChangeIndicate(text, yPos: frame.height - 500)
-			boostBar.increase(by: 20)
+			healthBar.secondaryIncrease(by: 20)
         }
 		if (contact.bodyA.node is Durian && contact.bodyB.node is Supply)  {
 			supply.getCollected()
@@ -430,8 +374,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             default: return "Supply Collected"
             }}() + " +100"
 			scoreChangeIndicate(text, yPos: frame.height - 500)
-			sunshineBar.increase(by: 20)
-			waterBar.increase(by: 20)
+			healthBar.increase(by: 20)
 		}
 
 		if contact.bodyA.node is Durian && contact.bodyB.node is Enemy {
@@ -439,15 +382,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 				return
 			}
             if !durian.invincible {
-               if sunshineBar.stacks > 0 {
-					sunshineBar.stacks -= 1
+               if healthBar.stacks > 0 {
+					healthBar.stacks -= 1
 					if let b = contact.bodyB.node as? Dasher {
 						b.selfDestruction()
 						durian.physicsBody?.isResting = true
 					}
 				} else {
-					sunshineBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-					waterBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+					healthBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
 				}
 			}
 		}
@@ -488,8 +430,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	
 	func didEnd(_ contact: SKPhysicsContact) {
-		if (contact.bodyA.node is Platform && contact.bodyB.node is Durian) ||
-            (contact.bodyB.node is Platform && contact.bodyA.node is Durian) {
+		if ((contact.bodyA.node is Platform || contact.bodyA.node is Fence) && contact.bodyB.node is Durian) ||
+            ((contact.bodyB.node is Platform || contact.bodyB.node is Fence) && contact.bodyA.node is Durian) {
 			durian.inAir -= 1
 		}
 	}
@@ -589,15 +531,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (platformPositionR < frame.width){
         // create new platform
             platform = Platform()
-			platform.create(number: (platformLength + Int(arc4random_uniform(20))) * Int(arc4random_uniform(2)) + 2)
-			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(400))) : 0), y: ((season == .Spring || season == .Summer) ? CGFloat(arc4random_uniform(100)) : 0) + 50)
-            platform.zPosition = 100
+            let num = (season == .Spring || season == .Summer) ? Int(arc4random_uniform(5))  + 1 : 5
+            platform.create(number: num)
+			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(400))) : 0), y: 0)
+            platform.zPosition = 50
             platformPositionR = platform.position.x + platform.width
 			platform.name = "platform"
             self.addChild(platform)
             platforms.append(platform)
 			if season == .Spring || season == .Summer {
 				Coin.spawnCoinsRainbow(CGPoint(x: platform.position.x - platformGap, y: 680), self)
+                if num == 5 {
+                    for i in 1...3 {
+                        let fence = Fence(type: arc4random_uniform(4))
+                        fence.position = CGPoint(x: platform.position.x + CGFloat(i) * platform.width/4, y: platform.position.y + platform.height / 2 + fence.frame.height / 2)
+                        fence.zPosition = 100
+                        self.addChild(fence)
+                        fences.append(fence)
+                    }
+                }
 			}
         }
         
@@ -617,6 +569,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		for pl in platformLevels{
 			pl.move(speed: GameScene.platformSpeed, dt)
 		}
+        
+        for f in fences {
+            f.move(speed: GameScene.platformSpeed, dt)
+        }
 		
 		platformLevelPositionR = platformLevelPositionR - CGFloat(dt) * GameScene.platformSpeed
 		
@@ -635,8 +591,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		gameTime += dt
 		if durian.state != DurianState.boost {
-			sunshineBar.decrease(by: CGFloat(dt * difficulty))
-			waterBar.decrease(by: CGFloat(dt * difficulty))
+			healthBar.decrease(by: CGFloat(dt * difficulty))
 		}
 		
 		// Scoring Update
@@ -644,8 +599,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		// MARK: --Boost
 		if durian.state == DurianState.boost  {
-			boostBar.decrease(by: CGFloat(dt) * 10)
-			if boostBar.isEmpty() {
+            healthBar.secondaryDecrease(by: CGFloat(dt) * 10)
+			if healthBar.secondaryIsEmpty() {
 				durian.state = .normal
 				durian.run()
 			}
@@ -655,7 +610,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		seasonTimer += dt
 		
 		// MARK: --Health Bar
-		if sunshineBar.isEmpty() || waterBar.isEmpty() {
+		if healthBar.isEmpty()  {
 			displayGameOver()
 		}
 		
@@ -667,34 +622,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // MARK: --Position Adjustment
 		if durian.position.x < 0 {
 			self.displayGameOver()
-		} else if durian.position.x < 800 {
-			durian.run(SKAction.moveBy(x: 0.5, y: 0, duration: dt))
-		} else if durian.position.x > 800 {
+		} else if durian.position.x < 600 {
+			durian.run(SKAction.moveBy(x: 1, y: 0, duration: dt))
+		} else if durian.position.x > 600 {
 			durian.run(SKAction.moveBy(x: -5, y: 0, duration: dt))
 		}
         
-		
+        
 		// MARK: --Absorbtion Related
 		if durian.state == DurianState.absorb {
-			if sun.isOpen {
-				sunshineBar.increase(by: CGFloat(dt * 10))
-			}
+//			if sun.isOpen {
+//				sunshineBar.increase(by: CGFloat(dt * 10))
+//			}
 			if isRaining {
-				waterBar.increase(by: CGFloat(dt * 10))
+				healthBar.increase(by: CGFloat(dt * 5))
 			}
-			for f in factories {
-				if abs(f.position.x - durian.position.x) < 300 {
-					sunshineBar.decrease(by: CGFloat(dt * 25))
+			for p in platforms {
+                if durian.position.x - p.position.x > 0 && durian.position.x - p.position.x < p.width  {
+                    if p.isCity {
+                        healthBar.decrease(by: CGFloat(dt * 15))
+                    } else {
+                        healthBar.increase(by: CGFloat(dt * 15))
+                    }
 				}
 			}
 			if isStorming {
-				sunshineBar.decrease(by: CGFloat(dt * 10))
-				waterBar.increase(by: CGFloat(dt * 30))
+				healthBar.decrease(by: CGFloat(dt * 10))
 			}
 		}
 		if durian.state == DurianState.boost {
-			sunshineBar.increase(by: CGFloat(dt * 20))
-			waterBar.increase(by: CGFloat(dt * 20))
+			healthBar.increase(by: CGFloat(dt * 30))
 		}
 		
 		// MARK: --Collectable
@@ -717,7 +674,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			switch season {
 			case .Spring, .Summer:
 				if 1 < num && num <= 10 {
-					spawnFactory()
+					// spawnFactory()
 				}
 				break
 //			case .Fall, .Winter:
@@ -731,12 +688,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		
         // MARK: --Seasonal Events
-		if sun.isOpen && seasonTimer > seasonInfo.sunSetTime! && seasonTimer < seasonInfo.sunSetTime! + seasonInfo.sunSetDuration!  {
-				sun.close()
-        }
-        if !sun.isOpen && seasonTimer > seasonInfo.sunSetTime! + seasonInfo.sunSetDuration! {
-            sun.open()
-        }
         if seasonTimer > seasonInfo.rainStartTime[0] && seasonTimer < seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
             isRaining = true
         } else if seasonTimer > seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
@@ -819,22 +770,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	
 	
-	// MARK: --Manage Pollution
-	func spawnFactory () {
-		let factory = Factory()
-		factory.position = CGPoint(x: self.frame.width + 200, y: 400)
-		factory.zPosition = -50
-		if factory.position.x - 500 < factories.last?.position.x ?? 500 {
-			factory.removeFromParent()
-			return
-		}
-		self.addChild(factory)
-		factories.append(factory)
-		factory.run(SKAction.moveTo(x: -200, duration: TimeInterval((self.size.width + 400) / GameScene.platformSpeed)), completion: {
-			factory.removeFromParent()
-			self.factories.removeFirst()
-		})
-	}
 	
 	func spawnFertilizer () {
 		guard !fertilizer.inGame else {
@@ -958,6 +893,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		let raindrop = Rain()
 		raindrop.name = "raindrop"
+        raindrop.zPosition = 150
 		let xPosition = CGFloat(arc4random_uniform(UInt32(self.frame.width)))
         let yPosition = size.height + raindrop.size.height
 
@@ -990,7 +926,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if season == .Summer {
 				isRaining = true
 		}
-		sun.close()
 		let thunder = SKAudioNode(fileNamed: "thunder.wav")
 		thunder.autoplayLooped = false
 		thunder.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume) ?? 0), duration: 0))
@@ -1019,9 +954,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 										flash.removeFromParent()
 										self.isStorming = false
 										self.isRaining = false
-										if self.season == .Summer {
-											self.sun.open()
-										}
 									})
 	}
 	
