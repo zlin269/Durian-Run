@@ -93,8 +93,9 @@ class Durian: SKSpriteNode {
 			boostRunTexture.append(boostRun.textureNamed("p3_walk0\(i+1)"))
 		}
 		
-		self.yScale = 0.8
-		
+        
+		self.yScale = 0.5
+        self.xScale = 0.6
 	}
 	
 	func run() {
@@ -126,7 +127,7 @@ class Durian: SKSpriteNode {
 		if inAir == 0 {
 			self.physicsBody?.isResting = true
 		}
-		self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 2200))
+		self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 3000))
 		sound.run(SKAction.play())
 	}
 	

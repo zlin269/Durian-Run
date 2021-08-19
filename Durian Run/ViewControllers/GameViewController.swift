@@ -11,7 +11,12 @@ import GameplayKit
 
 class GameViewController: UIViewController {
     
-
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        setNeedsUpdateOfHomeIndicatorAutoHidden()
+    }
+    
     override func viewDidLoad() {
 
         // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
@@ -40,7 +45,6 @@ class GameViewController: UIViewController {
         }
         super.viewDidLoad()
        
-
     }
 
     override var shouldAutorotate: Bool {
@@ -59,5 +63,7 @@ class GameViewController: UIViewController {
         return true
     }
 	
-	
+    override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
+        return UIRectEdge.bottom
+    }
 }

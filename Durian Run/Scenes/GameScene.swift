@@ -144,7 +144,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
 	// platforms
 	static var platformSpeed : CGFloat = 1000
-    var platformLength = 10
 	var platformGap : CGFloat {
 		return GameScene.platformSpeed / 4
 	}
@@ -210,7 +209,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		// MARK: --gravity
 		self.physicsWorld.contactDelegate = self
-		self.physicsWorld.gravity = CGVector(dx: 0, dy: -30)
+		self.physicsWorld.gravity = CGVector(dx: 0, dy: -50)
 		
 		// MARK: -- game elements
         
@@ -228,7 +227,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		self.addChild(durian)
 		
 		platform.name = "platform"
-		platform.position = CGPoint(x: 500, y: 0)
+		platform.position = CGPoint(x: 0, y: 0)
 		platform.zPosition = 50
         platformPositionR = platform.position.x + platform.width
 		self.addChild(platform)
@@ -352,6 +351,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             ((contact.bodyB.node is Platform || contact.bodyB.node is Fence) && contact.bodyA.node is Durian) {
 			durian.inAir += 1
 		}
+        if contact.bodyB.node?.name == "cone" && contact.bodyA.node is Durian {
+            contact.bodyB.node?.run(SKAction.rotate(byAngle: .pi/2, duration: 0.5))
+            contact.bodyB.node?.run(SKAction.moveBy(x: 100, y: 100, duration: 0.5), completion: {
+                contact.bodyB.node?.removeFromParent()
+            })
+            durian.run(SKAction.moveBy(x: -50, y: 0, duration: 0.5))
+        }
         if (contact.bodyA.node is Durian && contact.bodyB.node is Fertilizer) {
 			fertilizer.getCollected()
 			score += 100
@@ -533,7 +539,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             platform = Platform()
             let num = (season == .Spring || season == .Summer) ? Int(arc4random_uniform(5))  + 1 : 5
             platform.create(number: num)
-			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(400))) : 0), y: 0)
+			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(300))) : 0), y: 0)
             platform.zPosition = 50
             platformPositionR = platform.position.x + platform.width
 			platform.name = "platform"
@@ -622,9 +628,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // MARK: --Position Adjustment
 		if durian.position.x < 0 {
 			self.displayGameOver()
-		} else if durian.position.x < 600 {
+		} else if durian.position.x < 595 {
 			durian.run(SKAction.moveBy(x: 1, y: 0, duration: dt))
-		} else if durian.position.x > 600 {
+		} else if durian.position.x > 605 {
 			durian.run(SKAction.moveBy(x: -5, y: 0, duration: dt))
 		}
         
@@ -933,7 +939,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		flash.addChild(thunder)
 		thunder.run(SKAction.play())
 		flash.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
-		flash.zPosition = 150
+		flash.zPosition = 300
 		self.addChild(flash)
 		flash.alpha = 0
 		flash.run(SKAction.sequence([SKAction.fadeAlpha(to: 0.8, duration: 2),

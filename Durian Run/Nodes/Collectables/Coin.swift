@@ -12,7 +12,7 @@ class Coin: Collectable {
 	init() {
 		super.init(imageNamed: "gold")
 		self.scale(to: CGSize(width: 70, height: 70))
-		self.physicsBody?.affectedByGravity = false
+        self.physicsBody?.isDynamic = false
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
