@@ -48,6 +48,9 @@ class Durian: SKSpriteNode {
 		}
 	}
 	private var dropCD = false
+    var attackCD : CGFloat {
+        return state == .boost ? 1 : 10
+    }
     var invincible = false
 	
 	// gathering assets

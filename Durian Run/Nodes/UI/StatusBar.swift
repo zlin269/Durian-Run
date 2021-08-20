@@ -91,7 +91,7 @@ class StatusBar: SKNode {
     }
 	
 	func increase (by percent: CGFloat) {
-		guard 0 < percent && percent < 100 else { return }
+		guard 0 <= percent && percent <= 100 else { return }
 		coloredBar.size.width += percent / 100 * (width - 2 * borderThickness)
 		if coloredBar.size.width > (width - 2 * borderThickness) {
 			if hasStacks {
@@ -103,7 +103,7 @@ class StatusBar: SKNode {
 	}
 	
 	func decrease (by percent: CGFloat) {
-		guard 0 < percent && percent < 100 else { return }
+		guard 0 <= percent && percent <= 100 else { return }
 		coloredBar.size.width -= percent / 100 * (width - 2 * borderThickness)
 		if coloredBar.size.width < 0 {
 			coloredBar.size.width = 0
@@ -111,7 +111,7 @@ class StatusBar: SKNode {
 	}
     
     func secondaryIncrease (by percent: CGFloat) {
-        guard 0 < percent && percent < 100 else { return }
+        guard 0 <= percent && percent <= 100 else { return }
         coloredBar2.size.width += percent / 100 * (width - 2 * borderThickness)
         if coloredBar2.size.width > (width - 2 * borderThickness) {
             coloredBar2.size.width = (width - 2 * borderThickness)
@@ -119,7 +119,7 @@ class StatusBar: SKNode {
     }
     
     func secondaryDecrease (by percent: CGFloat) {
-        guard 0 < percent && percent < 100 else { return }
+        guard 0 <= percent && percent <= 100 else { return }
         coloredBar2.size.width -= percent / 100 * (width - 2 * borderThickness)
         if coloredBar2.size.width < 0 {
             coloredBar2.size.width = 0

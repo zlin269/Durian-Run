@@ -9,7 +9,6 @@ import SpriteKit
 
 class DurianWithDash: Durian {
     
-    private let attackCD = 2
     private var isOnCD = false
     
     override func attack() {
@@ -38,4 +37,7 @@ class DurianWithDash: Durian {
         }
     }
     
+    override var attackCD: CGFloat {
+        return state == .boost ? 2 : 40
+    }
 }

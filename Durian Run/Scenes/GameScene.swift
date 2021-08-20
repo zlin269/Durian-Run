@@ -130,6 +130,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	lazy var platform = Platform(initial: true)
     lazy var platformLevel = Platform()
 	lazy var healthBar = StatusBar(UIColor.red)
+    lazy var spellCD = CoolDownIndicator(.white)
     
 	lazy var fertilizer = Fertilizer()
 	lazy var supply = Supply()
@@ -207,6 +208,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		self.view?.addGestureRecognizer(swipeLeftRecognizer)
 		swipeLeftRecognizer.direction = .left
 		
+        let doubleTapRecognizer  = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+        self.view?.addGestureRecognizer(doubleTapRecognizer)
+        doubleTapRecognizer.numberOfTapsRequired = 2
+        
 		// MARK: --gravity
 		self.physicsWorld.contactDelegate = self
 		self.physicsWorld.gravity = CGVector(dx: 0, dy: -50)
@@ -239,8 +244,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		healthBar.zPosition = 200
 		healthBar.setEmpty()
 		healthBar.increase(by: 30)
+        healthBar.secondaryIncrease(by: 100)
         healthBar.alpha = 0.8
 		self.addChild(healthBar)
+        
+        spellCD.name = "cd"
+        spellCD.position = CGPoint(x: 140, y: 900)
+        spellCD.zPosition = 200
+        spellCD.setFull()
+        self.addChild(spellCD)
 		
 		
 		pauseButton.name = "pauseButton"
@@ -294,6 +306,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             background.run(moveForever)
         }
     }
+    
+    @objc func doubleTapped (sender: UITapGestureRecognizer) {
+        if durian.state != DurianState.boost && healthBar.secondaryIsMoreThanOrEqualTo(100) {
+            durian.state = DurianState.boost
+            boostStartTime = self.lastUpdateTime
+            durian.run()
+            let tempAudioNode = SKAudioNode(fileNamed: "powerup.wav")
+            tempAudioNode.autoplayLooped = false
+            self.addChild(tempAudioNode)
+            tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 3), SKAction.removeFromParent()]))
+        }
+    }
 	
 	// Long press event, handles absorb action
 	@objc func longPressHappened (sender: UILongPressGestureRecognizer) {
@@ -317,20 +341,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 	}
     
-	@objc func swipedRight (sender: UISwipeGestureRecognizer) {
-		if durian.state != DurianState.boost && healthBar.secondaryIsMoreThanOrEqualTo(100) {
-			durian.state = DurianState.boost
-			boostStartTime = self.lastUpdateTime
-			durian.run()
-			let tempAudioNode = SKAudioNode(fileNamed: "powerup.wav")
-			tempAudioNode.autoplayLooped = false
-			self.addChild(tempAudioNode)
-			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 3), SKAction.removeFromParent()]))
-        } else if durian.state == .boost {
-            durian.attack()
-        }
-	}
-	
 	@objc func swipedLeft (sender: UISwipeGestureRecognizer) {
 		if durian.state != DurianState.boost {
 			let tempAudioNode = SKAudioNode(fileNamed: "switch.wav")
@@ -344,6 +354,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			}
 		}
 	}
+    
+    @objc func swipedRight (sender: UISwipeGestureRecognizer) {
+        if spellCD.isEmpty() {
+            durian.attack()
+            spellCD.setFull()
+        }
+    }
+    
 	
 	// MARK: --CONTACT DETECTION
 	func didBegin(_ contact: SKPhysicsContact) {
@@ -417,6 +435,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
         if contact.bodyB.node?.name == "bullet" {
             if let enemy = contact.bodyA.node as? Enemy {
+                healthBar.increase(by: 10)
                 enemy.receiveDamage(1)
                 score += 500
                 let text = {()->String in switch UserDefaults.string(forKey: .language) {
@@ -599,6 +618,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		if durian.state != DurianState.boost {
 			healthBar.decrease(by: CGFloat(dt * difficulty))
 		}
+        if !spellCD.isEmpty() {
+            spellCD.decrease(by: CGFloat(dt)/durian.attackCD * 100)
+        }
 		
 		// Scoring Update
 		score += dt * Double(GameScene.platformSpeed) / 15
