@@ -12,6 +12,7 @@ import GameKit
 class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegate, UIScrollViewDelegate {
     
     let nameColor = UIColor(red: 237.0/255.0, green: 30.0/255.0, blue: 121.0/255.0, alpha: 1)
+    let scoresPerPage = 6
     
     private var background : UIView!
     private var shanghai : UIView!
@@ -141,52 +142,37 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
                 top3score.text = "\(scores[2].score)"
                 
                 // top 4 - 10
-                for i in 3...9 {
+                for i in 3...8 {
                     if scores.count == i {
                         break
                     }
                     listCount += 1
-                    let box = UIStackView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width, height: scrollView.frame.height / 7))
-                    box.axis = .horizontal
-                    box.spacing = 20
-                    box.distribution = .fillProportionally
-                    scrollView.addSubview(box)
-                    box.translatesAutoresizingMaskIntoConstraints = false
-                    box.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: scrollView.frame.height / 7 * CGFloat(i - 3)).isActive = true
-                    box.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-                    box.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: CGFloat(1)/CGFloat(7)).isActive = true
-                    box.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-                    // rank number
-                    let rank = UILabel(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.1, height: scrollView.frame.width * 0.1))
-                    rank.text = "\(listCount)"
-                    rank.textAlignment = .right
-                    box.addArrangedSubview(rank)
-                    rank.translatesAutoresizingMaskIntoConstraints = false
-                    rank.widthAnchor.constraint(equalTo: box.widthAnchor, multiplier: 0.1).isActive = true
-                    // player avatar
-                    let avatar = UIImageView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.1, height: scrollView.frame.width * 0.1))
-                    avatar.image = UIImage(named: "littlemonster")
-                    box.addArrangedSubview(avatar)
-                    avatar.translatesAutoresizingMaskIntoConstraints = false
-                    avatar.heightAnchor.constraint(equalTo: box.heightAnchor, multiplier: 0.8).isActive = true
-                    avatar.widthAnchor.constraint(equalTo: avatar.heightAnchor).isActive = true
-                    // name
-                    let playerName = UILabel(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.3, height: scrollView.frame.width * 0.1))
-                    playerName.text = "\(scores[i].playerName)"
-                    playerName.textAlignment = .left
-                    playerName.textColor = nameColor
-                    box.addArrangedSubview(playerName)
-                    playerName.translatesAutoresizingMaskIntoConstraints = false
-                    playerName.widthAnchor.constraint(equalTo: box.widthAnchor, multiplier: 0.3).isActive = true
-                    // score
-                    let playerScore = UILabel(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.4, height: scrollView.frame.width * 0.1))
-                    playerScore.text = "\(scores[i].score)"
-                    playerScore.textAlignment = .right
-                    box.addArrangedSubview(playerScore)
+                    _ = createBoxWithScore(rank: listCount, name: list[listCount - 1].playerName, score: list[listCount - 1].score)
                 }
             }
         } catch {
             print("ERROR: \(error.localizedDescription)")
+        }
+        var r = list.firstIndex(where: { s in
+            return s.playerName == "You"
+        })
+        if r != nil {
+            r! += 1
+        }
+        let personalBox = createBoxWithScore(rank: r, name: "You", score: UserDefaults.int(forKey: .highScore)!)
+        personalBox.removeFromSuperview()
+        view.addSubview(personalBox)
+        view.bringSubviewToFront(personalBox)
+        personalBox.removeConstraints(personalBox.constraints)
+        personalBox.centerXAnchor.constraint(equalTo: bar.centerXAnchor).isActive = true
+        personalBox.centerYAnchor.constraint(equalTo: bar.centerYAnchor).isActive = true
+        personalBox.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        for v in personalBox.arrangedSubviews where v is UILabel {
+            if let l = v as? UILabel {
+                if l.textColor != nameColor {
+                    l.textColor = .white
+                }
+            }
         }
     }
     
@@ -234,50 +220,64 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         if scrollView.contentOffset.y + scrollView.frame.height > scrollView.contentSize.height && listCount < list.count {
                 print("triggered")
             scrollView.contentSize.height += scrollView.frame.height
-            for i in 0...6 {
+            for i in 0...5 {
                 if listCount >= list.count {
-                    scrollView.contentSize.height -= (scrollView.frame.height / CGFloat(7) * CGFloat(7 - i))
+                    scrollView.contentSize.height -= (scrollView.frame.height / CGFloat(scoresPerPage) * CGFloat(scoresPerPage - i))
                     break
                 }
                 listCount += 1
-                let box = UIStackView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width, height: scrollView.frame.height / 7))
-                box.axis = .horizontal
-                box.spacing = 20
-                box.distribution = .fillProportionally
-                scrollView.addSubview(box)
-                box.translatesAutoresizingMaskIntoConstraints = false
-                box.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: scrollView.frame.height / 7 * CGFloat(listCount - 4)).isActive = true
-                box.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-                box.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: CGFloat(1)/CGFloat(7)).isActive = true
-                box.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 1).isActive = true
-                // rank number
-                let rank = UILabel(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.1, height: scrollView.frame.width * 0.1))
-                rank.text = "\(listCount)"
-                rank.textAlignment = .right
-                box.addArrangedSubview(rank)
-                rank.translatesAutoresizingMaskIntoConstraints = false
-                rank.widthAnchor.constraint(equalTo: box.widthAnchor, multiplier: 0.1).isActive = true
-                // player avatar
-                let avatar = UIImageView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.1, height: scrollView.frame.width * 0.1))
-                avatar.image = UIImage(named: "littlemonster")
-                box.addArrangedSubview(avatar)
-                avatar.translatesAutoresizingMaskIntoConstraints = false
-                avatar.heightAnchor.constraint(equalTo: box.heightAnchor, multiplier: 0.8).isActive = true
-                avatar.widthAnchor.constraint(equalTo: avatar.heightAnchor).isActive = true
-                // name
-                let playerName = UILabel(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.3, height: scrollView.frame.width * 0.1))
-                playerName.text = "\(list[listCount - 1].playerName)"
-                playerName.textAlignment = .left
-                playerName.textColor = nameColor
-                box.addArrangedSubview(playerName)
-                playerName.translatesAutoresizingMaskIntoConstraints = false
-                playerName.widthAnchor.constraint(equalTo: box.widthAnchor, multiplier: 0.3).isActive = true
-                // score
-                let playerScore = UILabel(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.3, height: scrollView.frame.width * 0.1))
-            playerScore.text = "\(list[listCount - 1].score)"
-                playerScore.textAlignment = .right
-                box.addArrangedSubview(playerScore)
+                _ = createBoxWithScore(rank: listCount, name: list[listCount - 1].playerName, score: list[listCount - 1].score)
             }
         }
     }
+    
+    func createBoxWithScore (rank: Int?, name : String, score : Int) -> UIStackView {
+        let box = UIStackView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width, height: scrollView.frame.height / CGFloat(scoresPerPage)))
+        box.axis = .horizontal
+        box.spacing = 20
+        box.distribution = .fillProportionally
+        scrollView.addSubview(box)
+        box.translatesAutoresizingMaskIntoConstraints = false
+        box.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: scrollView.frame.height / CGFloat(scoresPerPage) * CGFloat(listCount - 4)).isActive = true
+        box.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        box.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: CGFloat(1)/CGFloat(scoresPerPage)).isActive = true
+        box.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 1).isActive = true
+        // rank number
+        let rankLabel = UILabel(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.1, height: scrollView.frame.width * 0.1))
+        if let r = rank {
+            rankLabel.text = "\(r)"
+        } else {
+            rankLabel.text = "?"
+        }
+        rankLabel.textAlignment = .right
+        rankLabel.font = UIFont(name: "Futura-Medium", size: 20)
+        box.addArrangedSubview(rankLabel)
+        rankLabel.translatesAutoresizingMaskIntoConstraints = false
+        rankLabel.widthAnchor.constraint(equalTo: box.widthAnchor, multiplier: 0.1).isActive = true
+        // player avatar
+        let avatar = UIImageView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.1, height: scrollView.frame.width * 0.1))
+        avatar.image = UIImage(named: "littlemonster")
+        box.addArrangedSubview(avatar)
+        avatar.translatesAutoresizingMaskIntoConstraints = false
+        avatar.heightAnchor.constraint(equalTo: box.heightAnchor, multiplier: 0.8).isActive = true
+        avatar.widthAnchor.constraint(equalTo: avatar.heightAnchor).isActive = true
+        // name
+        let playerName = UILabel(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.3, height: scrollView.frame.width * 0.1))
+        playerName.text = "\(name)"
+        playerName.font = UIFont(name: "Futura-Medium", size: 20)
+        playerName.textAlignment = .left
+        playerName.textColor = nameColor
+        box.addArrangedSubview(playerName)
+        playerName.translatesAutoresizingMaskIntoConstraints = false
+        playerName.widthAnchor.constraint(equalTo: box.widthAnchor, multiplier: 0.3).isActive = true
+        // score
+        let playerScore = UILabel(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.3, height: scrollView.frame.width * 0.1))
+        playerScore.text = "\(score)"
+        playerScore.textAlignment = .right
+        playerScore.font = UIFont(name: "Futura-Medium", size: 20)
+        box.addArrangedSubview(playerScore)
+        
+        return box
+    }
 }
+

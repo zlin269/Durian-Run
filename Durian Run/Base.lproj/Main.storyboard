@@ -203,7 +203,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <state key="normal" image="trophybutton"/>
                                 <connections>
-                                    <segue destination="InB-lg-D8O" kind="showDetail" id="KBu-VP-B6d"/>
+                                    <segue destination="InB-lg-D8O" kind="showDetail" animates="NO" id="KBu-VP-B6d"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ikq-74-ugd">
@@ -372,7 +372,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="back"/>
                                 <connections>
-                                    <segue destination="n7s-q0-5nW" kind="showDetail" id="zei-zr-r6n"/>
+                                    <segue destination="n7s-q0-5nW" kind="showDetail" animates="NO" id="zei-zr-r6n"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="leaderboardbackground" image="leaderboardbackground" translatesAutoresizingMaskIntoConstraints="NO" id="gZb-ys-vGl">
@@ -392,7 +392,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="scrollView" translatesAutoresizingMaskIntoConstraints="NO" id="89i-8o-4gi">
-                                <rect key="frame" x="493" y="103" width="321" height="224"/>
+                                <rect key="frame" x="493" y="93" width="321" height="234"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <viewLayoutGuide key="contentLayoutGuide" id="hv3-0Z-bru"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="ih3-oO-2gN"/>
