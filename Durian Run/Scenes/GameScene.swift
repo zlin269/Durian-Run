@@ -186,12 +186,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		boundary.position = CGPoint(x: -500, y: -300)
 		self.addChild(boundary)
 		
-
-		// long press gesture recognizer
-		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
-		// self.view?.addGestureRecognizer(recognizer)
-		recognizer.minimumPressDuration = 0.15
-		
 		let swipeUpRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedUp))
 		self.view?.addGestureRecognizer(swipeUpRecognizer)
 		swipeUpRecognizer.direction = .up
@@ -319,13 +313,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 	
-	// Long press event, handles absorb action
-	@objc func longPressHappened (sender: UILongPressGestureRecognizer) {
-		if durian.state != DurianState.boost {
-			if sender.state == .began { durian.state = DurianState.absorb }
-			if sender.state == .ended { durian.state = DurianState.normal }
-		}
-	}
 	
 	@objc func swipedUp (sender: UISwipeGestureRecognizer) {
 		if !isPaused {
@@ -558,7 +545,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             platform = Platform()
             let num = (season == .Spring || season == .Summer) ? Int(arc4random_uniform(5))  + 1 : 5
             platform.create(number: num)
-			platform.position = CGPoint(x:CGFloat(frame.width) + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(300))) : 0), y: 0)
+            platform.position = CGPoint(x: platforms.last!.position.x + platforms.last!.width + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(300))) : 0), y: 0)
             platform.zPosition = 50
             platformPositionR = platform.position.x + platform.width
 			platform.name = "platform"
@@ -575,7 +562,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         fences.append(fence)
                     }
                 }
-			}
+            } else {
+                for i in 1...(arc4random_uniform(10)+3) {
+                    let fence = Fence(type: 3)
+                    fence.yScale = 1.5
+                    fence.position = CGPoint(x: platform.position.x + CGFloat(i) * fence.frame.width + 300, y: platform.position.y + platform.height / 2 + fence.frame.height / 2)
+                    fence.zPosition = 100
+                    self.addChild(fence)
+                    fences.append(fence)
+                }
+            }
         }
         
         for p in platforms{
@@ -613,6 +609,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		for e in enemies {
 			e.move(dt)
 		}
+        if season == .Fall || season == .Winter {
+            if Int(seasonTimer) >= (5 + 10 * seasonInfo.enemiesSpawned) {
+                 seasonInfo.enemiesSpawned += 1
+                 spawnBugs(Int(arc4random_uniform(season == .Fall ? 4 : 7)))
+             }
+        }
 		
 		gameTime += dt
 		if durian.state != DurianState.boost {
@@ -737,25 +739,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
 		
-        if season == .Fall || season == .Winter {
-            if (platformLevelPositionR < frame.width){
-                // create new platform
-                platformLevel = Platform()
-                platformLevel.create(number: levelLength + Int(arc4random_uniform(5)))
-                platformLevel.position = CGPoint(x:CGFloat(frame.width) + CGFloat(levelGap + Int(arc4random_uniform(500))), y:500)
-                platformLevel.zPosition = 100
-                platformLevelPositionR = platformLevel.position.x + platformLevel.width
-                platformLevel.name = "platformLevel"
-                self.addChild(platformLevel)
-                platformLevels.append(platformLevel)
-                Coin.spawnCoinsLine(3 ,CGPoint(x: platformLevel.position.x + 100, y: 680), self)
-                Coin.spanwCoinsDrop(CGPoint(x: platformLevel.position.x + platformLevel.width + 200, y: 1100), self)
-            }
-            if Int(seasonTimer) >= (5 + 10 * seasonInfo.enemiesSpawned) {
-                seasonInfo.enemiesSpawned += 1
-                spawnBugs(Int(arc4random_uniform(season == .Fall ? 4 : 7)))
-            }
-        }
+        
         
 		if isRaining {
 			// Update the spawn timer
