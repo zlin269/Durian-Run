@@ -14,15 +14,16 @@ class DurianWithGun: Durian {
     override func attack() {
         if !isOnCD {
             print("Power Shot")
-            let bullet = SKShapeNode(circleOfRadius: 10)
+            let bullet = SKShapeNode(circleOfRadius: 15)
             bullet.name = "bullet"
-            bullet.physicsBody = SKPhysicsBody(circleOfRadius: 10)
+            bullet.physicsBody = SKPhysicsBody(circleOfRadius: 15)
             bullet.physicsBody?.affectedByGravity = false
             bullet.physicsBody?.categoryBitMask = HitMask.bullet
             bullet.physicsBody?.collisionBitMask = 0
             bullet.physicsBody?.contactTestBitMask = HitMask.enemy
             bullet.fillColor = .gray
             bullet.strokeColor = .red
+            bullet.lineWidth = 5
             self.addChild(bullet)
             bullet.run(SKAction.moveTo(x: (self.parent?.frame.maxX)! + 100, duration: 1), completion: {
                 bullet.removeFromParent()

@@ -149,9 +149,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		return GameScene.platformSpeed / 4
 	}
     var platformPositionR: CGFloat = 0
-    var levelLength = 2
-    var levelGap = 2000
-    var platformLevelPositionR: CGFloat = 0
     
 	// buttons
 	var pauseButton = Button(imageNamed: "pause")
@@ -167,9 +164,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Any UI node has zPos >= 200
 	override func didMove(to view: SKView) {
         
+        
 		GameScene.sharedInstance = self
 		
-		GameScene.platformSpeed = 1000
+		GameScene.platformSpeed = 800
 		
         print("Inside Gameplay Scene")
             createBackground()
@@ -561,9 +559,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         self.addChild(fence)
                         fences.append(fence)
                     }
+                } else if num == 1 {
+                    spawnBugs(7)
                 }
             } else {
-                for i in 1...(arc4random_uniform(10)+3) {
+                // MARK: --level platform
+                for i in 1...(arc4random_uniform(6)+3) {
                     let fence = Fence(type: 3)
                     fence.yScale = 1.5
                     fence.position = CGPoint(x: platform.position.x + CGFloat(i) * fence.frame.width + 300, y: platform.position.y + platform.height / 2 + fence.frame.height / 2)
@@ -594,8 +595,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for f in fences {
             f.move(speed: GameScene.platformSpeed, dt)
         }
-		
-		platformLevelPositionR = platformLevelPositionR - CGFloat(dt) * GameScene.platformSpeed
 		
 		if fertilizer.inGame {
 			fertilizer.move(speed: GameScene.platformSpeed, dt)
@@ -672,7 +671,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     if p.isCity {
                         healthBar.decrease(by: CGFloat(dt * 15))
                     } else {
-                        healthBar.increase(by: CGFloat(dt * 15))
+                        healthBar.increase(by: CGFloat(dt * 10))
                     }
 				}
 			}
@@ -808,6 +807,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		print("supply spawned")
 	}
 	
+    
+    // MARK: --ENEMIES
 	func spawnBugs (_ num: Int) {
 		switch num {
 		case 0:
@@ -871,11 +872,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			enemies.append(wall)
 			self.addChild(wall)
 		default:
-			let bug = Bug()
-			bug.position = CGPoint(x: self.frame.width + 200, y: 600)
-			bug.zPosition = 100
-			enemies.append(bug)
-			self.addChild(bug)
+            let c = arc4random_uniform(3) + 1
+            for i in 1...c {
+                let blocker = Sleeper()
+                blocker.position = CGPoint(x: platforms.last!.position.x + platforms.last!.width * CGFloat(i) / CGFloat(3), y: 600)
+                blocker.zPosition = 100
+                enemies.append(blocker)
+                self.addChild(blocker)
+            }
 		}
 			
 	}

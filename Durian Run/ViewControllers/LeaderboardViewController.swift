@@ -151,7 +151,16 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
                 }
             }
         } catch {
-            print("ERROR: \(error.localizedDescription)")
+            do {
+                print("initializing scores data on disk")
+                let scores = [Score(name: "Jack", score: 66666, seasons: 12),
+                                  Score(name: "Alice", score: 23333, seasons: 6),
+                                  Score(name: "Lawrence", score: 12345, seasons: 3)]
+                let data = try NSKeyedArchiver.archivedData(withRootObject: scores, requiringSecureCoding: false)
+                try data.write(to: path)
+            } catch {
+                print("ERROR: \(error.localizedDescription)")
+            }
         }
         var r = list.firstIndex(where: { s in
             return s.playerName == "You"
