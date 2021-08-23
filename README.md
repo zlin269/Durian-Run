@@ -18,4 +18,4 @@ TODO:
 13. Water (Lawrence, Done)
 14. Platforms to jump and run on （Alice, Done）
 15. Four seasons (Jack)
-16. Fist-time open notification (Alice)
+16. FirstUseView (Alice, Done in new/firstuse branch)
