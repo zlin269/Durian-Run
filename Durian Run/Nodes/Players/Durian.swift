@@ -48,7 +48,10 @@ class Durian: SKSpriteNode {
 		}
 	}
 	private var dropCD = false
-	private var attackCD = false
+    var attackCD : CGFloat {
+        return state == .boost ? 1 : 10
+    }
+    var invincible = false
 	
 	// gathering assets
 	let normalRun = SKTextureAtlas(named: "NormalRun")
@@ -93,12 +96,12 @@ class Durian: SKSpriteNode {
 			boostRunTexture.append(boostRun.textureNamed("p3_walk0\(i+1)"))
 		}
 		
-		self.yScale = 0.8
-		
+        
+		self.yScale = 0.5
+        self.xScale = 0.6
 	}
 	
 	func run() {
-		self.removeAllActions()
 		var runTexture = [SKTexture]()
 		if state == DurianState.normal {
 			runTexture = normalRunTexture
@@ -127,7 +130,7 @@ class Durian: SKSpriteNode {
 		if inAir == 0 {
 			self.physicsBody?.isResting = true
 		}
-		self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 2200))
+		self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 3000))
 		sound.run(SKAction.play())
 	}
 	
@@ -143,13 +146,7 @@ class Durian: SKSpriteNode {
 	}
 	
 	func attack() {
-		if !attackCD {
-			print("attack")
-			attackCD = true
-			DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-				self.attackCD = false
-			}
-		}
+		print("attack")
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

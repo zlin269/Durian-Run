@@ -9,7 +9,7 @@ import SpriteKit
 class Wall: Enemy {
 	
 	init() {
-		super.init(imageNamed: "springMan_stand", withHealth: 100, withSpeed: GameScene.platformSpeed * 1.2)
+		super.init(imageNamed: "pokerSad", withHealth: 100, withSpeed: GameScene.platformSpeed * 1.2)
 		self.name = "wall"
 		self.xScale = 1
 		self.yScale = 3

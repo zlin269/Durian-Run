@@ -15,6 +15,9 @@ extension UserDefaults {
 		case coins
 		case highScore
 		case mostSeasons
+        case selectedCharacter
+        case charactersOwned
+        case language
 	}
 	
 	static func set(value: String, forKey key: AccountKeys) {
@@ -31,6 +34,11 @@ extension UserDefaults {
 		let key = key.rawValue
 		UserDefaults.standard.set(value, forKey: key)
 	}
+    
+    static func set(value: [Any], forKey key: AccountKeys) {
+        let key = key.rawValue
+        UserDefaults.standard.set(value, forKey: key)
+    }
 	
 	static func string(forKey key: AccountKeys) -> String? {
 		let key = key.rawValue
@@ -46,4 +54,24 @@ extension UserDefaults {
 		let key = key.rawValue
 		return UserDefaults.standard.double(forKey: key)
 	}
+    
+    static func array(forKey key: AccountKeys) -> [Any]? {
+        let key = key.rawValue
+        return UserDefaults.standard.array(forKey: key)
+    }
+}
+
+extension String {
+    func toLanguageIndex () -> Int {
+        if self == "Chinese" {
+            return 0
+        } else if self == "English" {
+            return 1
+        } else if self == "Thai" {
+            return 2
+        } else {
+            return 1
+        }
+    }
+    
 }
