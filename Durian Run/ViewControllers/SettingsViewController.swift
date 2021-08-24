@@ -163,8 +163,8 @@ class SettingsViewController: UIViewController {
     
     @objc func changeLanguage (_ sender: UISegmentedControl!) {
         var language : String
-        var title : String
-        var message : String
+//        var title : String
+//        var message : String
         switch languageSegmentedControl.selectedSegmentIndex {
         case 0:
             language = "Chinese"
@@ -184,11 +184,12 @@ class SettingsViewController: UIViewController {
             message = "The new language setting will be applied when a new page is opened."
         }
         UserDefaults.set(value: language, forKey: .language)
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
-        NSLog("The \"OK\" alert occured.")
-        }))
-        self.present(alert, animated: true, completion: nil)
+//        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+//        NSLog("The \"OK\" alert occured.")
+//        }))
+//        self.present(alert, animated: true, completion: nil)
+        viewDidLoad()
     }
     
     override var shouldAutorotate: Bool {
