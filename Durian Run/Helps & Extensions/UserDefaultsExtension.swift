@@ -18,6 +18,7 @@ extension UserDefaults {
         case selectedCharacter
         case charactersOwned
         case language
+        case hasFirstAccepted // has accepted protocol(not first used)
 	}
 	
 	static func set(value: String, forKey key: AccountKeys) {
@@ -40,6 +41,11 @@ extension UserDefaults {
         UserDefaults.standard.set(value, forKey: key)
     }
 	
+    static func set(value: Bool, forKey key: AccountKeys) {
+        let key = key.rawValue
+        UserDefaults.standard.set(value, forKey: key)
+    }
+    
 	static func string(forKey key: AccountKeys) -> String? {
 		let key = key.rawValue
 		return UserDefaults.standard.string(forKey: key)
@@ -58,6 +64,11 @@ extension UserDefaults {
     static func array(forKey key: AccountKeys) -> [Any]? {
         let key = key.rawValue
         return UserDefaults.standard.array(forKey: key)
+    }
+    
+    static func bool(forKey key: AccountKeys) -> Bool? {
+        let key = key.rawValue
+        return UserDefaults.standard.bool(forKey: key)
     }
 }
 
