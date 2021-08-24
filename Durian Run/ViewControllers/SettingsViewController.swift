@@ -163,8 +163,8 @@ class SettingsViewController: UIViewController {
     
     @objc func changeLanguage (_ sender: UISegmentedControl!) {
         var language : String
-//        var title : String
-//        var message : String
+        var title : String
+        var message : String
         switch languageSegmentedControl.selectedSegmentIndex {
         case 0:
             language = "Chinese"
