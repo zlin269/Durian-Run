@@ -48,7 +48,7 @@ class SettingsViewController: UIViewController {
 		viewInScrollView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
 		viewInScrollView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: 0).isActive = true
         
-		volume = UserDefaults.double(forKey: .gameVolume) ?? 1
+		volume = UserDefaults.double(forKey: .gameVolume)!
 	
         let volumeName = UILabel()
 		volumeName.translatesAutoresizingMaskIntoConstraints = false
@@ -84,7 +84,7 @@ class SettingsViewController: UIViewController {
         volumeLabel.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 70).isActive = true
         volumeLabel.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 85).isActive = true
         
-		music = UserDefaults.double(forKey: .musicVolume) ?? 1
+		music = UserDefaults.double(forKey: .musicVolume)!
 		
 		let musicName = UILabel()
 		musicName.translatesAutoresizingMaskIntoConstraints = false
@@ -131,7 +131,7 @@ class SettingsViewController: UIViewController {
 		languageLabel.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
         
         languageSegmentedControl = UISegmentedControl(items: ["中文", "English", "ไทย"])
-        languageSegmentedControl.selectedSegmentIndex = UserDefaults.string(forKey: .language)?.toLanguageIndex() ?? 1
+        languageSegmentedControl.selectedSegmentIndex = (UserDefaults.string(forKey: .language)?.toLanguageIndex())!
         languageSegmentedControl.addTarget(self, action: #selector(changeLanguage(_:)), for: .valueChanged)
         viewInScrollView.addSubview(languageSegmentedControl)
         languageSegmentedControl.translatesAutoresizingMaskIntoConstraints = false

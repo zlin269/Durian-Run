@@ -11,7 +11,7 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
 	
 	var arrLabels : [UILabel] = []
 
-	var coins: Int = UserDefaults.int(forKey: .coins) ?? 0
+	var coins: Int = UserDefaults.int(forKey: .coins)!
     var coinLabel: UILabel!
     
     var equipButton: UIButton!
@@ -73,7 +73,7 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
         let width1 = (Float(arrLabels.count) * Float(scrView.frame.size.width))
         scrView.contentSize = CGSize(width: CGFloat(width1), height: scrView.frame.size.height)
         pageControl.numberOfPages = arrLabels.count
-        pageControl.currentPage = UserDefaults.int(forKey: .selectedCharacter) ?? 0
+        pageControl.currentPage = UserDefaults.int(forKey: .selectedCharacter)!
         
 	}
     

@@ -12,7 +12,7 @@ class GameOverScene: MenuScene {
 	init(size: CGSize, score: Double, seasons: Int, coins: Int) {
 		super.init(size: size)
 		
-		if Int(score) > UserDefaults.int(forKey: .highScore) ?? 0 {
+		if Int(score) > UserDefaults.int(forKey: .highScore)! {
 			UserDefaults.set(value: Int(score), forKey: .highScore)
 			let newRecord = SKLabelNode(fontNamed: "Zapfino")
 			newRecord.text = {()->String in switch UserDefaults.string(forKey: .language) {
@@ -27,10 +27,10 @@ class GameOverScene: MenuScene {
 			newRecord.zRotation = .pi / 4
 			self.addChild(newRecord)
 		}
-		if seasons > UserDefaults.int(forKey: .mostSeasons) ?? 0 {
+		if seasons > UserDefaults.int(forKey: .mostSeasons)! {
 			UserDefaults.set(value: seasons, forKey: .mostSeasons)
 		}
-		UserDefaults.set(value: (UserDefaults.int(forKey: .coins) ?? 0) + coins, forKey: .coins)
+		UserDefaults.set(value: (UserDefaults.int(forKey: .coins)!) + coins, forKey: .coins)
 		
 		let scoreLabel = SKLabelNode(fontNamed: "ChalkboardSE-Bold")
 		scoreLabel.text = {()->String in switch UserDefaults.string(forKey: .language) {

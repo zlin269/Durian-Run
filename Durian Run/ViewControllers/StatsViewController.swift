@@ -26,9 +26,9 @@ class StatsViewController: UIViewController {
 		let allSubviews = view.subviews
 		for v in allSubviews {
 			if let textView = v as? UITextView {
-				textView.text = "Best Score: " + String(UserDefaults.int(forKey: .highScore) ?? 0) + "\n"
-				let season = Season.init(rawValue: (UserDefaults.int(forKey: .mostSeasons) ?? 0)%4)?.description
-				let year = String((UserDefaults.int(forKey: .mostSeasons) ?? 0) / 4 + Calendar.current.component(.year, from: Date()))
+				textView.text = "Best Score: " + String(UserDefaults.int(forKey: .highScore)!) + "\n"
+				let season = Season.init(rawValue: (UserDefaults.int(forKey: .mostSeasons)!)%4)?.description
+				let year = String((UserDefaults.int(forKey: .mostSeasons)!) / 4 + Calendar.current.component(.year, from: Date()))
 				textView.text += "Longest Survival time: The " + season! + " of " + year
 			}
 		}

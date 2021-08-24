@@ -126,7 +126,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	var isActuallyPaused = false
     
 	// Big game elements
-	lazy var durian = PlayerModelInfo(rawValue: UserDefaults.int(forKey: .selectedCharacter) ?? 0)!.model
+	lazy var durian = PlayerModelInfo(rawValue: UserDefaults.int(forKey: .selectedCharacter)!)!.model
 	lazy var platform = Platform(initial: true)
     lazy var platformLevel = Platform()
 	lazy var healthBar = StatusBar(UIColor.red)
@@ -173,11 +173,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             createBackground()
 		
 		musicNode.autoplayLooped = true
-		musicNode.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume) ?? 1), duration: 0))
+		musicNode.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume)!), duration: 0))
 		self.addChild(musicNode)
 		
 		gameSound.autoplayLooped = false
-		gameSound.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0))
+		gameSound.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0))
 		self.addChild(gameSound)
 		
 		let boundary = Boundary()
@@ -307,7 +307,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let tempAudioNode = SKAudioNode(fileNamed: "powerup.wav")
             tempAudioNode.autoplayLooped = false
             self.addChild(tempAudioNode)
-            tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 3), SKAction.removeFromParent()]))
+            tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 3), SKAction.removeFromParent()]))
         }
     }
 	
@@ -331,7 +331,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			let tempAudioNode = SKAudioNode(fileNamed: "switch.wav")
 			tempAudioNode.autoplayLooped = false
 			self.addChild(tempAudioNode)
-			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
+			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
 			if durian.state == .normal {
 				durian.state = .absorb
 			} else {
@@ -415,7 +415,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			let tempAudioNode = SKAudioNode(fileNamed: "coin.wav")
 			tempAudioNode.autoplayLooped = false
 			self.addChild(tempAudioNode)
-			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
+			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
 			coins += 1
 		}
         if contact.bodyB.node?.name == "bullet" {
@@ -433,7 +433,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let tempAudioNode = SKAudioNode(fileNamed: "sword-attack.wav")
                 tempAudioNode.autoplayLooped = false
                 self.addChild(tempAudioNode)
-                tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume) ?? 1), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
+                tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
             }
         }
 		
@@ -944,7 +944,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 		let thunder = SKAudioNode(fileNamed: "thunder.wav")
 		thunder.autoplayLooped = false
-		thunder.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume) ?? 0), duration: 0))
+		thunder.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume)!), duration: 0))
 		let flash = SKSpriteNode(color: UIColor.black, size: self.frame.size)
 		flash.addChild(thunder)
 		thunder.run(SKAction.play())

@@ -20,8 +20,9 @@ class FirstUseViewController: UIViewController {
     
     var languageSet:String = "English"
     
+    
     override func viewDidAppear(_ animated: Bool) {
-        if(UserDefaults.bool(forKey: .hasFirstAccepted) == true) { //not first open and has accepted terms
+        if(UserDefaults.bool(forKey: .hasFirstAccepted) ?? false) { //not first open and has accepted terms
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let startingViewController = storyBoard.instantiateViewController(withIdentifier: "MainMenu")
             self.present(startingViewController, animated: false, completion: nil)
@@ -33,7 +34,7 @@ class FirstUseViewController: UIViewController {
         declineButton.isHidden = true
         acceptButton.isHidden = true
         protocolText.isHidden = true
-}
+    }
 
     @IBAction func chooseChinese(_ sender: Any) {
         UserDefaults.set(value: "Chinese", forKey: .language)
@@ -143,5 +144,11 @@ class FirstUseViewController: UIViewController {
     
     @IBAction func pressAccept(_ sender: Any) {
         UserDefaults.set(value: true, forKey: .hasFirstAccepted)
+        UserDefaults.set(value: 1.0, forKey: .gameVolume)
+        UserDefaults.set(value: 1.0, forKey: .musicVolume)
+        UserDefaults.set(value: 0, forKey: .coins)
+        UserDefaults.set(value: 0, forKey: .highScore)
+        UserDefaults.set(value: 0, forKey: .mostSeasons)
+        UserDefaults.set(value: 0, forKey: .selectedCharacter)
     }
 }
