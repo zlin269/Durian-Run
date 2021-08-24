@@ -449,7 +449,7 @@
                                 <rect key="frame" x="525" y="264" width="90" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                <state key="normal" title="Thai" backgroundImage="pink button">
+                                <state key="normal" title="ไทย" backgroundImage="pink button">
                                     <color key="titleColor" systemColor="systemGray6Color"/>
                                 </state>
                                 <connections>
@@ -460,7 +460,7 @@
                                 <rect key="frame" x="281" y="264" width="90" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                <state key="normal" title="Chinese" backgroundImage="pink button">
+                                <state key="normal" title="中文" backgroundImage="pink button">
                                     <color key="titleColor" systemColor="systemGray6Color"/>
                                 </state>
                                 <connections>
