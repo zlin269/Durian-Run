@@ -112,18 +112,7 @@ class GameOverScene: MenuScene {
                 try newdata.write(to: path)
             }
         } catch {
-            do {
-                print("initializing scores data on disk")
-                var scores = [Score(name: "Jack", score: 66666, seasons: 12),
-                                  Score(name: "Alice", score: 23333, seasons: 6),
-                                  Score(name: "Lawrence", score: 12345, seasons: 3)]
-                scores.append(Score(name: "You", score: Int(score), seasons: seasons))
-                scores.sort()
-                let data = try NSKeyedArchiver.archivedData(withRootObject: scores, requiringSecureCoding: false)
-                try data.write(to: path)
-            } catch {
-                print("ERROR: \(error.localizedDescription)")
-            }
+            print("ERROR: \(error.localizedDescription)")
         }
 	}
 	

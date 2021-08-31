@@ -69,7 +69,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// time var
     private var lastUpdateTime : TimeInterval = 0
 	private var boostStartTime : TimeInterval = 0 // keep track of when boost will end
-	private var justUnpaused : Bool = false // prevent loss of health during pause
 	private var gameTime : TimeInterval = 0
     private var currentRainDropSpawnTime : TimeInterval = 0
     private var rainDropSpawnRate : TimeInterval = 0.1
@@ -123,7 +122,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Boolean & Tracker
 	var isRaining: Bool = false
 	var isStorming: Bool = false
-	var isActuallyPaused = false
+    var justUnpaused : Bool = false // prevent loss of health during pause
+	var isActuallyPaused : Bool = false
+    var gameStarted : Bool = false
     
 	// Big game elements
 	lazy var durian = PlayerModelInfo(rawValue: UserDefaults.int(forKey: .selectedCharacter)!)!.model
@@ -152,8 +153,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	// buttons
 	var pauseButton = Button(imageNamed: "pause")
-	var homeButton = Button(imageNamed: "home")
+    var resumeButton = SKSpriteNode(imageNamed: "Resume-1")
+    var settingsButton = SKSpriteNode(imageNamed: "setting")
+    var quitButton = SKSpriteNode(imageNamed: "quit")
 	
+    
+    // Pause
+    var blur : SKSpriteNode!
+    var pausebg : SKSpriteNode!
+    
 	
 	// MARK: --Layers in Scene
 	// Layers of nodes in the scene are determined by their zPosition
@@ -232,40 +240,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
 		
 		healthBar.name = "health"
-		healthBar.position = CGPoint(x: 80, y: 1000)
+		healthBar.position = CGPoint(x: 80, y: 850)
 		healthBar.zPosition = 200
 		healthBar.setEmpty()
 		healthBar.increase(by: 30)
         healthBar.secondaryIncrease(by: 100)
         healthBar.alpha = 0.8
+        healthBar.zRotation = .pi / 16
 		self.addChild(healthBar)
         
         spellCD.name = "cd"
-        spellCD.position = CGPoint(x: 140, y: 900)
+        spellCD.position = CGPoint(x: 140, y: 750)
         spellCD.zPosition = 200
         spellCD.setFull()
         self.addChild(spellCD)
 		
-		
+        resumeButton.name = "resume"
+        settingsButton.name = "setting"
+        quitButton.name = "quit"
+        
 		pauseButton.name = "pauseButton"
-        pauseButton.size = CGSize(width: 200, height: 200)
         pauseButton.position = CGPoint(x: self.size.width - pauseButton.size.width - 80, y: 1100)
 		pauseButton.zPosition = 200
 		pauseButton.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
 		self.addChild(pauseButton)
 		
-		homeButton.name = "exitButton"
-        homeButton.size = CGSize(width: 200, height: 200)
-        homeButton.position = CGPoint(x: frame.width - 600 - homeButton.size.width, y: 1100)
-		homeButton.zPosition = 200
-		homeButton.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
-		self.addChild(homeButton)
-		homeButton.isHidden = true
-		
-		
-		scoreLabel.fontName = "Chalkduster"
+		scoreLabel.fontName = "ChalkboardSE-Bold"
 		scoreLabel.fontSize = 200
-		scoreLabel.fontColor = UIColor.red
+        scoreLabel.fontColor = healthBar.healthColor
 		scoreLabel.position = CGPoint(x: frame.width / 2, y: frame.height - 200)
 		scoreLabel.zPosition = 200
 		self.addChild(scoreLabel)
@@ -276,6 +278,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         coinLabel.position = CGPoint(x: frame.width - 450, y: frame.height - 200)
 		coinLabel.zPosition = 200
 		self.addChild(coinLabel)
+        
+        startingAnimation()
+        
+        
     }
     
     func createBackground() {
@@ -300,6 +306,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     @objc func doubleTapped (sender: UITapGestureRecognizer) {
+        if isPaused {
+            return
+        }
         if durian.state != DurianState.boost && healthBar.secondaryIsMoreThanOrEqualTo(100) {
             durian.state = DurianState.boost
             boostStartTime = self.lastUpdateTime
@@ -327,6 +336,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
     
 	@objc func swipedLeft (sender: UISwipeGestureRecognizer) {
+        if isPaused {
+            return
+        }
 		if durian.state != DurianState.boost {
 			let tempAudioNode = SKAudioNode(fileNamed: "switch.wav")
 			tempAudioNode.autoplayLooped = false
@@ -341,6 +353,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
     
     @objc func swipedRight (sender: UISwipeGestureRecognizer) {
+        if isPaused {
+            return
+        }
         if spellCD.isEmpty() {
             durian.attack()
             spellCD.setFull()
@@ -448,8 +463,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	// Boost Mode and Attack handled at touchDown
     func touchDown(atPoint pos : CGPoint) {
-		// let touchedNode = atPoint(pos)
-		if isPaused  { return }
+        let touchedNode = atPoint(pos)
+            if touchedNode.name == "pauseButton" {
+                pause()
+            } else if touchedNode.name == "quit" {
+                displayGameOver()
+            } else if touchedNode.name == "setting" {
+                
+            } else if touchedNode.name == "resume" {
+                unpause()
+            }
 	}
     
 //    // Not needed
@@ -458,34 +481,66 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	// Pause and Jump handled at touchUp
     func touchUp(atPoint pos : CGPoint) {
-		let touchedNode = atPoint(pos)
-		if touchedNode.name == "pauseButton" {
-			if isPaused {
-				unpause()
-			} else {
-				pause()
-			}
-		} else if touchedNode.name == "exitButton" {
-			displayGameOver()
-		}
 	}
 	
+    // MARK: --Pause
 	func pause() {
 		print("Pausing")
 		isActuallyPaused = true
 		isPaused = true
-		pauseButton.texture = SKTexture(imageNamed: "resume")
 		justUnpaused = true
-		homeButton.isHidden = false
+        
+        blur = SKSpriteNode(texture: SKTexture(imageNamed: "blur"), color: .white, size: frame.size)
+        blur.zPosition = 250
+        blur.position = CGPoint(x: frame.midX, y: frame.midY)
+        blur.xScale = 2
+        blur.yScale = 2
+        blur.alpha = 0.8
+        self.addChild(blur)
+        let scale : CGFloat = 2.7
+        pausebg = SKSpriteNode(texture: SKTexture(imageNamed: "pausebg"))
+        pausebg.anchorPoint = CGPoint(x: 0.5, y: 0)
+        pausebg.position = CGPoint(x: frame.midX, y: 0)
+        pausebg.zPosition = 260
+        pausebg.xScale = scale
+        pausebg.yScale = scale
+        self.addChild(pausebg)
+        resumeButton.position = CGPoint(x: frame.midX, y: frame.midY + 90)
+        resumeButton.zPosition = 270
+        resumeButton.xScale = scale
+        resumeButton.yScale = scale
+        self.addChild(resumeButton)
+        settingsButton.position = CGPoint(x: frame.midX, y: frame.midY - 130)
+        settingsButton.zPosition = 270
+        settingsButton.xScale = scale
+        settingsButton.yScale = scale
+        self.addChild(settingsButton)
+        quitButton.position = CGPoint(x: frame.midX, y: frame.midY - 450)
+        quitButton.zPosition = 270
+        quitButton.xScale = scale
+        quitButton.yScale = scale
+        self.addChild(quitButton)
+        let durianQuestion = SKSpriteNode(imageNamed: "durianquestion")
+        durianQuestion.position = CGPoint(x: -220, y: 200)
+        durianQuestion.zPosition = 1
+        pausebg.addChild(durianQuestion)
+        let durianHog = SKSpriteNode(imageNamed: "durianhog")
+        durianHog.position = CGPoint(x: 200, y: 100)
+        durianHog.zPosition = 1
+        pausebg.addChild(durianHog)
 	}
 	
 	func unpause() {
 		print("Unpausing")
 		isActuallyPaused = false
 		isPaused = false
-		pauseButton.texture = SKTexture(imageNamed: "pause")
 		justUnpaused = true
-		homeButton.isHidden = true
+        
+        blur.removeFromParent()
+        pausebg.removeFromParent()
+        resumeButton.removeFromParent()
+        settingsButton.removeFromParent()
+        quitButton.removeFromParent()
 	}
     
 	// ------------ No Need to Modify Any of the Touches ------------
@@ -508,6 +563,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	// ------------ No Need to Modify Any of the Touches ------------
     
+    // MARK: --Update
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
 		if isActuallyPaused {
@@ -529,243 +585,255 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			justUnpaused = false
 			dt = 0
 		}
-		
-		// MARK: --Platforms
-        // Platform move
-        if(platforms[0].position.x + platforms[0].width < 0){
-        // remove platform that out of scene
-			platforms[0].removeFromParent()
-            platforms.remove(at: 0)
-        }
         
-        if (platformPositionR < frame.width){
-        // create new platform
-            platform = Platform()
-            let num = (season == .Spring || season == .Summer) ? Int(arc4random_uniform(5))  + 1 : 5
-            platform.create(number: num)
-            platform.position = CGPoint(x: platforms.last!.position.x + platforms.last!.width + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(300))) : 0), y: 0)
-            platform.zPosition = 50
-            platformPositionR = platform.position.x + platform.width
-			platform.name = "platform"
-            self.addChild(platform)
-            platforms.append(platform)
-			if season == .Spring || season == .Summer {
-				Coin.spawnCoinsRainbow(CGPoint(x: platform.position.x - platformGap, y: 680), self)
-                if num == 5 {
-                    for i in 1...3 {
-                        let fence = Fence(type: arc4random_uniform(4))
-                        fence.position = CGPoint(x: platform.position.x + CGFloat(i) * platform.width/4, y: platform.position.y + platform.height / 2 + fence.frame.height / 2)
+        gameTime += dt
+        
+        if gameStarted {
+            seasonTimer += dt
+            
+            GameScene.platformSpeed += CGFloat(dt * 2)
+        // Scoring Update
+            score += dt * Double(GameScene.platformSpeed) / 15
+            
+            // MARK: --Platforms
+            // Platform move
+            if(platforms[0].position.x + platforms[0].width < 0){
+            // remove platform that out of scene
+                platforms[0].removeFromParent()
+                platforms.remove(at: 0)
+            }
+            
+            if (platformPositionR < frame.width){
+            // create new platform
+                platform = Platform()
+                let num = (season == .Spring || season == .Summer) ? Int(arc4random_uniform(5))  + 1 : 5
+                platform.create(number: num)
+                platform.position = CGPoint(x: platforms.last!.position.x + platforms.last!.width + ((season == .Spring || season == .Summer) ? platformGap + CGFloat(Int(arc4random_uniform(300))) : 0), y: 0)
+                platform.zPosition = 50
+                platformPositionR = platform.position.x + platform.width
+                platform.name = "platform"
+                self.addChild(platform)
+                platforms.append(platform)
+                if season == .Spring || season == .Summer {
+                    Coin.spawnCoinsRainbow(CGPoint(x: platform.position.x - platformGap, y: 680), self)
+                    if num == 5 {
+                        for i in 1...3 {
+                            let fence = Fence(type: arc4random_uniform(4))
+                            fence.position = CGPoint(x: platform.position.x + CGFloat(i) * platform.width/4, y: platform.position.y + platform.height / 2 + fence.frame.height / 2)
+                            fence.zPosition = 100
+                            self.addChild(fence)
+                            fences.append(fence)
+                        }
+                    } else if num == 1 {
+                        spawnBugs(7)
+                    }
+                } else {
+                    // MARK: --level platform
+                    for i in 1...(arc4random_uniform(6)+3) {
+                        let fence = Fence(type: 3)
+                        fence.yScale = 1.5
+                        fence.position = CGPoint(x: platform.position.x + CGFloat(i) * fence.frame.width + 300, y: platform.position.y + platform.height / 2 + fence.frame.height / 2)
                         fence.zPosition = 100
                         self.addChild(fence)
                         fences.append(fence)
                     }
-                } else if num == 1 {
-                    spawnBugs(7)
                 }
-            } else {
-                // MARK: --level platform
-                for i in 1...(arc4random_uniform(6)+3) {
-                    let fence = Fence(type: 3)
-                    fence.yScale = 1.5
-                    fence.position = CGPoint(x: platform.position.x + CGFloat(i) * fence.frame.width + 300, y: platform.position.y + platform.height / 2 + fence.frame.height / 2)
-                    fence.zPosition = 100
-                    self.addChild(fence)
-                    fences.append(fence)
+            }
+            
+            for p in platforms{
+                p.move(speed: GameScene.platformSpeed, dt)
+            }
+            
+            platformPositionR = platformPositionR - GameScene.platformSpeed * CGFloat(dt)
+            
+            // PlatformLevel move
+            if !platformLevels.isEmpty && platformLevels[0].position.x + platformLevels[0].width < 0 {
+                // remove platform that out of scene
+                platformLevels[0].removeFromParent()
+                platformLevels.remove(at: 0)
+            }
+            
+            for pl in platformLevels{
+                pl.move(speed: GameScene.platformSpeed, dt)
+            }
+            
+            for f in fences {
+                f.move(speed: GameScene.platformSpeed, dt)
+            }
+            
+            if fertilizer.inGame {
+                fertilizer.move(speed: GameScene.platformSpeed, dt)
+            }
+            
+            // MARK: --Enemies
+            if	!enemies.isEmpty && (enemies[0].position.x < -200 || enemies[0].position.y < -100) {
+                enemies[0].selfDestruction()
+                enemies.removeFirst()
+            }
+            for e in enemies {
+                e.move(dt)
+            }
+            if season == .Fall || season == .Winter {
+                if Int(seasonTimer) >= (5 + 10 * seasonInfo.enemiesSpawned) {
+                     seasonInfo.enemiesSpawned += 1
+                     spawnBugs(Int(arc4random_uniform(season == .Fall ? 4 : 7)))
+                 }
+            }
+            
+            if durian.state != DurianState.boost {
+                healthBar.decrease(by: CGFloat(dt * difficulty))
+            }
+            if !spellCD.isEmpty() {
+                spellCD.decrease(by: CGFloat(dt)/durian.attackCD * 100)
+            }
+            
+            // MARK: --Boost
+            if durian.state == DurianState.boost  {
+                healthBar.secondaryDecrease(by: CGFloat(dt) * 10)
+                if healthBar.secondaryIsEmpty() {
+                    durian.state = .normal
+                    durian.run()
+                }
+            }
+            
+            
+            // MARK: --Health Bar
+            if healthBar.isEmpty()  {
+                displayGameOver()
+            }
+            
+            // MARK: --Death On Falling
+            if durian.position.y < 0 || self.childNode(withName: "durian") == nil {
+                displayGameOver()
+            }
+            
+            // MARK: --Position Adjustment
+            if durian.position.x < 0 {
+                self.displayGameOver()
+            } else if durian.position.x < 595 {
+                durian.run(SKAction.moveBy(x: 1, y: 0, duration: dt))
+            } else if durian.position.x > 605 {
+                durian.run(SKAction.moveBy(x: -5, y: 0, duration: dt))
+            }
+            
+            
+            // MARK: --Absorbtion Related
+            if durian.state == DurianState.absorb {
+                if isRaining {
+                    healthBar.increase(by: CGFloat(dt * 5))
+                }
+                for p in platforms {
+                    if durian.position.x - p.position.x > 0 && durian.position.x - p.position.x < p.width  {
+                        if p.isCity {
+                            healthBar.decrease(by: CGFloat(dt * 15))
+                        } else {
+                            healthBar.increase(by: CGFloat(dt * 10))
+                        }
+                    }
+                }
+                if isStorming {
+                    healthBar.decrease(by: CGFloat(dt * 10))
+                }
+            }
+            if durian.state == DurianState.boost {
+                healthBar.increase(by: CGFloat(dt * 30))
+            }
+            
+            // MARK: --Collectable
+            if fertilizer.inGame && (fertilizer.position.x < -100 || fertilizer.position.y < -100) {
+                fertilizer.removeFromParent()
+                fertilizer.inGame = false
+            }
+            if	!raindrops.isEmpty && !raindrops[0].inGame {
+                raindrops.removeFirst()
+            }
+        
+            
+            // MARK: Random Events Generation
+            let epsilon = 0.1
+            if abs((Double(gameTime) - Double(Int(gameTime)))) < epsilon {
+                let num = arc4random_uniform(200)
+                if num <= 2 {
+                    spawnFertilizer()
+                }
+                switch season {
+                case .Spring, .Summer:
+                    if 1 < num && num <= 10 {
+                        // spawnFactory()
+                    }
+                    break
+    //			case .Fall, .Winter:
+    //				if 1 < num && num <= 20 && enemies.count == 0 {
+    //                    spawnBugs(Int(arc4random_uniform(4) + ((season == .Winter) ? arc4random_uniform(4) : 0)))
+    //				}
+    //				break
+                default: break
+                }
+                
+            }
+            
+            // MARK: --Seasonal Events
+            if seasonTimer > seasonInfo.rainStartTime[0] && seasonTimer < seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
+                isRaining = true
+            } else if seasonTimer > seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
+                isRaining = false
+            }
+            if seasonTimer > seasonInfo.rainStartTime[1] && seasonTimer < seasonInfo.rainStartTime[1] + seasonInfo.rainDuration! {
+                isRaining = true
+            } else if seasonTimer > seasonInfo.rainStartTime[1] + seasonInfo.rainDuration! {
+                isRaining = false
+            }
+            if !isStorming && seasonTimer > seasonInfo.stormTime! && seasonTimer < seasonInfo.stormTime! + seasonInfo.stormDuration! {
+                startStorm()
+            }
+            if seasonTimer > seasonInfo.supplySpawnTime[0] && seasonInfo.suppliesSpawned == 0 {
+                spawnSupply()
+            }
+            if seasonTimer > seasonInfo.supplySpawnTime[1] && seasonInfo.suppliesSpawned == 1 {
+                spawnSupply()
+            }
+            
+            if isRaining {
+                // Update the spawn timer
+                currentRainDropSpawnTime += dt
+
+                if currentRainDropSpawnTime > rainDropSpawnRate {
+                  currentRainDropSpawnTime = 0
+                  spawnRaindrop()
                 }
             }
         }
-        
-        for p in platforms{
-			p.move(speed: GameScene.platformSpeed, dt)
-        }
-        
-		platformPositionR = platformPositionR - GameScene.platformSpeed * CGFloat(dt)
-        
-		// PlatformLevel move
-		if !platformLevels.isEmpty && platformLevels[0].position.x + platformLevels[0].width < 0 {
-			// remove platform that out of scene
-			platformLevels[0].removeFromParent()
-			platformLevels.remove(at: 0)
-		}
-		
-		for pl in platformLevels{
-			pl.move(speed: GameScene.platformSpeed, dt)
-		}
-        
-        for f in fences {
-            f.move(speed: GameScene.platformSpeed, dt)
-        }
-		
-		if fertilizer.inGame {
-			fertilizer.move(speed: GameScene.platformSpeed, dt)
-		}		
-		
-		// MARK: --Enemies
-		if	!enemies.isEmpty && (enemies[0].position.x < -200 || enemies[0].position.y < -100) {
-			enemies[0].selfDestruction()
-			enemies.removeFirst()
-		}
-		for e in enemies {
-			e.move(dt)
-		}
-        if season == .Fall || season == .Winter {
-            if Int(seasonTimer) >= (5 + 10 * seasonInfo.enemiesSpawned) {
-                 seasonInfo.enemiesSpawned += 1
-                 spawnBugs(Int(arc4random_uniform(season == .Fall ? 4 : 7)))
-             }
-        }
-		
-		gameTime += dt
-		if durian.state != DurianState.boost {
-			healthBar.decrease(by: CGFloat(dt * difficulty))
-		}
-        if !spellCD.isEmpty() {
-            spellCD.decrease(by: CGFloat(dt)/durian.attackCD * 100)
-        }
-		
-		// Scoring Update
-		score += dt * Double(GameScene.platformSpeed) / 15
-		
-		// MARK: --Boost
-		if durian.state == DurianState.boost  {
-            healthBar.secondaryDecrease(by: CGFloat(dt) * 10)
-			if healthBar.secondaryIsEmpty() {
-				durian.state = .normal
-				durian.run()
-			}
-		}
-		
-		// MARK: --Season Change
-		seasonTimer += dt
-		
-		// MARK: --Health Bar
-		if healthBar.isEmpty()  {
-			displayGameOver()
-		}
-		
-		// MARK: --Death On Falling
-		if durian.position.y < 0 || self.childNode(withName: "durian") == nil {
-			displayGameOver()
-		}
-		
-        // MARK: --Position Adjustment
-		if durian.position.x < 0 {
-			self.displayGameOver()
-		} else if durian.position.x < 595 {
-			durian.run(SKAction.moveBy(x: 1, y: 0, duration: dt))
-		} else if durian.position.x > 605 {
-			durian.run(SKAction.moveBy(x: -5, y: 0, duration: dt))
-		}
-        
-        
-		// MARK: --Absorbtion Related
-		if durian.state == DurianState.absorb {
-//			if sun.isOpen {
-//				sunshineBar.increase(by: CGFloat(dt * 10))
-//			}
-			if isRaining {
-				healthBar.increase(by: CGFloat(dt * 5))
-			}
-			for p in platforms {
-                if durian.position.x - p.position.x > 0 && durian.position.x - p.position.x < p.width  {
-                    if p.isCity {
-                        healthBar.decrease(by: CGFloat(dt * 15))
-                    } else {
-                        healthBar.increase(by: CGFloat(dt * 10))
-                    }
-				}
-			}
-			if isStorming {
-				healthBar.decrease(by: CGFloat(dt * 10))
-			}
-		}
-		if durian.state == DurianState.boost {
-			healthBar.increase(by: CGFloat(dt * 30))
-		}
-		
-		// MARK: --Collectable
-		if fertilizer.inGame && (fertilizer.position.x < -100 || fertilizer.position.y < -100) {
-			fertilizer.removeFromParent()
-			fertilizer.inGame = false
-		}
-		if	!raindrops.isEmpty && !raindrops[0].inGame {
-			raindrops.removeFirst()
-		}
-	
-		
-		// MARK: Random Events Generation
-		let epsilon = 0.1
-		if abs((Double(gameTime) - Double(Int(gameTime)))) < epsilon {
-			let num = arc4random_uniform(200)
-			if num <= 1 {
-				spawnFertilizer()
-			}
-			switch season {
-			case .Spring, .Summer:
-				if 1 < num && num <= 10 {
-					// spawnFactory()
-				}
-				break
-//			case .Fall, .Winter:
-//				if 1 < num && num <= 20 && enemies.count == 0 {
-//                    spawnBugs(Int(arc4random_uniform(4) + ((season == .Winter) ? arc4random_uniform(4) : 0)))
-//				}
-//				break
-            default: break
-			}
-            
-		}
-		
-        // MARK: --Seasonal Events
-        if seasonTimer > seasonInfo.rainStartTime[0] && seasonTimer < seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
-            isRaining = true
-        } else if seasonTimer > seasonInfo.rainStartTime[0] + seasonInfo.rainDuration! {
-            isRaining = false
-        }
-        if seasonTimer > seasonInfo.rainStartTime[1] && seasonTimer < seasonInfo.rainStartTime[1] + seasonInfo.rainDuration! {
-            isRaining = true
-        } else if seasonTimer > seasonInfo.rainStartTime[1] + seasonInfo.rainDuration! {
-            isRaining = false
-        }
-        if !isStorming && seasonTimer > seasonInfo.stormTime! && seasonTimer < seasonInfo.stormTime! + seasonInfo.stormDuration! {
-            startStorm()
-        }
-        if seasonTimer > seasonInfo.supplySpawnTime[0] && seasonInfo.suppliesSpawned == 0 {
-            spawnSupply()
-        }
-        if seasonTimer > seasonInfo.supplySpawnTime[1] && seasonInfo.suppliesSpawned == 1 {
-            spawnSupply()
-        }
-        
-		
-        
-        
-		if isRaining {
-			// Update the spawn timer
-			currentRainDropSpawnTime += dt
-
-			if currentRainDropSpawnTime > rainDropSpawnRate {
-			  currentRainDropSpawnTime = 0
-			  spawnRaindrop()
-			}
-		}
-		
 
 		// MARK: --DEBUG INFO
-//		print("game time:", gameTime)
+		print("game time:", gameTime)
 //		print("durian state:", durian.state)
 //		print("in air:", durian.inAir)
-		print(enemies.count)
-		if !enemies.isEmpty {
-			print(enemies[0].position)
-		}
 		print("Season Timer: ", seasonTimer)
 		
-		GameScene.platformSpeed += CGFloat(dt * 2)
 		print("Speed: ", GameScene.platformSpeed)
 
         
         self.lastUpdateTime = currentTime
+    }
+    
+    // initial animation
+    func startingAnimation () {
+        let truck = SKSpriteNode(imageNamed: "truck")
+        platforms.first!.addChild(truck)
+        truck.anchorPoint = .zero
+        truck.zPosition = 100
+        truck.position = CGPoint(x: 100, y: platforms.first!.height / 2)
+        truck.xScale = 2
+        truck.yScale = 2
+        truck.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: truck.size.width * 0.5, height: truck.size.height / 3), center: CGPoint(x: truck.frame.maxX * 0.6, y: truck.frame.maxY/6))
+        truck.physicsBody?.isDynamic = false
+        durian.run(SKAction.wait(forDuration: 1), completion: {
+            self.durian.physicsBody?.applyImpulse(CGVector(dx: 700, dy: 1000))
+        })
+        durian.run(SKAction.wait(forDuration: 2), completion: {
+            self.durian.physicsBody?.isResting = true
+            self.gameStarted = true
+        })
     }
 	
 	// Creates a game over scene
@@ -875,7 +943,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let c = arc4random_uniform(3) + 1
             for i in 1...c {
                 let blocker = Sleeper()
-                blocker.position = CGPoint(x: platforms.last!.position.x + platforms.last!.width * CGFloat(i) / CGFloat(3), y: 600)
+                blocker.position = CGPoint(x: platforms.last!.position.x + platforms.last!.width * CGFloat(Double(i) - 0.2) / CGFloat(3), y: 600)
                 blocker.zPosition = 100
                 enemies.append(blocker)
                 self.addChild(blocker)
@@ -905,6 +973,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 	}
     
+    
+    // MARK: --Weather Effects
     func spawnRaindrop() {
 		
 		let raindrop = Rain()

@@ -73,13 +73,6 @@ class Platform: SKNode {
 		
         switch number {
         case 0:
-            let truck = SKSpriteNode(imageNamed: "truck")
-            self.addChild(truck)
-            truck.anchorPoint = .zero
-            truck.zPosition = 1
-            truck.position = CGPoint(x: 300, y: grass_m.frame.height / 2)
-            truck.xScale = 2
-            truck.yScale = 2
             let lamp = SKSpriteNode(imageNamed: "street_lamp")
             lamp.anchorPoint = .zero
             lamp.zPosition = 1

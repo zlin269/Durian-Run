@@ -10,7 +10,7 @@ import SpriteKit
 class Coin: Collectable {
 	
 	init() {
-		super.init(imageNamed: "gold")
+		super.init(imageNamed: "coin")
 		self.scale(to: CGSize(width: 70, height: 70))
         self.physicsBody?.isDynamic = false
 	}

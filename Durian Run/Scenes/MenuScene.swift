@@ -23,7 +23,7 @@ class MenuScene: SKScene {
 	// MARK: - Configuration
 	
 	private func configureBackground() {
-		background = SKSpriteNode(imageNamed: "background")
+		background = SKSpriteNode(imageNamed: "backgroundNight")
 		background!.size = size
 		background!.position = CGPoint(x: size.width/2, y: size.height/2)
 		background!.zPosition = -1000

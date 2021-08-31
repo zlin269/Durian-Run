@@ -42,6 +42,9 @@ class SettingsViewController: UIViewController {
 		scrollView.bounces = true
 		scrollView.showsVerticalScrollIndicator = true
 		scrollView.contentSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height * 3)
+        for v in scrollView.subviews {
+            v.removeFromSuperview()
+        }
 		
 		let viewInScrollView = UIView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width, height: scrollView.frame.height * 3))
 		scrollView.addSubview(viewInScrollView)
