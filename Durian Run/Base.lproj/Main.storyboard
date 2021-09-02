@@ -297,7 +297,7 @@
         <!--Settings View Controller-->
         <scene sceneID="kcE-Or-9SG">
             <objects>
-                <viewController id="G5w-63-P4i" customClass="SettingsViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Setting" useStoryboardIdentifierAsRestorationIdentifier="YES" id="G5w-63-P4i" customClass="SettingsViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rk9-Jt-Pov">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -526,7 +526,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="KBu-VP-B6d"/>
         <segue reference="fqg-cZ-p4m"/>
-        <segue reference="7eo-OX-pbN"/>
+        <segue reference="0Fv-Q3-4d5"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Durian Run" width="547" height="106"/>

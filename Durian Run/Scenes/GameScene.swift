@@ -480,8 +480,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //    }
     
 	// Pause and Jump handled at touchUp
-    func touchUp(atPoint pos : CGPoint) {
-	}
+//    func touchUp(atPoint pos : CGPoint) {
+//	}
 	
     // MARK: --Pause
 	func pause() {
@@ -553,13 +553,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
 //    }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
+//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+//    }
+//
+//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+//    }
     
 	// ------------ No Need to Modify Any of the Touches ------------
     
