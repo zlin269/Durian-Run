@@ -16,7 +16,10 @@ class GameOverScene: MenuScene {
 			UserDefaults.set(value: seasons, forKey: .mostSeasons)
 		}
 		UserDefaults.set(value: (UserDefaults.int(forKey: .coins)!) + coins, forKey: .coins)
-		
+        
+        var kule = SKSpriteNode(imageNamed: "kule")
+        kule.position = CGPoint(x: frame.midX - 850, y: frame.midY + 20)
+        
         let scoreLabel = SKLabelNode(fontNamed: "ChalkboardSE-Bold")
         scoreLabel.fontSize = 220
         scoreLabel.fontColor = .healthColor
@@ -34,6 +37,9 @@ class GameOverScene: MenuScene {
             self.addChild(newRecord)
             scoreLabel.fontSize = 180
             scoreLabel.position = CGPoint(x: frame.midX, y: frame.midY - 50)
+            kule = SKSpriteNode(imageNamed: "durianlove")
+            kule.setScale(2.5)
+            kule.position = CGPoint(x: frame.midX - 850, y: frame.midY + 20)
         }
 		
 //		let coinLabel = SKLabelNode(fontNamed: "ChalkboardSE-Light")
@@ -77,9 +83,14 @@ class GameOverScene: MenuScene {
         restartIcon.yScale = 2.7
         restartIcon.position = CGPoint(x: frame.midX, y: 120)
 		
-//		let kule = SKSpriteNode(imageNamed: "kule")
-//		kule.position = CGPoint(x: frame.midX - 850, y: frame.midY + 20)
-//
+        let nameLabel = SKLabelNode(text: UserDefaults.string(forKey: .username))
+        nameLabel.fontColor = .healthColor
+        nameLabel.position = CGPoint(x: frame.midX, y: frame.midY - 190)
+        nameLabel.horizontalAlignmentMode = .center
+        nameLabel.fontSize = 120
+        nameLabel.fontName = "AvenirNext-Medium"
+        adjustLabelFontSizeToFitRect(labelNode: nameLabel, rect: CGRect(origin: nameLabel.frame.origin, size: CGSize(width: 240, height: 80)))
+
 		let home = SKSpriteNode(imageNamed: "back")
 		home.name = "home"
         home.position = CGPoint(x: 110, y: frame.height - 143)
@@ -94,7 +105,8 @@ class GameOverScene: MenuScene {
 //		addChild(seasonLabelIntro)
 //		addChild(seasonLabel)
 //		addChild(coinLabel)
-//		addChild(kule)
+        addChild(nameLabel)
+		addChild(kule)
 		addChild(scoreLabel)
 		addChild(restartIcon)
 		addChild(home)
@@ -105,7 +117,7 @@ class GameOverScene: MenuScene {
         do {
             let data = try Data(contentsOf: path)
             if var scores = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Score] {
-                scores.append(Score(name: "You", score: Int(score), seasons: seasons))
+                scores.append(Score(name: UserDefaults.string(forKey: .username)!, score: Int(score), seasons: seasons))
                 scores.sort()
                 let newdata = try NSKeyedArchiver.archivedData(withRootObject: scores, requiringSecureCoding: false)
                 try newdata.write(to: path)
@@ -215,7 +227,6 @@ class GameOverScene: MenuScene {
 		// Change the fontSize.
 		labelNode.fontSize *= scalingFactor
 		
-		// Optionally move the SKLabelNode to the center of the rectangle.
-		labelNode.position = CGPoint(x: rect.minX, y: rect.midY - labelNode.frame.height / 2.0)
+
 	}
 }

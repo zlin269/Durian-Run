@@ -150,6 +150,7 @@ class FirstUseViewController: UIViewController {
         UserDefaults.set(value: 0, forKey: .highScore)
         UserDefaults.set(value: 0, forKey: .mostSeasons)
         UserDefaults.set(value: 0, forKey: .selectedCharacter)
+        UserDefaults.set(value: "You", forKey: .username)
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("scores")
         do {
             print("initializing scores data on disk")

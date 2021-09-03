@@ -10,6 +10,8 @@ import Foundation
 extension UserDefaults {
 	
 	enum AccountKeys: String {
+        case username
+        case avatar
 		case gameVolume
 		case musicVolume
 		case coins

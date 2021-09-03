@@ -154,7 +154,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
             print("ERROR: \(error.localizedDescription)")
         }
         var r = list.firstIndex(where: { s in
-            return s.playerName == "You"
+            return s.playerName == UserDefaults.string(forKey: .username)
         })
         if r != nil {
             r! += 1
@@ -166,6 +166,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         personalBox.removeConstraints(personalBox.constraints)
         personalBox.centerXAnchor.constraint(equalTo: bar.centerXAnchor).isActive = true
         personalBox.centerYAnchor.constraint(equalTo: bar.centerYAnchor).isActive = true
+        personalBox.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: CGFloat(1)/CGFloat(scoresPerPage)).isActive = true
         personalBox.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         for v in personalBox.arrangedSubviews where v is UILabel {
             if let l = v as? UILabel {
@@ -256,7 +257,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         rankLabel.widthAnchor.constraint(equalTo: box.widthAnchor, multiplier: 0.1).isActive = true
         // player avatar
         let avatar = UIImageView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.1, height: scrollView.frame.width * 0.1))
-        avatar.image = UIImage(named: "littlemonster")
+        avatar.image = UIImage(named: "littlemonster1")
         box.addArrangedSubview(avatar)
         avatar.translatesAutoresizingMaskIntoConstraints = false
         avatar.heightAnchor.constraint(equalTo: box.heightAnchor, multiplier: 0.8).isActive = true
