@@ -18,11 +18,11 @@ class MainMenuViewController: UIViewController {
                 if UserDefaults.string(forKey: .language) == "Chinese" {
                     (v as! UILabel).text = "点击屏幕开始"
                 } else if UserDefaults.string(forKey: .language) == "Thai" {
-                    (v as! UILabel).text = "Touch to Start in Thai"
+                    (v as! UILabel).text = "แตะเพื่อเริ่มต้น"
                 } else {
                     (v as! UILabel).text = "Touch To Start"
                 }
-                // (v as! UILabel).blink()
+                
                 self.view.bringSubviewToFront(v)
             }
         }
@@ -30,6 +30,15 @@ class MainMenuViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        for v in view.subviews {
+            if v.restorationIdentifier == "TouchToStart" {
+                (v as! UILabel).blink()
+                self.view.bringSubviewToFront(v)
+            }
+        }
     }
     
     override var shouldAutorotate: Bool {
@@ -45,8 +54,9 @@ class MainMenuViewController: UIViewController {
 
 extension UILabel {
     func blink() {
+        print("blinking")
         self.alpha = 1.0;
-        UIView.animate(withDuration: 1.2, //Time duration you want,
+        UIView.animate(withDuration: 2, //Time duration you want,
             delay: 0.0,
             options: [.curveEaseInOut, .autoreverse, .repeat],
             animations: { [weak self] in self?.alpha = 0.0 },
