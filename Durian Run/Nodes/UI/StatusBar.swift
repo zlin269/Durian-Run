@@ -13,8 +13,7 @@ class StatusBar: SKNode {
 	private let width: CGFloat = 500
 	private let height: CGFloat = 70
     private let borderThickness: CGFloat = 10
-    let healthColor = UIColor(red: 237.0/255, green: 30.0/255, blue: 121.0/255, alpha: 1)
-    let energyColor = UIColor(red: 88.0/255, green: 86.0/255, blue: 124.0/255, alpha: 1)
+    
 	
     private var background: SKSpriteNode
 	private var coloredBar: SKSpriteNode
@@ -47,9 +46,9 @@ class StatusBar: SKNode {
 	
 	init(_ color: UIColor) {
         background = SKSpriteNode(color: UIColor.gray, size: CGSize(width: width, height: height))
-		coloredBar = SKSpriteNode(color: healthColor, size: CGSize(width: width - borderThickness * 2, height: height - borderThickness * 2 - 20))
+        coloredBar = SKSpriteNode(color: .healthColor, size: CGSize(width: width - borderThickness * 2, height: height - borderThickness * 2 - 20))
 		circleBar = SKShapeNode()
-        coloredBar2 = SKSpriteNode(color: energyColor, size: CGSize(width: width - borderThickness * 2, height: 15))
+        coloredBar2 = SKSpriteNode(color: .energyColor, size: CGSize(width: width - borderThickness * 2, height: 15))
 		text = SKLabelNode(text: "0")
         healthLabel = SKLabelNode()
         energyLabel = SKLabelNode()
@@ -100,11 +99,11 @@ class StatusBar: SKNode {
         energy.yScale = 4
         healthLabel.fontName = "AvenirNextCondensed-Heavy"
         healthLabel.fontSize = 80
-        healthLabel.fontColor = healthColor
+        healthLabel.fontColor = .healthColor
         healthLabel.position = CGPoint(x: width * 3 / 8, y: height + 30)
         energyLabel.fontName = "AvenirNextCondensed-Heavy"
         energyLabel.fontSize = 80
-        energyLabel.fontColor = energyColor
+        energyLabel.fontColor = .energyColor
         energyLabel.position = CGPoint(x: width * 7 / 8, y: height + 30)
         self.addChild(heart)
         self.addChild(energy)
@@ -192,4 +191,9 @@ class StatusBar: SKNode {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+}
+
+extension UIColor {
+    static let healthColor = UIColor(red: 237.0/255, green: 30.0/255, blue: 121.0/255, alpha: 1)
+    static let energyColor = UIColor(red: 88.0/255, green: 86.0/255, blue: 124.0/255, alpha: 1)
 }

@@ -12,94 +12,93 @@ class GameOverScene: MenuScene {
 	init(size: CGSize, score: Double, seasons: Int, coins: Int) {
 		super.init(size: size)
 		
-		if Int(score) > UserDefaults.int(forKey: .highScore)! {
-			UserDefaults.set(value: Int(score), forKey: .highScore)
-			let newRecord = SKLabelNode(fontNamed: "Zapfino")
-			newRecord.text = {()->String in switch UserDefaults.string(forKey: .language) {
-            case "Chinese": return "新纪录！"
-            case "English": return "New Record!"
-            case "Thai": return "สถิติใหม่!"
-            default: return "New Record!"
-            }}()
-			newRecord.fontColor = .red
-			newRecord.fontSize = 70
-			newRecord.position = CGPoint(x: 300, y: frame.height - 300)
-			newRecord.zRotation = .pi / 4
-			self.addChild(newRecord)
-		}
 		if seasons > UserDefaults.int(forKey: .mostSeasons)! {
 			UserDefaults.set(value: seasons, forKey: .mostSeasons)
 		}
 		UserDefaults.set(value: (UserDefaults.int(forKey: .coins)!) + coins, forKey: .coins)
 		
-		let scoreLabel = SKLabelNode(fontNamed: "ChalkboardSE-Bold")
-		scoreLabel.text = {()->String in switch UserDefaults.string(forKey: .language) {
-        case "Chinese": return "分数："
-        case "English": return "Score: "
-        case "Thai": return "คะแนน: "
-        default: return "Score: "
-        }}() + String(Int(score))
-		scoreLabel.fontSize = 200
-		scoreLabel.fontColor = .black
-		adjustLabelFontSizeToFitRect(labelNode: scoreLabel, rect: CGRect(origin: CGPoint(x: self.frame.midX, y: self.frame.midY + 270), size: CGSize(width: self.frame.width * 0.6, height: self.frame.height * 0.2)))
-		scoreLabel.horizontalAlignmentMode = .center
+        let scoreLabel = SKLabelNode(fontNamed: "ChalkboardSE-Bold")
+        scoreLabel.fontSize = 220
+        scoreLabel.fontColor = .healthColor
+        scoreLabel.zRotation = .pi / 80
+//        adjustLabelFontSizeToFitRect(labelNode: scoreLabel, rect: CGRect(origin: frame.origin, size: CGSize(width: self.frame.width * 0.6, height: self.frame.height * 0.2)))
+        scoreLabel.position = CGPoint(x: frame.midX, y: frame.midY)
+        scoreLabel.horizontalAlignmentMode = .center
+        scoreLabel.text = "\(Int(score))"
+        if Int(score) > UserDefaults.int(forKey: .highScore)! {
+            UserDefaults.set(value: Int(score), forKey: .highScore)
+            let newRecord = SKSpriteNode(imageNamed: "newrecord")
+            newRecord.position = CGPoint(x: frame.midX, y: frame.height - 400)
+            newRecord.zRotation = .pi / 100
+            newRecord.setScale(3)
+            self.addChild(newRecord)
+            scoreLabel.fontSize = 180
+            scoreLabel.position = CGPoint(x: frame.midX, y: frame.midY - 50)
+        }
 		
-		let coinLabel = SKLabelNode(fontNamed: "ChalkboardSE-Light")
-		coinLabel.text = {()->String in switch UserDefaults.string(forKey: .language) {
-        case "Chinese": return "收集到金币："
-        case "English": return "Coins Collected: "
-        case "Thai": return "เหรียญสะสม: "
-        default: return "Coins Collected: "
-        }}() + String(coins)
-		coinLabel.fontSize = 120
-		coinLabel.fontColor = SKColor.black
-		coinLabel.position = CGPoint(x: frame.midX + scoreLabel.frame.width/2 - coinLabel.frame.width/2 - 5, y: frame.midY + 30)
+//		let coinLabel = SKLabelNode(fontNamed: "ChalkboardSE-Light")
+//		coinLabel.text = {()->String in switch UserDefaults.string(forKey: .language) {
+//        case "Chinese": return "收集到金币："
+//        case "English": return "Coins Collected: "
+//        case "Thai": return "เหรียญสะสม: "
+//        default: return "Coins Collected: "
+//        }}() + String(coins)
+//		coinLabel.fontSize = 120
+//		coinLabel.fontColor = SKColor.black
+//		coinLabel.position = CGPoint(x: frame.midX + scoreLabel.frame.width/2 - coinLabel.frame.width/2 - 5, y: frame.midY + 30)
 		
-		let seasonLabelIntro = SKLabelNode(fontNamed: "ChalkboardSE-Regular")
-		seasonLabelIntro.text = {()->String in switch UserDefaults.string(forKey: .language) {
-        case "Chinese": return "生存到"
-        case "English": return "Survived To The"
-        case "Thai": return "เอาชีวิตรอดไปยัง"
-        default: return "Survived To The"
-        }}()
-		seasonLabelIntro.fontSize = 120
-		seasonLabelIntro.fontColor = SKColor.black
-		seasonLabelIntro.position = CGPoint(x: frame.midX + scoreLabel.frame.width/2 - seasonLabelIntro.frame.width/2 - 5, y: frame.midY - 160)
+//		let seasonLabelIntro = SKLabelNode(fontNamed: "ChalkboardSE-Regular")
+//		seasonLabelIntro.text = {()->String in switch UserDefaults.string(forKey: .language) {
+//        case "Chinese": return "生存到"
+//        case "English": return "Survived To The"
+//        case "Thai": return "เอาชีวิตรอดไปยัง"
+//        default: return "Survived To The"
+//        }}()
+//		seasonLabelIntro.fontSize = 120
+//		seasonLabelIntro.fontColor = SKColor.black
+//		seasonLabelIntro.position = CGPoint(x: frame.midX + scoreLabel.frame.width/2 - seasonLabelIntro.frame.width/2 - 5, y: frame.midY - 160)
 		
-		let seasonLabel = SKLabelNode(fontNamed: "SnellRoundhand-Black")
-        let season = Season.init(rawValue: seasons%4)
-		let year = String(seasons / 4 + Calendar.current.component(.year, from: Date()))
-		seasonLabel.text = {()->String in switch UserDefaults.string(forKey: .language) {
-        case "Chinese": return year + "年的" + season!.chinese
-        case "English": return season!.description + " of " + year
-        case "Thai": return season!.thai + " " + year
-        default: return season!.description + " of " + year
-        }}()
-		seasonLabel.fontSize = 180
-		seasonLabel.fontColor = SKColor.black
-		seasonLabel.position = CGPoint(x: frame.midX + scoreLabel.frame.width/2 - seasonLabel.frame.width/2 - 5, y: frame.midY - 350)
-		
-		let restartIcon = SKSpriteNode(imageNamed: "restart")
+//		let seasonLabel = SKLabelNode(fontNamed: "SnellRoundhand-Black")
+//        let season = Season.init(rawValue: seasons%4)
+//		let year = String(seasons / 4 + Calendar.current.component(.year, from: Date()))
+//		seasonLabel.text = {()->String in switch UserDefaults.string(forKey: .language) {
+//        case "Chinese": return year + "年的" + season!.chinese
+//        case "English": return season!.description + " of " + year
+//        case "Thai": return season!.thai + " " + year
+//        default: return season!.description + " of " + year
+//        }}()
+//		seasonLabel.fontSize = 180
+//		seasonLabel.fontColor = SKColor.black
+//		seasonLabel.position = CGPoint(x: frame.midX + scoreLabel.frame.width/2 - seasonLabel.frame.width/2 - 5, y: frame.midY - 350)
+//
+		let restartIcon = SKSpriteNode(imageNamed: "playagain")
 		restartIcon.name = "restart"
-		restartIcon.size = CGSize(width: 300, height: 300)
-		restartIcon.position = CGPoint(x: frame.width - 300, y: frame.height - 200)
+        restartIcon.xScale = 2.7
+        restartIcon.yScale = 2.7
+        restartIcon.position = CGPoint(x: frame.midX, y: 120)
 		
-		let kule = SKSpriteNode(imageNamed: "kule")
-		kule.position = CGPoint(x: frame.midX - 850, y: frame.midY + 20)
-		
-		let home = SKSpriteNode(imageNamed: "home")
+//		let kule = SKSpriteNode(imageNamed: "kule")
+//		kule.position = CGPoint(x: frame.midX - 850, y: frame.midY + 20)
+//
+		let home = SKSpriteNode(imageNamed: "back")
 		home.name = "home"
-		home.position = CGPoint(x: frame.width - 300, y: 200)
-		home.size = CGSize(width: 300, height: 300)
+        home.position = CGPoint(x: 110, y: frame.height - 143)
+        home.size = CGSize(width: 100, height: 100)
+        
+        let leaderBoard = SKSpriteNode(imageNamed: "trophyDark")
+        leaderBoard.name = "leaderBoard"
+        leaderBoard.position = CGPoint(x: frame.width - 215, y: frame.height - 138)
+        leaderBoard.size = CGSize(width: 110, height: 110)
 		
 		
-		addChild(seasonLabelIntro)
-		addChild(seasonLabel)
-		addChild(coinLabel)
-		addChild(kule)
+//		addChild(seasonLabelIntro)
+//		addChild(seasonLabel)
+//		addChild(coinLabel)
+//		addChild(kule)
 		addChild(scoreLabel)
 		addChild(restartIcon)
 		addChild(home)
+        addChild(leaderBoard)
         
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("scores")
 
@@ -126,12 +125,16 @@ class GameOverScene: MenuScene {
 			let touchedNode = atPoint(t.location(in: self))
 			if touchedNode.name == "restart" {
 				touchedNode.alpha = 0.7
-				touchedNode.setScale(1.2)
+                touchedNode.setScale(3)
 			}
 			if touchedNode.name == "home" {
 				touchedNode.alpha = 0.7
 				touchedNode.setScale(1.2)
 			}
+            if touchedNode.name == "leaderBoard" {
+                touchedNode.alpha = 0.7
+                touchedNode.setScale(1.2)
+            }
 		}
 
 	}
@@ -141,10 +144,10 @@ class GameOverScene: MenuScene {
 			let touchedNode = atPoint(t.location(in: self))
 			if touchedNode.name == "restart" {
 				touchedNode.alpha = 0.7
-				touchedNode.setScale(1.2)
+                touchedNode.setScale(3)
 			} else {
 				self.childNode(withName: "restart")?.alpha = 1
-				self.childNode(withName: "restart")?.setScale(1)
+                self.childNode(withName: "restart")?.setScale(2.7)
 			}
 			if touchedNode.name == "home" {
 				touchedNode.alpha = 0.7
@@ -153,6 +156,13 @@ class GameOverScene: MenuScene {
 				self.childNode(withName: "home")?.alpha = 1
 				self.childNode(withName: "home")?.setScale(1)
 			}
+            if touchedNode.name == "leaderBoard" {
+                touchedNode.alpha = 0.7
+                touchedNode.setScale(1.2)
+            } else {
+                self.childNode(withName: "leaderBoard")?.alpha = 1
+                self.childNode(withName: "leaderBoard")?.setScale(1)
+            }
 		}
 	}
 	
@@ -179,6 +189,18 @@ class GameOverScene: MenuScene {
 									})
 			
 			}
+            if touchedNode.name == "leaderBoard" {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "LeaderBoard")
+                vc.view.frame = (self.view?.frame)!
+                vc.view.layoutIfNeeded()
+                UIView.transition(with: self.view!, duration: 0.3, options: .transitionCrossDissolve, animations:
+                                    {
+                                        self.view?.window?.rootViewController = vc
+                                    }, completion: { completed in
+                                    })
+            
+            }
 		}
 		
 		

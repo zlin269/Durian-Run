@@ -267,7 +267,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		scoreLabel.fontName = "ChalkboardSE-Bold"
 		scoreLabel.fontSize = 200
-        scoreLabel.fontColor = healthBar.healthColor
+        scoreLabel.fontColor = .healthColor
 		scoreLabel.position = CGPoint(x: frame.width / 2, y: frame.height - 200)
 		scoreLabel.zPosition = 200
 		self.addChild(scoreLabel)
