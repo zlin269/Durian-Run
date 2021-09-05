@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -439,7 +440,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                 <state key="normal" title="English" backgroundImage="pink button">
-                                    <color key="titleColor" systemColor="systemGray6Color"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="chooseEnglish:" destination="XD3-Xf-ipr" eventType="touchUpInside" id="tVg-OJ-HBG"/>
@@ -450,7 +451,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                 <state key="normal" title="ไทย" backgroundImage="pink button">
-                                    <color key="titleColor" systemColor="systemGray6Color"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="chooseThai:" destination="XD3-Xf-ipr" eventType="touchUpInside" id="K85-rp-YLL"/>
@@ -461,7 +462,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                 <state key="normal" title="中文" backgroundImage="pink button">
-                                    <color key="titleColor" systemColor="systemGray6Color"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="chooseChinese:" destination="XD3-Xf-ipr" eventType="touchUpInside" id="HT6-eO-V5K"/>
@@ -472,7 +473,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                 <state key="normal" title="Decline" backgroundImage="grey button">
-                                    <color key="titleColor" systemColor="systemGray6Color"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="pressDecline:" destination="XD3-Xf-ipr" eventType="touchUpInside" id="xGW-qf-dY5"/>
@@ -483,11 +484,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                 <state key="normal" title="Accept" backgroundImage="pink button">
-                                    <color key="titleColor" systemColor="systemGray6Color"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="pressAccept:" destination="XD3-Xf-ipr" eventType="touchUpInside" id="DRI-1E-k5I"/>
-                                    <segue destination="n7s-q0-5nW" kind="show" id="7eo-OX-pbN"/>
+                                    <segue destination="bz7-z8-nSb" kind="show" id="uaa-cd-LSJ"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Language Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aEU-iL-lPf">
@@ -520,13 +521,129 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9ii-mr-Zqt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="78" y="1986"/>
+            <point key="canvasLocation" x="-818" y="1987"/>
+        </scene>
+        <!--Onboarding View Controller-->
+        <scene sceneID="i1B-hm-kVZ">
+            <objects>
+                <viewController id="bz7-z8-nSb" customClass="OnboardingViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2ex-Lu-imb">
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="onboarding_bkg" translatesAutoresizingMaskIntoConstraints="NO" id="yaz-Bh-f1G">
+                                <rect key="frame" x="0.0" y="0.0" width="896" height="415"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="board" translatesAutoresizingMaskIntoConstraints="NO" id="iKe-Ik-e04">
+                                <rect key="frame" x="177" y="20" width="548" height="405"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxw-ia-WJa" userLabel="Continue Button">
+                                <rect key="frame" x="345" y="349" width="208" height="58"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <size key="titleShadowOffset" width="0.0" height="2"/>
+                                <state key="normal" title="CONTINUE" backgroundImage="redbutton_long">
+                                    <color key="titleColor" red="0.99805384870000002" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="titleShadowColor" systemColor="systemIndigoColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="continuePressed:" destination="bz7-z8-nSb" eventType="touchUpInside" id="k4z-fW-nwE"/>
+                                    <segue destination="n7s-q0-5nW" kind="show" id="QXr-7K-gKV"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="nikename no more than 8 characters" textAlignment="natural" minimumFontSize="17" background="textfieldbar" clearButtonMode="whileEditing" id="S0P-MN-tRi">
+                                <rect key="frame" x="269" y="152" width="360" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillEqually" spacingType="standard" id="9Oa-q1-9Fl">
+                                <rect key="frame" x="269" y="236" width="364" height="56"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="littlemonster1" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UPw-qh-FqV" userLabel="Monster1 Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="66" height="56"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="selected" backgroundImage="littlemonster1"/>
+                                        <connections>
+                                            <action selector="avatar1Selected:" destination="bz7-z8-nSb" eventType="touchUpInside" id="FiQ-F3-Ar6"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="littlemonster2" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="U3i-0M-L6g" userLabel="Monster2 Button">
+                                        <rect key="frame" x="74" y="0.0" width="67" height="56"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" backgroundImage="littlemonster2"/>
+                                        <connections>
+                                            <action selector="avatar1Selected:" destination="bz7-z8-nSb" eventType="touchUpInside" id="2fu-4y-7xX"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="littlemonster3" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="7O9-e5-vkh" userLabel="Monster3 Button">
+                                        <rect key="frame" x="149" y="0.0" width="66" height="56"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" backgroundImage="littlemonster3"/>
+                                        <connections>
+                                            <action selector="avatar1Selected:" destination="bz7-z8-nSb" eventType="touchUpInside" id="f9L-5h-VbD"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="littlemonster4" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="14S-bd-xJ0" userLabel="Monster4 Button">
+                                        <rect key="frame" x="223" y="0.0" width="66" height="56"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" backgroundImage="littlemonster4"/>
+                                        <connections>
+                                            <action selector="avatar1Selected:" destination="bz7-z8-nSb" eventType="touchUpInside" id="RdX-FG-MyC"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="littlemonster5" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qeQ-wN-Ce4" userLabel="Monster5 Button">
+                                        <rect key="frame" x="297" y="0.0" width="67" height="56"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" backgroundImage="littlemonster5"/>
+                                        <connections>
+                                            <action selector="avatar1Selected:" destination="bz7-z8-nSb" eventType="touchUpInside" id="veh-5M-yPD"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, What's your name?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" id="5EB-7u-9t1">
+                                <rect key="frame" x="264" y="76" width="368" height="41"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="34"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <size key="shadowOffset" width="0.0" height="1"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="8ci-Yj-FLj"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="wRw-Su-AYE"/>
+                    <connections>
+                        <outlet property="continuebtn" destination="gxw-ia-WJa" id="7JC-oH-At5"/>
+                        <outlet property="monsterbtn1" destination="UPw-qh-FqV" id="O3a-vn-Jc4"/>
+                        <outlet property="monsterbtn2" destination="U3i-0M-L6g" id="RYh-8m-q2S"/>
+                        <outlet property="monsterbtn3" destination="7O9-e5-vkh" id="XZN-O9-8Lw"/>
+                        <outlet property="monsterbtn4" destination="14S-bd-xJ0" id="BdS-mj-daJ"/>
+                        <outlet property="monsterbtn5" destination="qeQ-wN-Ce4" id="CbD-2X-0q1"/>
+                        <outlet property="textfield" destination="S0P-MN-tRi" id="nzY-lp-8tu"/>
+                        <outlet property="titleLabel" destination="5EB-7u-9t1" id="1A5-eM-SL0"/>
+                        <outletCollection property="avatarButtons" destination="UPw-qh-FqV" collectionClass="NSMutableArray" id="Kid-cy-p4g"/>
+                        <outletCollection property="avatarButtons" destination="U3i-0M-L6g" collectionClass="NSMutableArray" id="0lx-Fg-tRN"/>
+                        <outletCollection property="avatarButtons" destination="7O9-e5-vkh" collectionClass="NSMutableArray" id="sSB-f8-Qpm"/>
+                        <outletCollection property="avatarButtons" destination="14S-bd-xJ0" collectionClass="NSMutableArray" id="lnZ-sU-mg0"/>
+                        <outletCollection property="avatarButtons" destination="qeQ-wN-Ce4" collectionClass="NSMutableArray" id="X8C-66-DtM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sdK-VR-VRw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="139.95535714285714" y="1986.9565217391305"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="KBu-VP-B6d"/>
         <segue reference="fqg-cZ-p4m"/>
-        <segue reference="zei-zr-r6n"/>
+        <segue reference="QXr-7K-gKV"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Durian Run" width="547" height="106"/>
@@ -534,6 +651,7 @@
         <image name="Shanghai" width="896" height="414"/>
         <image name="arrow.uturn.left.circle.fill" catalog="system" width="128" height="121"/>
         <image name="back" width="32" height="32"/>
+        <image name="board" width="435" height="400"/>
         <image name="clouds" width="896" height="414"/>
         <image name="gold" width="84" height="84"/>
         <image name="grey button" width="90" height="36"/>
@@ -543,10 +661,19 @@
         <image name="leaderboardtitle" width="326" height="88"/>
         <image name="leaderboardtop3" width="408" height="201"/>
         <image name="list.number" catalog="system" width="128" height="97"/>
+        <image name="littlemonster1" width="56" height="56"/>
+        <image name="littlemonster2" width="56" height="56"/>
+        <image name="littlemonster3" width="56" height="56"/>
+        <image name="littlemonster4" width="56" height="56"/>
+        <image name="littlemonster5" width="56" height="56"/>
         <image name="mushroom_red" width="81" height="99"/>
         <image name="notification bar" width="389" height="187"/>
+        <image name="onboarding_bkg" width="896" height="414"/>
         <image name="pink button" width="90" height="36"/>
+        <image name="redbutton_long" width="208" height="58"/>
+        <image name="selected" width="56" height="56"/>
         <image name="settings" width="49" height="48"/>
+        <image name="textfieldbar" width="356" height="56"/>
         <image name="trophybutton" width="49" height="48"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -554,8 +681,8 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemIndigoColor">
+            <color red="0.34509803921568627" green="0.33725490196078434" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemTealColor">
             <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

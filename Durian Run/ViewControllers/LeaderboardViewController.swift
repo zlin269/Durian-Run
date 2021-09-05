@@ -159,7 +159,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         if r != nil {
             r! += 1
         }
-        let personalBox = createBoxWithScore(rank: r, name: "You", score: UserDefaults.int(forKey: .highScore)!)
+        let personalBox = createBoxWithScore(rank: r, name: UserDefaults.string(forKey: .username)!, score: UserDefaults.int(forKey: .highScore)!)
         personalBox.removeFromSuperview()
         view.addSubview(personalBox)
         view.bringSubviewToFront(personalBox)
