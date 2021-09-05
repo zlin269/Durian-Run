@@ -147,7 +147,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
                         break
                     }
                     listCount += 1
-                    _ = createBoxWithScore(rank: listCount, name: list[listCount - 1].playerName, score: list[listCount - 1].score)
+                    _ = createBoxWithScore(rank: listCount, avatarImg: list[listCount - 1].avatar, name: list[listCount - 1].playerName, score: list[listCount - 1].score)
                 }
             }
         } catch {
@@ -159,7 +159,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         if r != nil {
             r! += 1
         }
-        let personalBox = createBoxWithScore(rank: r, name: UserDefaults.string(forKey: .username)!, score: UserDefaults.int(forKey: .highScore)!)
+        let personalBox = createBoxWithScore(rank: r, avatarImg: UserDefaults.string(forKey: .avatar)!, name: UserDefaults.string(forKey: .username)!, score: UserDefaults.int(forKey: .highScore)!)
         personalBox.removeFromSuperview()
         view.addSubview(personalBox)
         view.bringSubviewToFront(personalBox)
@@ -227,12 +227,12 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
                     break
                 }
                 listCount += 1
-                _ = createBoxWithScore(rank: listCount, name: list[listCount - 1].playerName, score: list[listCount - 1].score)
+                _ = createBoxWithScore(rank: listCount, avatarImg: list[listCount - 1].avatar, name: list[listCount - 1].playerName, score: list[listCount - 1].score)
             }
         }
     }
     
-    func createBoxWithScore (rank: Int?, name : String, score : Int) -> UIStackView {
+    func createBoxWithScore (rank: Int?, avatarImg : String ,name : String, score : Int) -> UIStackView {
         let box = UIStackView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width, height: scrollView.frame.height / CGFloat(scoresPerPage)))
         box.axis = .horizontal
         box.spacing = 20
@@ -257,7 +257,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         rankLabel.widthAnchor.constraint(equalTo: box.widthAnchor, multiplier: 0.1).isActive = true
         // player avatar
         let avatar = UIImageView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width * 0.1, height: scrollView.frame.width * 0.1))
-        avatar.image = UIImage(named: "littlemonster1")
+        avatar.image = UIImage(named: avatarImg)
         box.addArrangedSubview(avatar)
         avatar.translatesAutoresizingMaskIntoConstraints = false
         avatar.heightAnchor.constraint(equalTo: box.heightAnchor, multiplier: 0.8).isActive = true

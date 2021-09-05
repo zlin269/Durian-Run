@@ -117,7 +117,7 @@ class GameOverScene: MenuScene {
         do {
             let data = try Data(contentsOf: path)
             if var scores = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Score] {
-                scores.append(Score(name: UserDefaults.string(forKey: .username)!, score: Int(score), seasons: seasons))
+                scores.append(Score(name: UserDefaults.string(forKey: .username)!, score: Int(score), seasons: seasons, avatar: UserDefaults.string(forKey: .avatar)!))
                 scores.sort()
                 let newdata = try NSKeyedArchiver.archivedData(withRootObject: scores, requiringSecureCoding: false)
                 try newdata.write(to: path)

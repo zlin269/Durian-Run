@@ -46,7 +46,7 @@ class SettingsViewController: UIViewController {
             v.removeFromSuperview()
         }
 		
-		let viewInScrollView = UIView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width, height: scrollView.frame.height * 3))
+		let viewInScrollView = UIView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width, height: 400))
 		scrollView.addSubview(viewInScrollView)
 		viewInScrollView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
 		viewInScrollView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: 0).isActive = true
@@ -141,12 +141,18 @@ class SettingsViewController: UIViewController {
         languageSegmentedControl.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 270).isActive = true
         languageSegmentedControl.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
 		
-		let moreSettings2 = UILabel()
-		moreSettings2.translatesAutoresizingMaskIntoConstraints = false
-		moreSettings2.text = "Something"
-		viewInScrollView.addSubview(moreSettings2)
-		moreSettings2.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 500).isActive = true
-		moreSettings2.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
+        let resetID = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
+        resetID.translatesAutoresizingMaskIntoConstraints = false
+        resetID.titleLabel?.text = {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "更变用户名或头像"
+        case "English": return "Change Name or Avatar"
+        case "Thai": return "เปลี่ยนชื่อผู้ใช้หรืออวาตาร์"
+        default: return "更变用户名或头像"
+        }}()
+		viewInScrollView.addSubview(resetID)
+        resetID.addTarget(self, action: #selector(setNameAndAvatar(_:)), for: .touchUpInside)
+        resetID.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 320).isActive = true
+        resetID.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
         
 
         // Do any additional setup after loading the view.
@@ -193,6 +199,18 @@ class SettingsViewController: UIViewController {
 //        }))
 //        self.present(alert, animated: true, completion: nil)
         viewDidLoad()
+    }
+    
+    @objc func setNameAndAvatar(_ sender: UIButton!) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "onboarding")
+        vc.view.frame = (self.view?.frame)!
+        vc.view.layoutIfNeeded()
+        UIView.transition(with: self.view!, duration: 0.3, options: .transitionCrossDissolve, animations:
+                            {
+                                self.view?.window?.rootViewController = vc
+                            }, completion: { completed in
+                            })
     }
     
     override var shouldAutorotate: Bool {

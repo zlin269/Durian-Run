@@ -4,7 +4,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -531,7 +530,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="onboarding_bkg" translatesAutoresizingMaskIntoConstraints="NO" id="yaz-Bh-f1G">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="onboarding" image="FirstUse bkg" translatesAutoresizingMaskIntoConstraints="NO" id="yaz-Bh-f1G">
                                 <rect key="frame" x="0.0" y="0.0" width="896" height="415"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -539,20 +538,6 @@
                                 <rect key="frame" x="177" y="20" width="548" height="405"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxw-ia-WJa" userLabel="Continue Button">
-                                <rect key="frame" x="345" y="349" width="208" height="58"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                <size key="titleShadowOffset" width="0.0" height="2"/>
-                                <state key="normal" title="CONTINUE" backgroundImage="redbutton_long">
-                                    <color key="titleColor" red="0.99805384870000002" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    <color key="titleShadowColor" systemColor="systemIndigoColor"/>
-                                </state>
-                                <connections>
-                                    <action selector="continuePressed:" destination="bz7-z8-nSb" eventType="touchUpInside" id="k4z-fW-nwE"/>
-                                    <segue destination="n7s-q0-5nW" kind="show" id="QXr-7K-gKV"/>
-                                </connections>
-                            </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="nikename no more than 8 characters" textAlignment="natural" minimumFontSize="17" background="textfieldbar" clearButtonMode="whileEditing" id="S0P-MN-tRi">
                                 <rect key="frame" x="269" y="152" width="360" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -560,20 +545,22 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillEqually" spacingType="standard" id="9Oa-q1-9Fl">
-                                <rect key="frame" x="269" y="236" width="364" height="56"/>
+                            <stackView opaque="NO" contentMode="scaleAspectFit" distribution="equalCentering" id="9Oa-q1-9Fl">
+                                <rect key="frame" x="269" y="236" width="363" height="56"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="littlemonster1" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UPw-qh-FqV" userLabel="Monster1 Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="66" height="56"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="selected" backgroundImage="littlemonster1"/>
+                                        <state key="normal" image="selected" backgroundImage="littlemonster1">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
+                                        </state>
                                         <connections>
                                             <action selector="avatar1Selected:" destination="bz7-z8-nSb" eventType="touchUpInside" id="FiQ-F3-Ar6"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="littlemonster2" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="U3i-0M-L6g" userLabel="Monster2 Button">
-                                        <rect key="frame" x="74" y="0.0" width="67" height="56"/>
+                                        <rect key="frame" x="77" y="0.0" width="56" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <state key="normal" backgroundImage="littlemonster2"/>
                                         <connections>
@@ -581,7 +568,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="littlemonster3" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="7O9-e5-vkh" userLabel="Monster3 Button">
-                                        <rect key="frame" x="149" y="0.0" width="66" height="56"/>
+                                        <rect key="frame" x="153" y="0.0" width="56" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <state key="normal" backgroundImage="littlemonster3"/>
                                         <connections>
@@ -589,7 +576,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="littlemonster4" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="14S-bd-xJ0" userLabel="Monster4 Button">
-                                        <rect key="frame" x="223" y="0.0" width="66" height="56"/>
+                                        <rect key="frame" x="230" y="0.0" width="56" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <state key="normal" backgroundImage="littlemonster4"/>
                                         <connections>
@@ -597,7 +584,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="littlemonster5" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qeQ-wN-Ce4" userLabel="Monster5 Button">
-                                        <rect key="frame" x="297" y="0.0" width="67" height="56"/>
+                                        <rect key="frame" x="307" y="0.0" width="56" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <state key="normal" backgroundImage="littlemonster5"/>
                                         <connections>
@@ -614,6 +601,20 @@
                                 <nil key="highlightedColor"/>
                                 <size key="shadowOffset" width="0.0" height="1"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxw-ia-WJa" userLabel="Continue Button">
+                                <rect key="frame" x="344" y="335" width="208" height="58"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <size key="titleShadowOffset" width="0.0" height="2"/>
+                                <state key="normal" title="CONTINUE" backgroundImage="redbutton_long">
+                                    <color key="titleColor" red="0.99805384870000002" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="titleShadowColor" systemColor="systemIndigoColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="continuePressed:" destination="bz7-z8-nSb" eventType="touchUpInside" id="k4z-fW-nwE"/>
+                                    <segue destination="n7s-q0-5nW" kind="show" id="QXr-7K-gKV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8ci-Yj-FLj"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -668,7 +669,6 @@
         <image name="littlemonster5" width="56" height="56"/>
         <image name="mushroom_red" width="81" height="99"/>
         <image name="notification bar" width="389" height="187"/>
-        <image name="onboarding_bkg" width="896" height="414"/>
         <image name="pink button" width="90" height="36"/>
         <image name="redbutton_long" width="208" height="58"/>
         <image name="selected" width="56" height="56"/>
