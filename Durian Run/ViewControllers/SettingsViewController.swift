@@ -41,12 +41,12 @@ class SettingsViewController: UIViewController {
 		scrollView.isScrollEnabled = true
 		scrollView.bounces = true
 		scrollView.showsVerticalScrollIndicator = true
-		scrollView.contentSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height * 3)
+		scrollView.contentSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height * 2)
         for v in scrollView.subviews {
             v.removeFromSuperview()
         }
 		
-		let viewInScrollView = UIView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width, height: 400))
+        let viewInScrollView = UIView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.width, height: scrollView.contentSize.height))
 		scrollView.addSubview(viewInScrollView)
 		viewInScrollView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
 		viewInScrollView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: 0).isActive = true
@@ -143,15 +143,16 @@ class SettingsViewController: UIViewController {
 		
         let resetID = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
         resetID.translatesAutoresizingMaskIntoConstraints = false
-        resetID.titleLabel?.text = {()->String in switch UserDefaults.string(forKey: .language) {
+        resetID.setTitle({()->String in switch UserDefaults.string(forKey: .language) {
         case "Chinese": return "更变用户名或头像"
         case "English": return "Change Name or Avatar"
         case "Thai": return "เปลี่ยนชื่อผู้ใช้หรืออวาตาร์"
         default: return "更变用户名或头像"
-        }}()
+        }}(), for: .normal)
+        resetID.setTitleColor(.healthColor, for: .normal)
 		viewInScrollView.addSubview(resetID)
         resetID.addTarget(self, action: #selector(setNameAndAvatar(_:)), for: .touchUpInside)
-        resetID.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 320).isActive = true
+        resetID.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 340).isActive = true
         resetID.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
         
 

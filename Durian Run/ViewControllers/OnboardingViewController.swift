@@ -42,7 +42,38 @@ class OnboardingViewController: UIViewController {
         
         // MARK: - add username constrain check
         let usernameTyped = textfield.text
+        if usernameTyped?.removingWhitespaces() == "" {
+            showAlert()
+        }
         UserDefaults.set(value: usernameTyped ?? "You", forKey: .username)
         print("username set to "+usernameTyped!)
+
+    }
+    
+    func showAlert () {
+        var alert:UIAlertController
+        switch UserDefaults.string(forKey: .language) {
+        case "Chinese":
+            alert = UIAlertController(title: "注意", message: "昵称不能为空", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "好", style: UIAlertAction.Style.default, handler: nil))
+        case "English":
+            alert = UIAlertController(title: "Attention", message: "Nickname cannot be white space", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+        case "Thai":
+            alert = UIAlertController(title: "ความสนใจ", message: "กรุณากดปุ่มยอมรับเพื่อดำเนินการต่อ", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "ตกลง", style: UIAlertAction.Style.default, handler: nil))
+        default:
+            alert = UIAlertController(title: "Attention", message: "Please Press the Accept Button to continue", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+
+        }
+            // show the alert
+            self.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension String {
+    func removingWhitespaces() -> String {
+        return components(separatedBy: .whitespaces).joined()
     }
 }

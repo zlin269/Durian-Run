@@ -85,7 +85,7 @@ class GameOverScene: MenuScene {
 		
         let nameLabel = SKLabelNode(text: UserDefaults.string(forKey: .username))
         nameLabel.fontColor = .healthColor
-        nameLabel.position = CGPoint(x: frame.midX, y: frame.midY - 190)
+        nameLabel.position = CGPoint(x: frame.midX, y: frame.midY - 186)
         nameLabel.horizontalAlignmentMode = .center
         nameLabel.fontSize = 120
         nameLabel.fontName = "AvenirNext-Medium"
