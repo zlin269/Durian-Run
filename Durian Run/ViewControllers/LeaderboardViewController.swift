@@ -140,7 +140,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
                 top2score.text = "\(scores[1].score)"
                 top3name.text = scores[2].playerName
                 top3score.text = "\(scores[2].score)"
-                
+                print(111)
                 // top 4 - 10
                 for i in 3...8 {
                     if scores.count == i {
@@ -159,7 +159,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         if r != nil {
             r! += 1
         }
-        let personalBox = createBoxWithScore(rank: r, avatarImg: UserDefaults.string(forKey: .avatar)!, name: UserDefaults.string(forKey: .username)!, score: UserDefaults.int(forKey: .highScore)!)
+        let personalBox = createBoxWithScore(rank: r, avatarImg: UserDefaults.string(forKey: .avatar)!, name: UserDefaults.string(forKey: .username)!, score: r == nil ? 0 : list[r!-1].score)
         personalBox.removeFromSuperview()
         view.addSubview(personalBox)
         view.bringSubviewToFront(personalBox)

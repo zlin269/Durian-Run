@@ -24,7 +24,12 @@ class FirstUseViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         if(UserDefaults.bool(forKey: .hasFirstAccepted) ?? false) { //not first open and has accepted terms
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let startingViewController = storyBoard.instantiateViewController(withIdentifier: "MainMenu")
+            let startingViewController : UIViewController
+            if (UserDefaults.bool(forKey: .hasSetName) ?? false) {
+                startingViewController = storyBoard.instantiateViewController(withIdentifier: "MainMenu")
+            } else {
+                startingViewController = storyBoard.instantiateViewController(withIdentifier: "onboarding")
+            }
             self.present(startingViewController, animated: false, completion: nil)
         }
     }

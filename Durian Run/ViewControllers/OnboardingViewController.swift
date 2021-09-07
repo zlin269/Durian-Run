@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class OnboardingViewController: UIViewController {
+class OnboardingViewController: UIViewController, UITextFieldDelegate {
     
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -26,7 +26,27 @@ class OnboardingViewController: UIViewController {
     var avatar = "littlemonster1"
     let btnSelectedImage = UIImage(named: "selected")
     
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        self.textfield.delegate = self
+        view.addGestureRecognizer(tap)
+        
+        switch UserDefaults.string(forKey: .language) {
+        case "English":
+            textfield.placeholder = "nikename no more than 8 characters"
+            continuebtn.setTitle("Continue", for: .normal)
+        case "Chinese":
+            textfield.placeholder = "请输入8字以内的昵称"
+            continuebtn.setTitle("继续", for: .normal)
+        case "Thai":
+            textfield.placeholder = "กรุณาใส่ชื่อเล่นไม่เกิน 8 ตัวอักษร"
+            continuebtn.setTitle("ดำเนินต่อ", for: .normal)
+        default:
+            break
+        }
+    }
     
     @IBAction func avatar1Selected(_ sender: UIButton) {
         avatarButtons.forEach({$0.setImage(nil, for: .normal) })
@@ -41,13 +61,21 @@ class OnboardingViewController: UIViewController {
         print("avatar set to "+avatar)
         
         // MARK: - add username constrain check
-        let usernameTyped = textfield.text
-        if usernameTyped?.removingWhitespaces() == "" {
+        let usernameTyped = textfield.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if usernameTyped.removingWhitespaces() == "" {
             showAlert()
+            return
         }
-        UserDefaults.set(value: usernameTyped ?? "You", forKey: .username)
-        print("username set to "+usernameTyped!)
+        UserDefaults.set(value: true, forKey: .hasSetName)
+        UserDefaults.set(value: usernameTyped, forKey: .username)
+        print("username set to " + usernameTyped)
 
+    }
+    
+    //Calls this function when the tap is recognized.
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     func showAlert () {
@@ -63,13 +91,18 @@ class OnboardingViewController: UIViewController {
             alert = UIAlertController(title: "ความสนใจ", message: "กรุณากดปุ่มยอมรับเพื่อดำเนินการต่อ", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "ตกลง", style: UIAlertAction.Style.default, handler: nil))
         default:
-            alert = UIAlertController(title: "Attention", message: "Please Press the Accept Button to continue", preferredStyle: .alert)
+            alert = UIAlertController(title: "Attention", message: "Nickname cannot be white space", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
 
         }
             // show the alert
             self.present(alert, animated: true, completion: nil)
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            self.view.endEditing(true)
+            return false
+        }
 }
 
 extension String {

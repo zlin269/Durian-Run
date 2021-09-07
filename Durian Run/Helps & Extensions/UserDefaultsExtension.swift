@@ -21,6 +21,7 @@ extension UserDefaults {
         case charactersOwned
         case language
         case hasFirstAccepted // has accepted protocol(not first used)
+        case hasSetName // has accepted set username and avatar
 	}
 	
 	static func set(value: String, forKey key: AccountKeys) {
