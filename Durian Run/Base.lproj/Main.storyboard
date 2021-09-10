@@ -405,6 +405,8 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="scrollView" translatesAutoresizingMaskIntoConstraints="NO" id="89i-8o-4gi">
                                 <rect key="frame" x="493" y="93" width="321" height="234"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="tintColor" systemColor="systemBackgroundColor"/>
                                 <viewLayoutGuide key="contentLayoutGuide" id="hv3-0Z-bru"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="ih3-oO-2gN"/>
                             </scrollView>
@@ -642,9 +644,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="qDB-fv-EZa"/>
         <segue reference="ZYn-Hy-Q2I"/>
         <segue reference="fqg-cZ-p4m"/>
-        <segue reference="QXr-7K-gKV"/>
+        <segue reference="zei-zr-r6n"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Durian Run" width="547" height="106"/>
