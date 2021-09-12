@@ -11,6 +11,14 @@ import GameplayKit
 
 class GameViewController: UIViewController {
     
+    private let gameScene: GameScene? = {
+        guard let scene = GKScene(fileNamed: "GameScene"), let sceneNode = scene.rootNode as? GameScene else {
+            return nil
+        }
+        
+        return sceneNode
+    }()
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -18,33 +26,47 @@ class GameViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-
-        // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
-        // including entities and graphs.
-        if let scene = GKScene(fileNamed: "GameScene") {
-            
-            // Get the SKScene from the loaded GKScene
-            if let sceneNode = scene.rootNode as! GameScene? {
-                
-                // Set the scale mode to scale to fit the window
-                sceneNode.scaleMode = .aspectFit
-                
-                // Present the scene
-                if let view = self.view as! SKView? {
-                    view.presentScene(sceneNode)
-                    
-                    view.ignoresSiblingOrder = true
-                    
-                    view.showsFPS = true
-                    view.showsNodeCount = true
-					view.showsPhysics = true
-					view.showsDrawCount = true
-					
-                }
+        
+        // Set the scale mode to scale to fit the window
+        gameScene?.scaleMode = .aspectFit
+        
+        gameScene?.openSettingsClosure = { [weak self] in
+            guard let self = self else {
+                return
             }
+            
+            self.openGameSettingsViewController()
         }
+        
+        // Present the scene
+        if let view = self.view as! SKView? {
+            view.presentScene(gameScene)
+            
+            view.ignoresSiblingOrder = true
+            
+            view.showsFPS = true
+            view.showsNodeCount = true
+            view.showsPhysics = true
+            view.showsDrawCount = true
+        }
+        
         super.viewDidLoad()
-       
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateGameScene), name: Notification.Name("UpdateGameScene"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("UpdateGameScene"), object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        gameScene?.reloadGameScene()
+    }
+    
+    @objc private func updateGameScene() {
+        gameScene?.reloadGameScene()
     }
 
     override var shouldAutorotate: Bool {
@@ -65,5 +87,12 @@ class GameViewController: UIViewController {
 	
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
         return UIRectEdge.bottom
+    }
+    
+    public func openGameSettingsViewController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let settingsViewController = storyboard.instantiateViewController(withIdentifier: "GameSettings")
+        
+        present(settingsViewController, animated: true, completion: nil)
     }
 }
