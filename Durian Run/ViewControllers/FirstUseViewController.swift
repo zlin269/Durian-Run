@@ -39,6 +39,9 @@ class FirstUseViewController: UIViewController {
         declineButton.isHidden = true
         acceptButton.isHidden = true
         protocolText.isHidden = true
+        
+        languageSettingLabel.textColor = .black
+        protocolText.textColor = .black
     }
 
     @IBAction func chooseChinese(_ sender: Any) {

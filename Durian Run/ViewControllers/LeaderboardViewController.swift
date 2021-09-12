@@ -53,7 +53,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         
         scrollView.delegate = self
         // Top1
-        let top1name = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width/6, height: top3.frame.height/8))
+        let top1name = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width/7, height: top3.frame.height/8))
         top1name.text = "TOP1"
         top1name.textColor = nameColor
         top1name.textAlignment = .center
@@ -76,7 +76,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         top1score.heightAnchor.constraint(equalTo: top3.heightAnchor, multiplier: 0.5).isActive = true
         
         // Top2
-        let top2name = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width/6, height: top3.frame.height/8))
+        let top2name = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width/7, height: top3.frame.height/8))
         top2name.text = "TOP2"
         top2name.textColor = nameColor
         top2name.textAlignment = .center
@@ -99,7 +99,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         top2score.heightAnchor.constraint(equalTo: top3.heightAnchor, multiplier: 0.5).isActive = true
         
         // Top3
-        let top3name = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width/6, height: top3.frame.height/8))
+        let top3name = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width/7, height: top3.frame.height/8))
         top3name.text = "TOP3"
         top3name.textColor = nameColor
         top3name.textAlignment = .center
@@ -251,6 +251,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
             rankLabel.text = "?"
         }
         rankLabel.textAlignment = .right
+        rankLabel.textColor = .black
         rankLabel.font = UIFont(name: "Futura-Medium", size: 20)
         box.addArrangedSubview(rankLabel)
         rankLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -276,6 +277,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         playerScore.text = "\(score)"
         playerScore.textAlignment = .right
         playerScore.font = UIFont(name: "Futura-Medium", size: 20)
+        playerScore.textColor = .black
         box.addArrangedSubview(playerScore)
         
         return box
