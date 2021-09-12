@@ -61,6 +61,8 @@ enum Season : Int {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 	
+    public var openSettingsClosure: (() -> Void)?
+    
 	static var sharedInstance = GameScene()
 	
 	// Season Info
@@ -181,11 +183,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             createBackground()
 		
 		musicNode.autoplayLooped = true
-		musicNode.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume)!), duration: 0))
+//		musicNode.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume)!), duration: 0))
 		self.addChild(musicNode)
 		
 		gameSound.autoplayLooped = false
-		gameSound.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0))
+//		gameSound.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0))
 		self.addChild(gameSound)
 		
 		let boundary = Boundary()
@@ -280,8 +282,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		self.addChild(coinLabel)
         
         startingAnimation()
+    }
+    
+    public func reloadGameScene() {
+        musicNode.removeAllActions()
+        musicNode.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume)!), duration: 0))
         
-        
+        gameSound.removeAllActions()
+        gameSound.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0))
     }
     
     func createBackground() {
@@ -469,7 +477,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             } else if touchedNode.name == "quit" {
                 displayGameOver()
             } else if touchedNode.name == "setting" {
-                
+                if let openSettingsClosure = openSettingsClosure {
+                    openSettingsClosure()
+                }
             } else if touchedNode.name == "resume" {
                 unpause()
             }

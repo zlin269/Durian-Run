@@ -238,8 +238,7 @@ class GameOverScene: MenuScene {
 		
 		// Determine the font scaling factor that should let the label text fit in the given rectangle.
 		let scalingFactor = min(rect.width / labelNode.frame.width, rect.height / labelNode.frame.height)
-        print (rect.width / labelNode.frame.width)
-        print(rect.height / labelNode.frame.height)
+		
 		// Change the fontSize.
 		labelNode.fontSize *= scalingFactor
 		
