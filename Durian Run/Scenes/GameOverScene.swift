@@ -128,6 +128,7 @@ class GameOverScene: MenuScene {
         
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("scores")
 
+        if score > 0 {
         do {
             let data = try Data(contentsOf: path)
             if var scores = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Score] {
@@ -138,7 +139,7 @@ class GameOverScene: MenuScene {
             }
         } catch {
             print("ERROR: \(error.localizedDescription)")
-        }
+        }}
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
