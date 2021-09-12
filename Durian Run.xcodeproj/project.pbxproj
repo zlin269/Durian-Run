@@ -71,6 +71,7 @@
 		62CF789426B780E100E573ED /* coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF789326B780E100E573ED /* coin.wav */; };
 		62CF789626B785C600E573ED /* chewing.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF789526B785C600E573ED /* chewing.wav */; };
 		62CF789B26B9257B00E573ED /* UserDefaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CF789A26B9257B00E573ED /* UserDefaultsExtension.swift */; };
+		62FD83AE26EE60430089BAED /* GameSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD83AD26EE60430089BAED /* GameSettingsViewController.swift */; };
 		C64B299126A8326B006A1FEB /* Extension_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B299026A8326B006A1FEB /* Extension_1.swift */; };
 		C64B299326A83289006A1FEB /* Extension_2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B299226A83289006A1FEB /* Extension_2.swift */; };
 		C64B29D226A9213B006A1FEB /* Rain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B29D126A9213B006A1FEB /* Rain.swift */; };
@@ -164,6 +165,7 @@
 		62CF789326B780E100E573ED /* coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = coin.wav; sourceTree = "<group>"; };
 		62CF789526B785C600E573ED /* chewing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = chewing.wav; sourceTree = "<group>"; };
 		62CF789A26B9257B00E573ED /* UserDefaultsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtension.swift; sourceTree = "<group>"; };
+		62FD83AD26EE60430089BAED /* GameSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSettingsViewController.swift; sourceTree = "<group>"; };
 		C64B299026A8326B006A1FEB /* Extension_1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_1.swift; sourceTree = "<group>"; };
 		C64B299226A83289006A1FEB /* Extension_2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_2.swift; sourceTree = "<group>"; };
 		C64B29D126A9213B006A1FEB /* Rain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rain.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 		626938F726B96989003E968F /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				62FD83AD26EE60430089BAED /* GameSettingsViewController.swift */,
 				623EB12F26A167BC000628CB /* GameViewController.swift */,
 				621031C126D4D5AD0043CD99 /* MainMenuViewController.swift */,
 				626938F826B96E05003E968F /* StatsViewController.swift */,
@@ -564,6 +567,7 @@
 				623EB12E26A167BC000628CB /* GameScene.swift in Sources */,
 				623EB17626A66A3A000628CB /* Sun.swift in Sources */,
 				623EB16926A5406D000628CB /* StatusBar.swift in Sources */,
+				62FD83AE26EE60430089BAED /* GameSettingsViewController.swift in Sources */,
 				623EB13026A167BC000628CB /* GameViewController.swift in Sources */,
 				623EB15F26A16B0B000628CB /* Durian.swift in Sources */,
 				1EF8816D26D4B453000D4591 /* FirstUseViewController.swift in Sources */,

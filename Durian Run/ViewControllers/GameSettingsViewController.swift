@@ -76,7 +76,7 @@ class GameSettingsViewController: UIViewController {
     }
     
     @IBAction func changeLanguage(_ sender: UISegmentedControl) {
-        let list = ["Chinese", "Thai", "English"]
+        let list = ["Chinese", "English", "Thai"]
         UserDefaults.set(value: list[min(sender.selectedSegmentIndex, 2)], forKey: .language)
         updateSubviews()
     }
