@@ -41,6 +41,7 @@ class FirstUseViewController: UIViewController {
         protocolText.isHidden = true
         
         languageSettingLabel.textColor = .black
+        languageSettingLabel.textAlignment = .center
         protocolText.textColor = .black
     }
 

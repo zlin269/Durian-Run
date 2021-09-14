@@ -81,7 +81,7 @@ class GameOverScene: MenuScene {
         restartIcon.zPosition = 10
         restartIcon.setScale(3)
 		restartIcon.name = "restart"
-        restartIcon.position = CGPoint(x: frame.midX, y: 120)
+        restartIcon.position = CGPoint(x: frame.midX, y: 140)
         let restarttext = SKLabelNode(text: {()->String in switch UserDefaults.string(forKey: .language) {
         case "Chinese": return "再玩一次"
         case "English": return "Play Again"
@@ -153,6 +153,12 @@ class GameOverScene: MenuScene {
 			if touchedNode.name == "restart" {
 				touchedNode.alpha = 0.7
                 touchedNode.setScale(3)
+                touchedNode.run(SKAction.wait(forDuration: 0.3), completion: {
+                    let gameScene = GameScene(size: self.size)
+                    gameScene.scaleMode = self.scaleMode
+                    let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+                    self.view?.presentScene(gameScene, transition: reveal)
+                })
 			}
 			if touchedNode.name == "home" {
 				touchedNode.alpha = 0.7
@@ -200,7 +206,6 @@ class GameOverScene: MenuScene {
 			if touchedNode.name == "restart" {
 				let gameScene = GameScene(size: size)
 				gameScene.scaleMode = scaleMode
-				
 				let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
 				view?.presentScene(gameScene, transition: reveal)
 			}

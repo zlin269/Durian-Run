@@ -12,7 +12,7 @@
         <scene sceneID="tXr-a1-R10">
             <objects>
                 <viewController modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="BV1-FR-VrT" customClass="GameViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
+                    <view key="view" contentMode="scaleAspectFit" id="3se-qz-xqx" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
@@ -28,7 +28,7 @@
         <scene sceneID="pn8-Eu-ehe">
             <objects>
                 <viewController id="6Fv-H7-2ua" customClass="CreditViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="V1b-Wr-cfN">
+                    <view key="view" contentMode="scaleAspectFit" id="V1b-Wr-cfN">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -78,7 +78,7 @@
         <scene sceneID="k2b-ft-ng2">
             <objects>
                 <viewController id="vUy-sl-Mkc" customClass="ShopViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="enf-PE-6Jv">
+                    <view key="view" contentMode="scaleAspectFit" id="enf-PE-6Jv">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -175,7 +175,7 @@
         <scene sceneID="mLl-00-6IG">
             <objects>
                 <viewController storyboardIdentifier="MainMenu" modalTransitionStyle="crossDissolve" useStoryboardIdentifierAsRestorationIdentifier="YES" id="n7s-q0-5nW" customClass="MainMenuViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="GRX-a1-drr">
+                    <view key="view" contentMode="scaleAspectFit" id="GRX-a1-drr">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -298,7 +298,7 @@
         <scene sceneID="kcE-Or-9SG">
             <objects>
                 <viewController storyboardIdentifier="Setting" useStoryboardIdentifierAsRestorationIdentifier="YES" id="G5w-63-P4i" customClass="SettingsViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="rk9-Jt-Pov">
+                    <view key="view" contentMode="scaleAspectFit" id="rk9-Jt-Pov">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -362,9 +362,9 @@
         <scene sceneID="S0a-YA-5ce">
             <objects>
                 <viewController storyboardIdentifier="LeaderBoard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="InB-lg-D8O" customClass="LeaderboardViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="27k-Pz-LkL">
+                    <view key="view" contentMode="center" id="27k-Pz-LkL">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="shanghai" image="Shanghai" translatesAutoresizingMaskIntoConstraints="NO" id="VEg-Cc-14L">
                                 <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
@@ -426,7 +426,7 @@
         <scene sceneID="uN4-QR-YjA">
             <objects>
                 <viewController id="XD3-Xf-ipr" userLabel="FirstUse View Controller" customClass="FirstUseViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="ru9-wj-t4J">
+                    <view key="view" contentMode="scaleAspectFit" id="ru9-wj-t4J">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -530,7 +530,7 @@
         <scene sceneID="i1B-hm-kVZ">
             <objects>
                 <viewController storyboardIdentifier="onboarding" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bz7-z8-nSb" customClass="OnboardingViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="2ex-Lu-imb">
+                    <view key="view" contentMode="scaleAspectFit" id="2ex-Lu-imb">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -648,7 +648,7 @@
         <scene sceneID="c6H-vi-gh9">
             <objects>
                 <viewController storyboardIdentifier="GameSettings" useStoryboardIdentifierAsRestorationIdentifier="YES" id="iLG-kO-FpL" customClass="GameSettingsViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="FFV-4j-do0">
+                    <view key="view" contentMode="scaleAspectFit" id="FFV-4j-do0">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -656,7 +656,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KB8-vg-QZV">
-                                <rect key="frame" x="60" y="20" width="64" height="64"/>
+                                <rect key="frame" x="60" y="19.5" width="64" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="64" id="Xzp-co-qUm"/>
                                     <constraint firstAttribute="width" secondItem="KB8-vg-QZV" secondAttribute="height" multiplier="1:1" id="kM5-LC-fcW"/>
@@ -794,9 +794,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ZYn-Hy-Q2I"/>
+        <segue reference="KBu-VP-B6d"/>
         <segue reference="fqg-cZ-p4m"/>
-        <segue reference="QXr-7K-gKV"/>
+        <segue reference="zei-zr-r6n"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Durian Run" width="547" height="106"/>
