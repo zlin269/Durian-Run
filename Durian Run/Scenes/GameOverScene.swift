@@ -77,25 +77,11 @@ class GameOverScene: MenuScene {
 //		seasonLabel.fontColor = SKColor.black
 //		seasonLabel.position = CGPoint(x: frame.midX + scoreLabel.frame.width/2 - seasonLabel.frame.width/2 - 5, y: frame.midY - 350)
 //
-		let restartIcon = SKSpriteNode(imageNamed: "pink button")
-        restartIcon.zPosition = 10
-        restartIcon.setScale(3)
+		let restartIcon = SKSpriteNode(imageNamed: "playagain")
 		restartIcon.name = "restart"
+        restartIcon.xScale = 2.7
+        restartIcon.yScale = 2.7
         restartIcon.position = CGPoint(x: frame.midX, y: 120)
-        let restarttext = SKLabelNode(text: {()->String in switch UserDefaults.string(forKey: .language) {
-        case "Chinese": return "再玩一次"
-        case "English": return "Play Again"
-        case "Thai": return "เล่นอีกครั้ง"
-        default: return "再玩一次"
-        }}())
-        restarttext.zPosition = 20
-        restarttext.fontColor = .yellow
-        restarttext.fontSize = 100
-        restarttext.fontName = "AlNile-Bold"
-        adjustLabelFontSizeToFitRect(labelNode: restarttext, rect: CGRect(origin: .zero, size: CGSize(width: restartIcon.frame.width * 0.2, height: restartIcon.frame.height * 0.2)))
-        restarttext.position = CGPoint(x: 0, y: -10)
-        restartIcon.addChild(restarttext)
-        
 		
         let nameLabel = SKLabelNode(text: UserDefaults.string(forKey: .username))
         nameLabel.fontColor = .healthColor

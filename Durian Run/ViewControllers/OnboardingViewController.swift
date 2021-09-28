@@ -35,15 +35,12 @@ class OnboardingViewController: UIViewController, UITextFieldDelegate {
         
         switch UserDefaults.string(forKey: .language) {
         case "English":
-            titleLabel.text = "Hello! What's your name?"
             textfield.placeholder = "nikename no more than 8 characters"
             continuebtn.setTitle("Continue", for: .normal)
         case "Chinese":
-            titleLabel.text = "你好，请问怎么称呼？"
             textfield.placeholder = "请输入8字以内的昵称"
             continuebtn.setTitle("继续", for: .normal)
         case "Thai":
-            titleLabel.text = "สวัสดีคุณชื่ออะไร?"
             textfield.placeholder = "กรุณาใส่ชื่อเล่นไม่เกิน 8 ตัวอักษร"
             continuebtn.setTitle("ดำเนินต่อ", for: .normal)
         default:
@@ -66,10 +63,7 @@ class OnboardingViewController: UIViewController, UITextFieldDelegate {
         // MARK: - add username constrain check
         let usernameTyped = textfield.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if usernameTyped.removingWhitespaces() == "" {
-            showEmptyAlert()
-            return
-        } else if usernameTyped.count > 8 {
-            showTooLongAlert()
+            showAlert()
             return
         }
         UserDefaults.set(value: true, forKey: .hasSetName)
@@ -84,7 +78,7 @@ class OnboardingViewController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
     
-    func showEmptyAlert () {
+    func showAlert () {
         var alert:UIAlertController
         switch UserDefaults.string(forKey: .language) {
         case "Chinese":
@@ -95,27 +89,6 @@ class OnboardingViewController: UIViewController, UITextFieldDelegate {
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
         case "Thai":
             alert = UIAlertController(title: "ความสนใจ", message: "กรุณากดปุ่มยอมรับเพื่อดำเนินการต่อ", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "ตกลง", style: UIAlertAction.Style.default, handler: nil))
-        default:
-            alert = UIAlertController(title: "Attention", message: "Nickname cannot be white space", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-
-        }
-            // show the alert
-            self.present(alert, animated: true, completion: nil)
-    }
-    
-    func showTooLongAlert () {
-        var alert:UIAlertController
-        switch UserDefaults.string(forKey: .language) {
-        case "Chinese":
-            alert = UIAlertController(title: "注意", message: "昵称过长", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "好", style: UIAlertAction.Style.default, handler: nil))
-        case "English":
-            alert = UIAlertController(title: "Attention", message: "Nickname is too long", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-        case "Thai":
-            alert = UIAlertController(title: "ความสนใจ", message: "ชื่อเล่นยาวเกินไป", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "ตกลง", style: UIAlertAction.Style.default, handler: nil))
         default:
             alert = UIAlertController(title: "Attention", message: "Nickname cannot be white space", preferredStyle: .alert)
