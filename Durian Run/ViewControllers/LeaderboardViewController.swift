@@ -28,6 +28,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         super.viewDidLoad()
         //authenticatePlayer()
         
+        
         let allSubviews = view.subviews
         for v in allSubviews {
             if v.restorationIdentifier == "shanghai" {
@@ -53,15 +54,22 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         
         scrollView.delegate = self
         // Top1
-        let top1name = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width/7, height: top3.frame.height/8))
+        let top1name = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width/7 , height: top3.frame.height/10))
+        top1name.translatesAutoresizingMaskIntoConstraints = false
         top1name.text = "TOP1"
         top1name.textColor = nameColor
         top1name.textAlignment = .center
         top1name.adjustsFontSizeToFitWidth = true
         top3.addSubview(top1name)
-        top1name.translatesAutoresizingMaskIntoConstraints = false
+        if top1name.frame.width < 55 {
+            top1name.font = UIFont(name: top1name.font.fontName, size: 17 * top1name.frame.width/55)
+        }
         top1name.centerXAnchor.constraint(equalTo: top3.centerXAnchor).isActive = true
-        top1name.centerYAnchor.constraint(equalTo: top3.centerYAnchor, constant: top3.frame.height * 0.145).isActive = true
+        if top1name.frame.width >= 55 {
+            top1name.centerYAnchor.constraint(equalTo: top3.centerYAnchor, constant: top3.frame.height * 0.145).isActive = true
+        } else {
+            top1name.bottomAnchor.constraint(equalTo: top3.centerYAnchor, constant: top3.frame.height * 0.145).isActive = true
+        }
         let top1score = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width / 4, height: top3.frame.height * 0.3))
         top1score.font = UIFont(name: "ArialRoundedMTBold", size: 90)
         top1score.text = "\(66666)"
@@ -76,15 +84,22 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         top1score.heightAnchor.constraint(equalTo: top3.heightAnchor, multiplier: 0.5).isActive = true
         
         // Top2
-        let top2name = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width/7, height: top3.frame.height/8))
+        let top2name = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width/7, height: top3.frame.height/10))
+        top2name.translatesAutoresizingMaskIntoConstraints = false
         top2name.text = "TOP2"
         top2name.textColor = nameColor
         top2name.textAlignment = .center
         top2name.adjustsFontSizeToFitWidth = true
         top3.addSubview(top2name)
-        top2name.translatesAutoresizingMaskIntoConstraints = false
+        if top1name.frame.width < 55 {
+            top2name.font = UIFont(name: top1name.font.fontName, size: 17 * top1name.frame.width/55)
+        }
         top2name.centerXAnchor.constraint(equalTo: top3.centerXAnchor, constant: -top3.frame.width * 0.345).isActive = true
-        top2name.centerYAnchor.constraint(equalTo: top3.centerYAnchor, constant: top3.frame.height * 0.265).isActive = true
+        if top1name.frame.width >= 55 {
+            top2name.centerYAnchor.constraint(equalTo: top3.centerYAnchor, constant: top3.frame.height * 0.265).isActive = true
+        } else {
+            top2name.bottomAnchor.constraint(equalTo: top3.centerYAnchor, constant: top3.frame.height * 0.235).isActive = true
+        }
         let top2score = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width / 4, height: top3.frame.height))
         top2score.font = UIFont(name: "ArialRoundedMTBold", size: 90)
         top2score.text = "\(23333)"
@@ -99,15 +114,22 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         top2score.heightAnchor.constraint(equalTo: top3.heightAnchor, multiplier: 0.5).isActive = true
         
         // Top3
-        let top3name = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width/7, height: top3.frame.height/8))
+        let top3name = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width / 7, height: top3.frame.height/10))
+        top3name.translatesAutoresizingMaskIntoConstraints = false
         top3name.text = "TOP3"
         top3name.textColor = nameColor
         top3name.textAlignment = .center
         top3name.adjustsFontSizeToFitWidth = true
         top3.addSubview(top3name)
-        top3name.translatesAutoresizingMaskIntoConstraints = false
+        if top1name.frame.width < 55 {
+            top3name.font = UIFont(name: top1name.font.fontName, size: 17 * top1name.frame.width/55)
+        }
         top3name.centerXAnchor.constraint(equalTo: top3.centerXAnchor, constant: top3.frame.width * 0.345).isActive = true
-        top3name.centerYAnchor.constraint(equalTo: top3.centerYAnchor, constant: top3.frame.height * 0.265).isActive = true
+        if top1name.frame.width >= 55 {
+            top3name.centerYAnchor.constraint(equalTo: top3.centerYAnchor, constant: top3.frame.height * 0.265).isActive = true
+        } else {
+            top3name.bottomAnchor.constraint(equalTo: top3.centerYAnchor, constant: top3.frame.height * 0.235).isActive = true
+        }
         let top3score = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width / 4, height: top3.frame.height))
         top3score.font = UIFont(name: "ArialRoundedMTBold", size: 90)
         top3score.text = "\(12345)"
@@ -140,7 +162,6 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
                 top2score.text = "\(scores[1].score)"
                 top3name.text = scores[2].playerName
                 top3score.text = "\(scores[2].score)"
-                print(111)
                 // top 4 - 10
                 for i in 3...8 {
                     if scores.count == i {

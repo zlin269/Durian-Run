@@ -63,7 +63,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
     public var openSettingsClosure: (() -> Void)?
     
-	static var sharedInstance = GameScene()
+    static var sharedInstance : GameScene? = GameScene()
 	
 	// Season Info
 	private var seasonInfo = SeasonInfo()

@@ -77,7 +77,8 @@ class GameOverScene: MenuScene {
 //		seasonLabel.fontColor = SKColor.black
 //		seasonLabel.position = CGPoint(x: frame.midX + scoreLabel.frame.width/2 - seasonLabel.frame.width/2 - 5, y: frame.midY - 350)
 //
-		let restartIcon = SKSpriteNode(imageNamed: "playagain")
+		let restartIcon = SKSpriteNode(imageNamed: "pink button")
+        restartIcon.setScale(2.7)
 		restartIcon.name = "restart"
         restartIcon.position = CGPoint(x: frame.midX, y: 140)
         let restarttext = SKLabelNode(text: {()->String in switch UserDefaults.string(forKey: .language) {
