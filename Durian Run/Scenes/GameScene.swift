@@ -282,6 +282,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		self.addChild(coinLabel)
         
         startingAnimation()
+        
+        blur = SKSpriteNode(texture: SKTexture(imageNamed: "blur"), color: .white, size: frame.size)
+        blur.zPosition = 250
+        blur.position = CGPoint(x: frame.midX, y: frame.midY)
+        blur.xScale = 2
+        blur.yScale = 2
+        blur.alpha = 0.8
+        let scale : CGFloat = 2.7
+        pausebg = SKSpriteNode(texture: SKTexture(imageNamed: "pausebg"))
+        pausebg.anchorPoint = CGPoint(x: 0.5, y: 0)
+        pausebg.position = CGPoint(x: frame.midX, y: 0)
+        pausebg.zPosition = 260
+        pausebg.xScale = scale
+        pausebg.yScale = scale
+        resumeButton.position = CGPoint(x: frame.midX, y: frame.midY + 90)
+        resumeButton.zPosition = 270
+        resumeButton.xScale = scale
+        resumeButton.yScale = scale
+        settingsButton.position = CGPoint(x: frame.midX, y: frame.midY - 130)
+        settingsButton.zPosition = 270
+        settingsButton.xScale = scale
+        settingsButton.yScale = scale
+        quitButton.position = CGPoint(x: frame.midX, y: frame.midY - 450)
+        quitButton.zPosition = 270
+        quitButton.xScale = scale
+        quitButton.yScale = scale
+        let durianQuestion = SKSpriteNode(imageNamed: "durianquestion")
+        durianQuestion.position = CGPoint(x: -220, y: 200)
+        durianQuestion.zPosition = 1
+        pausebg.addChild(durianQuestion)
+        let durianHog = SKSpriteNode(imageNamed: "durianhog")
+        durianHog.position = CGPoint(x: 200, y: 100)
+        durianHog.zPosition = 1
+        pausebg.addChild(durianHog)
     }
     
     public func reloadGameScene() {
@@ -500,44 +534,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		isPaused = true
 		justUnpaused = true
         
-        blur = SKSpriteNode(texture: SKTexture(imageNamed: "blur"), color: .white, size: frame.size)
-        blur.zPosition = 250
-        blur.position = CGPoint(x: frame.midX, y: frame.midY)
-        blur.xScale = 2
-        blur.yScale = 2
-        blur.alpha = 0.8
+        blur.removeFromParent()
+        pausebg.removeFromParent()
+        resumeButton.removeFromParent()
+        settingsButton.removeFromParent()
+        quitButton.removeFromParent()
+        
         self.addChild(blur)
-        let scale : CGFloat = 2.7
-        pausebg = SKSpriteNode(texture: SKTexture(imageNamed: "pausebg"))
-        pausebg.anchorPoint = CGPoint(x: 0.5, y: 0)
-        pausebg.position = CGPoint(x: frame.midX, y: 0)
-        pausebg.zPosition = 260
-        pausebg.xScale = scale
-        pausebg.yScale = scale
         self.addChild(pausebg)
-        resumeButton.position = CGPoint(x: frame.midX, y: frame.midY + 90)
-        resumeButton.zPosition = 270
-        resumeButton.xScale = scale
-        resumeButton.yScale = scale
         self.addChild(resumeButton)
-        settingsButton.position = CGPoint(x: frame.midX, y: frame.midY - 130)
-        settingsButton.zPosition = 270
-        settingsButton.xScale = scale
-        settingsButton.yScale = scale
         self.addChild(settingsButton)
-        quitButton.position = CGPoint(x: frame.midX, y: frame.midY - 450)
-        quitButton.zPosition = 270
-        quitButton.xScale = scale
-        quitButton.yScale = scale
         self.addChild(quitButton)
-        let durianQuestion = SKSpriteNode(imageNamed: "durianquestion")
-        durianQuestion.position = CGPoint(x: -220, y: 200)
-        durianQuestion.zPosition = 1
-        pausebg.addChild(durianQuestion)
-        let durianHog = SKSpriteNode(imageNamed: "durianhog")
-        durianHog.position = CGPoint(x: 200, y: 100)
-        durianHog.zPosition = 1
-        pausebg.addChild(durianHog)
 	}
 	
 	func unpause() {

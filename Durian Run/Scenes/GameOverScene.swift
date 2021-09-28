@@ -79,9 +79,21 @@ class GameOverScene: MenuScene {
 //
 		let restartIcon = SKSpriteNode(imageNamed: "playagain")
 		restartIcon.name = "restart"
-        restartIcon.xScale = 2.7
-        restartIcon.yScale = 2.7
-        restartIcon.position = CGPoint(x: frame.midX, y: 120)
+        restartIcon.position = CGPoint(x: frame.midX, y: 140)
+        let restarttext = SKLabelNode(text: {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "再玩一次"
+        case "English": return "Play Again"
+        case "Thai": return "เล่นอีกครั้ง"
+        default: return "再玩一次"
+        }}())
+        restarttext.zPosition = 20
+        restarttext.fontColor = .yellow
+        restarttext.fontSize = 100
+        restarttext.fontName = "AlNile-Bold"
+        adjustLabelFontSizeToFitRect(labelNode: restarttext, rect: CGRect(origin: .zero, size: CGSize(width: restartIcon.frame.width * 0.2, height: restartIcon.frame.height * 0.2)))
+        restarttext.position = CGPoint(x: 0, y: -10)
+        restartIcon.addChild(restarttext)
+        
 		
         let nameLabel = SKLabelNode(text: UserDefaults.string(forKey: .username))
         nameLabel.fontColor = .healthColor
@@ -114,6 +126,7 @@ class GameOverScene: MenuScene {
         
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("scores")
 
+        if score > 0 {
         do {
             let data = try Data(contentsOf: path)
             if var scores = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Score] {
@@ -124,7 +137,7 @@ class GameOverScene: MenuScene {
             }
         } catch {
             print("ERROR: \(error.localizedDescription)")
-        }
+        }}
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -138,6 +151,12 @@ class GameOverScene: MenuScene {
 			if touchedNode.name == "restart" {
 				touchedNode.alpha = 0.7
                 touchedNode.setScale(3)
+                touchedNode.run(SKAction.wait(forDuration: 0.3), completion: {
+                    let gameScene = GameScene(size: self.size)
+                    gameScene.scaleMode = self.scaleMode
+                    let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+                    self.view?.presentScene(gameScene, transition: reveal)
+                })
 			}
 			if touchedNode.name == "home" {
 				touchedNode.alpha = 0.7
@@ -185,7 +204,6 @@ class GameOverScene: MenuScene {
 			if touchedNode.name == "restart" {
 				let gameScene = GameScene(size: size)
 				gameScene.scaleMode = scaleMode
-				
 				let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
 				view?.presentScene(gameScene, transition: reveal)
 			}

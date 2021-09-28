@@ -46,6 +46,7 @@ class OnboardingViewController: UIViewController, UITextFieldDelegate {
         default:
             break
         }
+        titleLabel.textAlignment = .center
     }
     
     @IBAction func avatar1Selected(_ sender: UIButton) {
