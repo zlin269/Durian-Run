@@ -413,6 +413,18 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="0.0" right="8"/>
                             </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" restorationIdentifier="top1avatar" image="littlemonster1" translatesAutoresizingMaskIntoConstraints="NO" id="aGN-ya-ArH">
+                                <rect key="frame" x="201" y="178" width="92" height="95"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" restorationIdentifier="top2avatar" image="littlemonster1" translatesAutoresizingMaskIntoConstraints="NO" id="NGO-0V-0Zx">
+                                <rect key="frame" x="78" y="219" width="83" height="84"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" restorationIdentifier="top3avatar" image="littlemonster1" translatesAutoresizingMaskIntoConstraints="NO" id="4OD-ri-L18">
+                                <rect key="frame" x="335" y="217" width="82" height="86"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="JlT-rT-ZqZ"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -719,8 +731,8 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PxL-7I-8rK">
-                                                <rect key="frame" x="236.5" y="211" width="191" height="32"/>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PxL-7I-8rK">
+                                                <rect key="frame" x="237" y="219" width="191" height="32"/>
                                                 <segments>
                                                     <segment title="中文"/>
                                                     <segment title="English"/>
@@ -798,7 +810,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="KBu-VP-B6d"/>
         <segue reference="fqg-cZ-p4m"/>
-        <segue reference="QXr-7K-gKV"/>
+        <segue reference="zei-zr-r6n"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Durian Run" width="547" height="106"/>

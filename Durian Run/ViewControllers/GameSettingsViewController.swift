@@ -31,7 +31,8 @@ class GameSettingsViewController: UIViewController {
         
         volumeSlider.value = Float(volume)
         musicSlider.value = Float(music)
-        
+        let list = ["Chinese", "English", "Thai"]
+        languageSegmentedControl.selectedSegmentIndex = list.firstIndex(of: UserDefaults.string(forKey: .language)!)!
         updateSubviews()
     }
     

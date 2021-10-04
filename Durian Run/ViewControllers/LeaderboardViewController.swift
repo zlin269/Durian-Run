@@ -22,6 +22,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
     private var scrollView : UIScrollView!
     private var listCount : Int = 3
     private var list : [Score]!
+    private var avatar1 : UIImageView!, avatar2 : UIImageView!, avatar3 : UIImageView!
     
     
     override func viewDidLoad() {
@@ -43,6 +44,12 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
                 bar = v
             } else if v.restorationIdentifier == "scrollView" {
                 scrollView = v as? UIScrollView
+            } else if v.restorationIdentifier == "top1avatar" {
+                avatar1 = v as? UIImageView
+            } else if v.restorationIdentifier == "top2avatar" {
+                avatar2 = v as? UIImageView
+            } else if v.restorationIdentifier == "top3avatar" {
+                avatar3 = v as? UIImageView
             }
         }
         self.view.sendSubviewToBack(background)
@@ -158,10 +165,13 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
                 // update top 3 scores and names
                 top1name.text = scores[0].playerName
                 top1score.text = "\(scores[0].score)"
+                avatar1.image = UIImage(named: scores[0].avatar)
                 top2name.text = scores[1].playerName
                 top2score.text = "\(scores[1].score)"
+                avatar2.image = UIImage(named: scores[1].avatar)
                 top3name.text = scores[2].playerName
                 top3score.text = "\(scores[2].score)"
+                avatar3.image = UIImage(named: scores[2].avatar)
                 // top 4 - 10
                 for i in 3...8 {
                     if scores.count == i {
