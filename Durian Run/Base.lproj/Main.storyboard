@@ -699,13 +699,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="664" height="274"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NhG-Au-CpR">
-                                                <rect key="frame" x="311" y="24" width="42" height="21"/>
+                                                <rect key="frame" x="311" y="10" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ptc-6k-eGr">
-                                                <rect key="frame" x="250" y="53" width="164" height="31"/>
+                                                <rect key="frame" x="250" y="39" width="164" height="31"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="160" id="den-RP-ZLj"/>
                                                 </constraints>
@@ -714,19 +714,19 @@
                                                 </connections>
                                             </slider>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2x2-p2-mbS">
-                                                <rect key="frame" x="311" y="107" width="42" height="21"/>
+                                                <rect key="frame" x="311" y="93" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="FBK-D8-eay">
-                                                <rect key="frame" x="250" y="136" width="164" height="31"/>
+                                                <rect key="frame" x="250" y="122" width="164" height="31"/>
                                                 <connections>
                                                     <action selector="adjustMusicVolume:" destination="iLG-kO-FpL" eventType="valueChanged" id="ebV-hg-Ajr"/>
                                                 </connections>
                                             </slider>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fve-2w-5o3">
-                                                <rect key="frame" x="311" y="190" width="42" height="21"/>
+                                                <rect key="frame" x="311" y="176" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -745,7 +745,7 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="NhG-Au-CpR" firstAttribute="top" secondItem="71m-tX-pUv" secondAttribute="top" constant="24" id="CCg-2F-qmZ"/>
+                                            <constraint firstItem="NhG-Au-CpR" firstAttribute="top" secondItem="71m-tX-pUv" secondAttribute="top" constant="10" id="CCg-2F-qmZ"/>
                                             <constraint firstItem="FBK-D8-eay" firstAttribute="centerX" secondItem="71m-tX-pUv" secondAttribute="centerX" id="CJO-ck-YjE"/>
                                             <constraint firstItem="ptc-6k-eGr" firstAttribute="top" secondItem="NhG-Au-CpR" secondAttribute="bottom" constant="8" symbolic="YES" id="DFR-B9-QMB"/>
                                             <constraint firstItem="2x2-p2-mbS" firstAttribute="centerX" secondItem="71m-tX-pUv" secondAttribute="centerX" id="Ilv-Pn-G5S"/>

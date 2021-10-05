@@ -137,8 +137,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 	lazy var fertilizer = Fertilizer()
 	lazy var supply = Supply()
-	lazy var musicNode = SKAudioNode(fileNamed: "electronic.wav")
+
 	lazy var gameSound = SKAudioNode(fileNamed: "coin.wav")
+    var bgms : [String] = ["airtone_-_birdsongs_1.mp3", "airtone_-_precarity_10.mp3", "batchbug-sweet-dreams.mp3", "Beluga_-_Cloudy_Evening_1.mp3", "donnieozone_-_Rainy_Feels_1.mp3", "fission9__thunder-and-beginning-of-rainfall.mp3", "HinaCC0_011_Fallen_leaves.mp3", "Lights.mp3", "Loyalty_Freak_Music_-_17_-_Summer_Pride.mp3", "Merry-Bay-Upbeat-Summer-Lofi.mp3", "purrple-cat-field-of-fireflies.mp3", "春のテーマ-Spring-field-.mp3"]
+    lazy var musicNode = SKAudioNode(fileNamed: bgms.randomElement()!)
 	
     lazy var platforms = [Platform]()
     lazy var platformLevels = [Platform]()
@@ -181,14 +183,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
         print("Inside Gameplay Scene")
             createBackground()
-		
-		musicNode.autoplayLooped = true
-//		musicNode.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume)!), duration: 0))
-		self.addChild(musicNode)
-		
-		gameSound.autoplayLooped = false
-//		gameSound.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0))
-		self.addChild(gameSound)
+        
+        musicNode.autoplayLooped = true
+        self.addChild(musicNode)
+        musicNode.run(SKAction.play())
+    
+        gameSound.autoplayLooped = false
+        self.addChild(gameSound)
 		
 		let boundary = Boundary()
 		boundary.position = CGPoint(x: -500, y: -300)
@@ -274,11 +275,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		scoreLabel.zPosition = 200
 		self.addChild(scoreLabel)
 		
+        let coinIcon = SKSpriteNode(imageNamed: "coin")
+        coinIcon.anchorPoint = CGPoint(x: 0, y: 0)
+        coinIcon.position = CGPoint(x: frame.width - 430, y: frame.height - 142)
+        coinIcon.zPosition = 200
+        coinIcon.setScale(3)
+        self.addChild(coinIcon)
 		coinLabel.fontName = "Italic"
 		coinLabel.fontSize = 100
 		coinLabel.fontColor = UIColor.orange
-        coinLabel.position = CGPoint(x: frame.width - 450, y: frame.height - 200)
+        coinLabel.position = CGPoint(x: frame.width - 340, y: frame.height - 140)
 		coinLabel.zPosition = 200
+        coinLabel.horizontalAlignmentMode = .left
 		self.addChild(coinLabel)
         
         startingAnimation()
@@ -318,7 +326,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         pausebg.addChild(durianHog)
     }
     
+    // MARK: --AUDIO--
     public func reloadGameScene() {
+        
         musicNode.removeAllActions()
         musicNode.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume)!), duration: 0))
         
@@ -326,6 +336,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameSound.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0))
     }
     
+    public func changeBGM() {
+        
+        musicNode.removeAllActions()
+        musicNode.removeFromParent()
+        musicNode = SKAudioNode(fileNamed: bgms.randomElement()!)
+        musicNode.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume)!), duration: 0))
+        musicNode.autoplayLooped = true
+        self.addChild(musicNode)
+        musicNode.run(SKAction.play())
+        
+    }
+    
+    // MARK: --BACKGROUND--
     func createBackground() {
         let backgroundTexture = SKTexture(imageNamed: "clouds")
         
@@ -856,7 +879,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// Creates a game over scene
 	func displayGameOver() {
 		
-		musicNode.run(SKAction.stop())
+        musicNode.run(SKAction.stop())
 		
 		let gameOverScene = GameOverScene(size: size, score: score, seasons: seasonsPassed, coins: coins)
 		gameOverScene.scaleMode = scaleMode
