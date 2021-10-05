@@ -51,6 +51,18 @@
 		6270E12426AA9D5600011319 /* Supply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E12326AA9D5600011319 /* Supply.swift */; };
 		6270E12626ABB9A100011319 /* Boundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6270E12526ABB9A100011319 /* Boundary.swift */; };
 		6276A4B326D356E000FD8AC0 /* Sleeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6276A4B226D356E000FD8AC0 /* Sleeper.swift */; };
+		6280F8C9270C9906006C35C6 /* Loyalty_Freak_Music_-_17_-_Summer_Pride.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6280F8BD270C9904006C35C6 /* Loyalty_Freak_Music_-_17_-_Summer_Pride.mp3 */; };
+		6280F8CA270C9906006C35C6 /* HinaCC0_011_Fallen_leaves.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6280F8BE270C9904006C35C6 /* HinaCC0_011_Fallen_leaves.mp3 */; };
+		6280F8CB270C9906006C35C6 /* donnieozone_-_Rainy_Feels_1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6280F8BF270C9904006C35C6 /* donnieozone_-_Rainy_Feels_1.mp3 */; };
+		6280F8CC270C9906006C35C6 /* batchbug-sweet-dreams.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6280F8C0270C9905006C35C6 /* batchbug-sweet-dreams.mp3 */; };
+		6280F8CD270C9906006C35C6 /* airtone_-_precarity_10.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6280F8C1270C9905006C35C6 /* airtone_-_precarity_10.mp3 */; };
+		6280F8CE270C9906006C35C6 /* Beluga_-_Cloudy_Evening_1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6280F8C2270C9905006C35C6 /* Beluga_-_Cloudy_Evening_1.mp3 */; };
+		6280F8CF270C9906006C35C6 /* airtone_-_birdsongs_1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6280F8C3270C9906006C35C6 /* airtone_-_birdsongs_1.mp3 */; };
+		6280F8D0270C9906006C35C6 /* purrple-cat-field-of-fireflies.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6280F8C4270C9906006C35C6 /* purrple-cat-field-of-fireflies.mp3 */; };
+		6280F8D1270C9906006C35C6 /* 春のテーマ-Spring-field-.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6280F8C5270C9906006C35C6 /* 春のテーマ-Spring-field-.mp3 */; };
+		6280F8D2270C9906006C35C6 /* fission9__thunder-and-beginning-of-rainfall.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6280F8C6270C9906006C35C6 /* fission9__thunder-and-beginning-of-rainfall.mp3 */; };
+		6280F8D3270C9906006C35C6 /* Merry-Bay-Upbeat-Summer-Lofi.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6280F8C7270C9906006C35C6 /* Merry-Bay-Upbeat-Summer-Lofi.mp3 */; };
+		6280F8D4270C9906006C35C6 /* Lights.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6280F8C8270C9906006C35C6 /* Lights.mp3 */; };
 		628B714226CBF3D3000B46E5 /* Fence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628B714126CBF3D3000B46E5 /* Fence.swift */; };
 		628B714426CCA81E000B46E5 /* CoolDownIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628B714326CCA81E000B46E5 /* CoolDownIndicator.swift */; };
 		628B714626CD0A49000B46E5 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628B714526CD0A49000B46E5 /* Score.swift */; };
@@ -64,7 +76,6 @@
 		62CF787D26B2891B00E573ED /* Fly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CF787C26B2891B00E573ED /* Fly.swift */; };
 		62CF788126B2988F00E573ED /* switch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788026B2988F00E573ED /* switch.wav */; };
 		62CF788326B3BECE00E573ED /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CF788226B3BECE00E573ED /* Coin.swift */; };
-		62CF788A26B3E62000E573ED /* electronic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788926B3E62000E573ED /* electronic.wav */; };
 		62CF788C26B3E69200E573ED /* shield-guard.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788B26B3E69200E573ED /* shield-guard.wav */; };
 		62CF788E26B3E6B100E573ED /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788D26B3E6B100E573ED /* ding.wav */; };
 		62CF789026B3EADA00E573ED /* thunder.wav in Resources */ = {isa = PBXBuildFile; fileRef = 62CF788F26B3EADA00E573ED /* thunder.wav */; };
@@ -146,6 +157,18 @@
 		6270E12326AA9D5600011319 /* Supply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supply.swift; sourceTree = "<group>"; };
 		6270E12526ABB9A100011319 /* Boundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Boundary.swift; sourceTree = "<group>"; };
 		6276A4B226D356E000FD8AC0 /* Sleeper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sleeper.swift; sourceTree = "<group>"; };
+		6280F8BD270C9904006C35C6 /* Loyalty_Freak_Music_-_17_-_Summer_Pride.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Loyalty_Freak_Music_-_17_-_Summer_Pride.mp3"; sourceTree = "<group>"; };
+		6280F8BE270C9904006C35C6 /* HinaCC0_011_Fallen_leaves.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = HinaCC0_011_Fallen_leaves.mp3; sourceTree = "<group>"; };
+		6280F8BF270C9904006C35C6 /* donnieozone_-_Rainy_Feels_1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "donnieozone_-_Rainy_Feels_1.mp3"; sourceTree = "<group>"; };
+		6280F8C0270C9905006C35C6 /* batchbug-sweet-dreams.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "batchbug-sweet-dreams.mp3"; sourceTree = "<group>"; };
+		6280F8C1270C9905006C35C6 /* airtone_-_precarity_10.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "airtone_-_precarity_10.mp3"; sourceTree = "<group>"; };
+		6280F8C2270C9905006C35C6 /* Beluga_-_Cloudy_Evening_1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Beluga_-_Cloudy_Evening_1.mp3"; sourceTree = "<group>"; };
+		6280F8C3270C9906006C35C6 /* airtone_-_birdsongs_1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "airtone_-_birdsongs_1.mp3"; sourceTree = "<group>"; };
+		6280F8C4270C9906006C35C6 /* purrple-cat-field-of-fireflies.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "purrple-cat-field-of-fireflies.mp3"; sourceTree = "<group>"; };
+		6280F8C5270C9906006C35C6 /* 春のテーマ-Spring-field-.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "春のテーマ-Spring-field-.mp3"; sourceTree = "<group>"; };
+		6280F8C6270C9906006C35C6 /* fission9__thunder-and-beginning-of-rainfall.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "fission9__thunder-and-beginning-of-rainfall.mp3"; sourceTree = "<group>"; };
+		6280F8C7270C9906006C35C6 /* Merry-Bay-Upbeat-Summer-Lofi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Merry-Bay-Upbeat-Summer-Lofi.mp3"; sourceTree = "<group>"; };
+		6280F8C8270C9906006C35C6 /* Lights.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Lights.mp3; sourceTree = "<group>"; };
 		628B714126CBF3D3000B46E5 /* Fence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fence.swift; sourceTree = "<group>"; };
 		628B714326CCA81E000B46E5 /* CoolDownIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoolDownIndicator.swift; sourceTree = "<group>"; };
 		628B714526CD0A49000B46E5 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
@@ -159,7 +182,6 @@
 		62CF787C26B2891B00E573ED /* Fly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fly.swift; sourceTree = "<group>"; };
 		62CF788026B2988F00E573ED /* switch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = switch.wav; sourceTree = "<group>"; };
 		62CF788226B3BECE00E573ED /* Coin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
-		62CF788926B3E62000E573ED /* electronic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = electronic.wav; sourceTree = "<group>"; };
 		62CF788B26B3E69200E573ED /* shield-guard.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "shield-guard.wav"; sourceTree = "<group>"; };
 		62CF788D26B3E6B100E573ED /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
 		62CF788F26B3EADA00E573ED /* thunder.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = thunder.wav; sourceTree = "<group>"; };
@@ -374,12 +396,23 @@
 		629301AF26B10B3400A087DA /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				6280F8C3270C9906006C35C6 /* airtone_-_birdsongs_1.mp3 */,
+				6280F8C1270C9905006C35C6 /* airtone_-_precarity_10.mp3 */,
+				6280F8C0270C9905006C35C6 /* batchbug-sweet-dreams.mp3 */,
+				6280F8C2270C9905006C35C6 /* Beluga_-_Cloudy_Evening_1.mp3 */,
+				6280F8BF270C9904006C35C6 /* donnieozone_-_Rainy_Feels_1.mp3 */,
+				6280F8C6270C9906006C35C6 /* fission9__thunder-and-beginning-of-rainfall.mp3 */,
+				6280F8BE270C9904006C35C6 /* HinaCC0_011_Fallen_leaves.mp3 */,
+				6280F8C8270C9906006C35C6 /* Lights.mp3 */,
+				6280F8BD270C9904006C35C6 /* Loyalty_Freak_Music_-_17_-_Summer_Pride.mp3 */,
+				6280F8C7270C9906006C35C6 /* Merry-Bay-Upbeat-Summer-Lofi.mp3 */,
+				6280F8C4270C9906006C35C6 /* purrple-cat-field-of-fireflies.mp3 */,
+				6280F8C5270C9906006C35C6 /* 春のテーマ-Spring-field-.mp3 */,
 				6269390726BC0E14003E968F /* warning.wav */,
 				62CF789526B785C600E573ED /* chewing.wav */,
 				62CF788D26B3E6B100E573ED /* ding.wav */,
 				62CF789326B780E100E573ED /* coin.wav */,
 				62CF788B26B3E69200E573ED /* shield-guard.wav */,
-				62CF788926B3E62000E573ED /* electronic.wav */,
 				62CF788026B2988F00E573ED /* switch.wav */,
 				62CF788F26B3EADA00E573ED /* thunder.wav */,
 				62CF787A26B242CE00E573ED /* powerup.wav */,
@@ -495,26 +528,37 @@
 			buildActionMask = 2147483647;
 			files = (
 				62CF788C26B3E69200E573ED /* shield-guard.wav in Resources */,
+				6280F8C9270C9906006C35C6 /* Loyalty_Freak_Music_-_17_-_Summer_Pride.mp3 in Resources */,
 				62CF787926B2404800E573ED /* sword-attack.wav in Resources */,
 				623EB13326A167BC000628CB /* Main.storyboard in Resources */,
 				623EB15926A16844000628CB /* NormalRun.atlas in Resources */,
+				6280F8D3270C9906006C35C6 /* Merry-Bay-Upbeat-Summer-Lofi.mp3 in Resources */,
 				62CF787526B154FA00E573ED /* jump.mp3 in Resources */,
 				62CF787B26B242CE00E573ED /* powerup.wav in Resources */,
+				6280F8CE270C9906006C35C6 /* Beluga_-_Cloudy_Evening_1.mp3 in Resources */,
 				62FD83B026F0F7D70089BAED /* Launch Screen.storyboard in Resources */,
 				6269390826BC0E14003E968F /* warning.wav in Resources */,
 				62CF788E26B3E6B100E573ED /* ding.wav in Resources */,
 				62CF787626B154FA00E573ED /* run.mp3 in Resources */,
 				623EB12A26A167BC000628CB /* GameScene.sks in Resources */,
+				6280F8D2270C9906006C35C6 /* fission9__thunder-and-beginning-of-rainfall.mp3 in Resources */,
 				623EB15D26A16878000628CB /* BoostRun.atlas in Resources */,
-				62CF788A26B3E62000E573ED /* electronic.wav in Resources */,
+				6280F8CC270C9906006C35C6 /* batchbug-sweet-dreams.mp3 in Resources */,
 				62CF788126B2988F00E573ED /* switch.wav in Resources */,
+				6280F8CD270C9906006C35C6 /* airtone_-_precarity_10.mp3 in Resources */,
+				6280F8D4270C9906006C35C6 /* Lights.mp3 in Resources */,
 				623EB13526A167BE000628CB /* Assets.xcassets in Resources */,
 				62CF787726B154FA00E573ED /* skywave.wav in Resources */,
 				623EB15B26A16860000628CB /* AbsorbRun.atlas in Resources */,
+				6280F8D0270C9906006C35C6 /* purrple-cat-field-of-fireflies.mp3 in Resources */,
 				62CF789426B780E100E573ED /* coin.wav in Resources */,
 				62CF789026B3EADA00E573ED /* thunder.wav in Resources */,
 				623EB12C26A167BC000628CB /* Actions.sks in Resources */,
+				6280F8CB270C9906006C35C6 /* donnieozone_-_Rainy_Feels_1.mp3 in Resources */,
+				6280F8CA270C9906006C35C6 /* HinaCC0_011_Fallen_leaves.mp3 in Resources */,
+				6280F8D1270C9906006C35C6 /* 春のテーマ-Spring-field-.mp3 in Resources */,
 				62CF789626B785C600E573ED /* chewing.wav in Resources */,
+				6280F8CF270C9906006C35C6 /* airtone_-_birdsongs_1.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
