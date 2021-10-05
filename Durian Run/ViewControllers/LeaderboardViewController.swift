@@ -24,6 +24,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
     private var list : [Score]!
     private var avatar1 : UIImageView!, avatar2 : UIImageView!, avatar3 : UIImageView!
     private var top1name : UILabel!, top2name : UILabel!, top3name : UILabel!
+    private var top1score : UILabel!, top2score : UILabel!, top3score : UILabel!
     
     
     override func viewDidLoad() {
@@ -31,7 +32,7 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
         //authenticatePlayer()
         
         
-        let allSubviews = view.subviews
+        let allSubviews = view.subviews[0].subviews
         for v in allSubviews {
             if v.restorationIdentifier == "shanghai" {
                 shanghai = v
@@ -57,69 +58,30 @@ class LeaderboardViewController: UIViewController, GKGameCenterControllerDelegat
                 top2name = v as? UILabel
             } else if v.restorationIdentifier == "top3name" {
                 top3name = v as? UILabel
+            } else if v.restorationIdentifier == "top1score" {
+                top1score = v as? UILabel
+            } else if v.restorationIdentifier == "top2score" {
+                top2score = v as? UILabel
+            } else if v.restorationIdentifier == "top3score" {
+                top3score = v as? UILabel
             }
         }
-        self.view.sendSubviewToBack(background)
-        self.view.sendSubviewToBack(shanghai)
-        self.view.bringSubviewToFront(top3)
+        self.view.sendSubviewToBack(top3)
         self.view.bringSubviewToFront(titleImage)
         self.view.bringSubviewToFront(scrollView)
         self.view.bringSubviewToFront(bar)
-        self.view.bringSubviewToFront(top1name)
-        self.view.bringSubviewToFront(top2name)
-        self.view.bringSubviewToFront(top3name)
-        self.view.bringSubviewToFront(avatar1)
-        self.view.bringSubviewToFront(avatar2)
-        self.view.bringSubviewToFront(avatar3)
+        self.view.sendSubviewToBack(background)
+        self.view.sendSubviewToBack(shanghai)
         
         scrollView.delegate = self
         // Top1
-        top1name.text = "TOP1"
         top1name.textColor = nameColor
-        let top1score = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width / 4, height: top3.frame.height * 0.3))
-        top1score.font = UIFont(name: "ArialRoundedMTBold", size: 90)
-        top1score.text = "\(66666)"
-        top1score.adjustsFontSizeToFitWidth = true
-        top1score.textColor = UIColor.white
-        top1score.textAlignment = .center
-        top3.addSubview(top1score)
-        top1score.translatesAutoresizingMaskIntoConstraints = false
-        top1score.centerXAnchor.constraint(equalTo: top3.centerXAnchor).isActive = true
-        top1score.centerYAnchor.constraint(equalTo: top3.centerYAnchor, constant: top3.frame.height * 0.21).isActive = true
-        top1score.widthAnchor.constraint(equalTo: top3.widthAnchor, multiplier: 0.25).isActive = true
-        top1score.heightAnchor.constraint(equalTo: top3.heightAnchor, multiplier: 0.5).isActive = true
         
         // Top2
-        top2name.text = "TOP2"
         top2name.textColor = nameColor
-        let top2score = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width / 4, height: top3.frame.height))
-        top2score.font = UIFont(name: "ArialRoundedMTBold", size: 90)
-        top2score.text = "\(23333)"
-        top2score.adjustsFontSizeToFitWidth = true
-        top2score.textColor = UIColor.white
-        top2score.textAlignment = .center
-        top3.addSubview(top2score)
-        top2score.translatesAutoresizingMaskIntoConstraints = false
-        top2score.centerXAnchor.constraint(equalTo: top3.centerXAnchor, constant: -top3.frame.width * 0.345).isActive = true
-        top2score.centerYAnchor.constraint(equalTo: top3.centerYAnchor, constant: top3.frame.height * 0.28).isActive = true
-        top2score.widthAnchor.constraint(equalTo: top3.widthAnchor, multiplier: 0.15).isActive = true
-        top2score.heightAnchor.constraint(equalTo: top3.heightAnchor, multiplier: 0.5).isActive = true
         
         // Top3
-        top3name.text = "TOP3"
         top3name.textColor = nameColor
-        let top3score = UILabel(frame: CGRect(x: 0, y: 0, width: top3.frame.width / 4, height: top3.frame.height))
-        top3score.font = UIFont(name: "ArialRoundedMTBold", size: 90)
-        top3score.text = "\(12345)"
-        top3score.adjustsFontSizeToFitWidth = true
-        top3score.textColor = UIColor.white
-        top3score.textAlignment = .center
-        top3.addSubview(top3score)
-        top3score.translatesAutoresizingMaskIntoConstraints = false
-        top3score.centerXAnchor.constraint(equalTo: top3.centerXAnchor, constant: top3.frame.width * 0.345).isActive = true
-        top3score.centerYAnchor.constraint(equalTo: top3.centerYAnchor, constant: top3.frame.height * 0.28).isActive = true
-        top3score.widthAnchor.constraint(equalTo: top3.widthAnchor, multiplier: 0.15).isActive = true
-        top3score.heightAnchor.constraint(equalTo: top3.heightAnchor, multiplier: 0.5).isActive = true
         // Do any additional setup after loading the view.
         
         scrollView.isScrollEnabled = true
