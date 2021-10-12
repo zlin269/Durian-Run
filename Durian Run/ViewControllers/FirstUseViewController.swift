@@ -160,6 +160,11 @@ class FirstUseViewController: UIViewController {
         UserDefaults.set(value: 0, forKey: .mostSeasons)
         UserDefaults.set(value: 0, forKey: .selectedCharacter)
         UserDefaults.set(value: "You", forKey: .username)
+        UserDefaults.set(value: 0, forKey: .totalScore)
+        UserDefaults.set(value: 0, forKey: .totalTime)
+        UserDefaults.set(value: 0, forKey: .totalCoins)
+        UserDefaults.set(value: 0, forKey: .cppoint)
+        UserDefaults.set(value: 0, forKey: .coupon)
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("scores")
         do {
             print("initializing scores data on disk")

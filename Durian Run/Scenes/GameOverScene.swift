@@ -24,7 +24,11 @@ class GameOverScene: MenuScene {
         scoreLabel.fontSize = 220
         scoreLabel.fontColor = .healthColor
         scoreLabel.zRotation = .pi / 80
-//        adjustLabelFontSizeToFitRect(labelNode: scoreLabel, rect: CGRect(origin: frame.origin, size: CGSize(width: self.frame.width * 0.6, height: self.frame.height * 0.2)))
+
+        UserDefaults.set(value: (UserDefaults.int(forKey: .totalScore)!) + Int(score), forKey: .totalScore)
+        UserDefaults.set(value: (UserDefaults.int(forKey: .totalTime)!) + seasons, forKey: .totalTime)
+        UserDefaults.set(value: (UserDefaults.int(forKey: .cppoint)!) + coins, forKey: .cppoint)
+        
         scoreLabel.position = CGPoint(x: frame.midX, y: frame.midY)
         scoreLabel.horizontalAlignmentMode = .center
         scoreLabel.text = "\(Int(score))"

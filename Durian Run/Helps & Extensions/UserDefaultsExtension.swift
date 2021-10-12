@@ -10,16 +10,32 @@ import Foundation
 extension UserDefaults {
 	
 	enum AccountKeys: String {
+        // user settings
         case username
         case avatar
 		case gameVolume
 		case musicVolume
-		case coins
+        case language
+        // top record
 		case highScore
 		case mostSeasons
+        // lifetime record
+        case totalScore
+        case totalTime
+        case totalCoins
+        case enemiesKilled
+        case numOfDeath
+        case numOfFall
+        case numOfKnockout
+        case fled
+        // shop related
+        case coins
         case selectedCharacter
         case charactersOwned
-        case language
+        // Coupon Points
+        case cppoint
+        case coupon
+        
         case hasFirstAccepted // has accepted protocol(not first used)
         case hasSetName // has accepted set username and avatar
 	}

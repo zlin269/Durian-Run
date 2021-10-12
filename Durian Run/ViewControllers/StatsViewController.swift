@@ -23,7 +23,8 @@ class StatsViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		let allSubviews = view.subviews
+		// let allSubviews = view.subviews
+        /*
 		for v in allSubviews {
 			if let textView = v as? UITextView {
 				textView.text = "Best Score: " + String(UserDefaults.int(forKey: .highScore)!) + "\n"
@@ -32,9 +33,11 @@ class StatsViewController: UIViewController {
 				textView.text += "Longest Survival time: The " + season! + " of " + year
 			}
 		}
-		
+		*/
 		
 		// Do any additional setup after loading the view.
+        cppointLabel.text = "\(UserDefaults.int(forKey: .cppoint)!)"
+        couponLabel.text = "\(UserDefaults.int(forKey: .coupon)!)"
 	}
 	
 	override var shouldAutorotate: Bool {
@@ -51,6 +54,38 @@ class StatsViewController: UIViewController {
 	}
 
 	
-	
-	
+    @IBOutlet weak var cppointLabel: UILabel!
+    
+    @IBOutlet weak var couponLabel: UILabel!
+    
+    @IBAction func redeemCoupon(_ sender: UIButton) {
+        if UserDefaults.int(forKey: .cppoint)! >= 10 {
+            UserDefaults.set(value: UserDefaults.int(forKey: .cppoint)! - 10, forKey: .cppoint)
+            UserDefaults.set(value: UserDefaults.int(forKey: .coupon)! + 1, forKey: .coupon)
+            viewDidLoad()
+        } else {
+            let alert = UIAlertController(title: "Notice", message: "Not Sufficient CP Points", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+            NSLog("The \"OK\" alert occured.")
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    @IBAction func useCoupon(_ sender: UIButton) {
+        if UserDefaults.int(forKey: .coupon)! > 0 {
+            let alert = UIAlertController(title: "Confirmation", message: "Are You Sure You Want To Use A Coupon?\nUsed Coupon Cannot Be Restored!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("YES", comment: "Yes action"), style: .default, handler: { _ in
+                UserDefaults.set(value: UserDefaults.int(forKey: .coupon)! - 1, forKey: .coupon)
+                self.viewDidLoad()
+            }))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "No action"), style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Notice", message: "Not Sufficient Coupons", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+            NSLog("The \"OK\" alert occured.")
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 }
