@@ -1,0 +1,161 @@
+//
+//  StatsViewController.swift
+//  Durian Run
+//
+//  Created by 林子轩 on 2021/8/3.
+//
+
+import Foundation
+import UIKit
+import GameKit
+
+class CouponViewController: UIViewController, UIScrollViewDelegate {
+	
+    let couponPrice = 10
+    
+    @IBOutlet weak var scrView: UIScrollView!
+    var arrLabels : [UILabel] = []
+    var totalDistance: Int = 0
+	var totalCoins: Int = 0
+	var numberOfRuns: Int = 0
+	var screenTapped: Int = 0
+	var distanceLabel: UILabel!
+	var coinLabel: UILabel!
+	var runLabel: UILabel!
+	var tapLabel: UILabel!
+    var avaiableCoupons: [Coupon]!
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+        
+        arrLabels = []
+        
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("coupons")
+
+        do {
+            let data = try Data(contentsOf: path)
+            if let coupons = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Coupon] {
+                avaiableCoupons = coupons
+                print("success")
+                print(avaiableCoupons.count)
+                for c in coupons {
+                    let label = UILabel()
+                    label.backgroundColor = .yellow
+                    label.text = c.couponType + "\n"
+                    label.text! += "Remaining Usage: \(c.numberOfUse) \n"
+                    label.text! += "Expires On: " + Date(timeIntervalSince1970: c.expirationDate).toString(dateFormat: "dd MMM yyyy HH:mm")
+                    label.adjustsFontSizeToFitWidth = true
+                    label.textAlignment = .center
+                    arrLabels.append(label)
+                }
+            }
+        } catch {
+            print("ERROR: \(error.localizedDescription)")
+        }
+		
+		
+		// Do any additional setup after loading the view.
+        cppointLabel.text = "\(couponPrice - UserDefaults.int(forKey: .cppoint)!)"
+        couponLabel.text = "\(UserDefaults.int(forKey: .coupon)!)"
+        
+        if UserDefaults.int(forKey: .cppoint)! >= couponPrice {
+            redeemCoupon();
+        }
+	}
+    
+    func loadScrollView() {
+        scrView.delegate = self
+        scrView.backgroundColor = UIColor.cyan
+        scrView.alpha = 0.5
+        scrView.isPagingEnabled = true
+        scrView.contentSize = CGSize(width: scrView.frame.width * CGFloat(arrLabels.count), height: scrView.frame.height)
+        for v in scrView.subviews {
+            v.removeFromSuperview()
+        }
+        
+        for i in (0..<arrLabels.count) {
+            
+            arrLabels[i].frame = CGRect(x: i * Int(scrView.frame.size.width) , y: 0 , width:
+                                        Int(scrView.frame.size.width) , height: Int(scrView.frame.size.height))
+            
+            self.scrView.addSubview(arrLabels[i])
+        }
+        if arrLabels.count == 0 {
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width:
+                                                Int(scrView.frame.size.width), height: Int(scrView.frame.size.height)))
+            label.text = "No Coupon Available. Go Play Some Games"
+            label.textAlignment = .center
+            self.scrView.addSubview(label)
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        loadScrollView()
+    }
+	
+	override var shouldAutorotate: Bool {
+		return true
+	}
+	
+	
+	override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+		if UIDevice.current.userInterfaceIdiom == .phone {
+			return .landscape
+		} else {
+			return .landscape
+		}
+	}
+
+	
+    @IBOutlet weak var cppointLabel: UILabel!
+    
+    @IBOutlet weak var couponLabel: UILabel!
+    
+    func redeemCoupon() {
+        if UserDefaults.int(forKey: .cppoint)! >= couponPrice {
+            UserDefaults.set(value: UserDefaults.int(forKey: .cppoint)! - couponPrice, forKey: .cppoint)
+            UserDefaults.set(value: UserDefaults.int(forKey: .coupon)! + 1, forKey: .coupon)
+            avaiableCoupons.append(Coupon())
+            let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("coupons")
+            do {
+                let data = try NSKeyedArchiver.archivedData(withRootObject: avaiableCoupons!, requiringSecureCoding: false)
+                print(avaiableCoupons.count)
+                try data.write(to: path)
+            } catch {
+                print("ERROR: \(error.localizedDescription)")
+            }
+            viewDidLoad()
+            loadScrollView()
+        } else {
+            let alert = UIAlertController(title: "Notice", message: "Not Sufficient CP Points", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    @IBAction func useCoupon(_ sender: UIButton) {
+        if UserDefaults.int(forKey: .coupon)! > 0 {
+            let alert = UIAlertController(title: "Confirmation", message: "Are You Sure You Want To Use A Coupon?\nUsed Coupon Cannot Be Restored!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("YES", comment: "Yes action"), style: .default, handler: { [self] _ in
+                UserDefaults.set(value: UserDefaults.int(forKey: .coupon)! - 1, forKey: .coupon)
+                let index = Int(round(scrView.contentOffset.x/scrView.frame.size.width))
+                avaiableCoupons.remove(at: index)
+                let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("coupons")
+                do {
+                    let data = try NSKeyedArchiver.archivedData(withRootObject: avaiableCoupons!, requiringSecureCoding: false)
+                    try data.write(to: path)
+                } catch {
+                    print("ERROR: \(error.localizedDescription)")
+                }
+                viewDidLoad()
+                loadScrollView()
+            }))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "No action"), style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Notice", message: "Not Sufficient Coupons", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+}
+

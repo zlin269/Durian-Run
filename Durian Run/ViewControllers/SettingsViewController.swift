@@ -155,6 +155,20 @@ class SettingsViewController: UIViewController {
         resetID.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 340).isActive = true
         resetID.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
         
+        let reset = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
+        reset.translatesAutoresizingMaskIntoConstraints = false
+        reset.setTitle({()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "初始化"
+        case "English": return "Initialize"
+        case "Thai": return "การเริ่มต้น"
+        default: return "Initialize"
+        }}(), for: .normal)
+        reset.setTitleColor(.healthColor, for: .normal)
+        viewInScrollView.addSubview(reset)
+        reset.addTarget(self, action: #selector(fullReset(_:)), for: .touchUpInside)
+        reset.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 390).isActive = true
+        reset.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
+        
 
         // Do any additional setup after loading the view.
     }
@@ -205,6 +219,20 @@ class SettingsViewController: UIViewController {
     @objc func setNameAndAvatar(_ sender: UIButton!) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "onboarding")
+        vc.view.frame = (self.view?.frame)!
+        vc.view.layoutIfNeeded()
+        UIView.transition(with: self.view!, duration: 0.3, options: .transitionCrossDissolve, animations:
+                            {
+                                self.view?.window?.rootViewController = vc
+                            }, completion: { completed in
+                            })
+    }
+    
+    @objc func fullReset(_ sender: UIButton!) {
+        
+        UserDefaults.set(value: false, forKey: .hasFirstAccepted)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "first")
         vc.view.frame = (self.view?.frame)!
         vc.view.layoutIfNeeded()
         UIView.transition(with: self.view!, duration: 0.3, options: .transitionCrossDissolve, animations:

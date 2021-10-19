@@ -165,13 +165,22 @@ class FirstUseViewController: UIViewController {
         UserDefaults.set(value: 0, forKey: .totalCoins)
         UserDefaults.set(value: 0, forKey: .cppoint)
         UserDefaults.set(value: 0, forKey: .coupon)
-        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("scores")
+        var path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("scores")
         do {
             print("initializing scores data on disk")
             let scores = [Score(name: "Jack", score: 66666, seasons: 12, avatar: "littlemonster1"),
                               Score(name: "Alice", score: 23333, seasons: 6, avatar: "littlemonster2"),
                               Score(name: "Lawrence", score: 12345, seasons: 3, avatar: "littlemonster3")]
             let data = try NSKeyedArchiver.archivedData(withRootObject: scores, requiringSecureCoding: false)
+            try data.write(to: path)
+        } catch {
+            print("ERROR: \(error.localizedDescription)")
+        }
+        path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("coupons")
+        do {
+            print("initializing coupon data on disk")
+            let coupons = [Coupon]()
+            let data = try NSKeyedArchiver.archivedData(withRootObject: coupons, requiringSecureCoding: false)
             try data.write(to: path)
         } catch {
             print("ERROR: \(error.localizedDescription)")

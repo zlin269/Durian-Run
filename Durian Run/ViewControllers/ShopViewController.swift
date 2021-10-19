@@ -96,9 +96,6 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
 			
 			self.scrView.addSubview(arrLabels[i])
 		}
-		
-
-        
 	}
 	
 	override var shouldAutorotate: Bool {

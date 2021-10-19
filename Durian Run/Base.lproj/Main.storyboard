@@ -109,7 +109,7 @@
                                 <rect key="frame" x="362" y="316.66666666666669" width="120.33333333333331" height="26.333333333333314"/>
                             </pageControl>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" restorationIdentifier="scrView" layoutMarginsFollowReadableWidth="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQd-Hq-TJb">
-                                <rect key="frame" x="155" y="84" width="587" height="247"/>
+                                <rect key="frame" x="155" y="84" width="535" height="225"/>
                                 <viewLayoutGuide key="contentLayoutGuide" id="jg4-2z-4Ap"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="FuO-fl-Rp5"/>
                             </scrollView>
@@ -169,7 +169,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZKM-Ro-5pb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="953" y="1951"/>
+            <point key="canvasLocation" x="952.60663507108995" y="1950.7692307692307"/>
         </scene>
         <!--Main Menu View Controller-->
         <scene sceneID="mLl-00-6IG">
@@ -244,10 +244,10 @@
             </objects>
             <point key="canvasLocation" x="76.911544227886068" y="976.79999999999995"/>
         </scene>
-        <!--Stats View Controller-->
+        <!--Coupon View Controller-->
         <scene sceneID="mQ5-RP-TfW">
             <objects>
-                <viewController storyboardIdentifier="StatsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="qbE-VB-Ixd" customClass="StatsViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CouponViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="qbE-VB-Ixd" customClass="CouponViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0ms-V0-AOQ">
                         <rect key="frame" x="0.0" y="0.0" width="844" height="390"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -260,16 +260,6 @@
                                         <rect key="frame" x="6" y="0.0" width="832" height="390"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="Title" text="Coupon Page" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="4Jc-Om-QUH">
-                                        <rect key="frame" x="198" y="30" width="448" height="48"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        <accessibility key="accessibilityConfiguration">
-                                            <accessibilityTraits key="traits" none="YES"/>
-                                        </accessibility>
-                                        <fontDescription key="fontDescription" type="system" weight="black" pointSize="40"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YFO-15-CaX">
                                         <rect key="frame" x="37" y="26" width="63" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -278,48 +268,30 @@
                                             <segue destination="InB-lg-D8O" kind="showDetail" id="ZYn-Hy-Q2I"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CP Points Owned: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eKE-pR-mVv">
-                                        <rect key="frame" x="146" y="108" width="290" height="53"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CP Points Until Next Counpon: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eKE-pR-mVv">
+                                        <rect key="frame" x="146" y="26" width="452" height="53"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="33"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CFP-Yo-3ed">
-                                        <rect key="frame" x="443" y="108" width="250" height="53"/>
+                                        <rect key="frame" x="629" y="26" width="64" height="53"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efZ-gB-Z2l">
-                                        <rect key="frame" x="487" y="169" width="206" height="53"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="36"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CP Coupons Owned: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gt6-3y-lzB">
-                                        <rect key="frame" x="145" y="169" width="354" height="53"/>
+                                        <rect key="frame" x="146" y="72" width="354" height="53"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="36"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dy1-Fe-QUm">
-                                        <rect key="frame" x="146" y="284" width="208" height="55"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="italicSystem" pointSize="18"/>
-                                        <state key="normal" title="Redeem Coupon" backgroundImage="pink button">
-                                            <color key="titleColor" systemColor="systemYellowColor"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="redeemCoupon:" destination="qbE-VB-Ixd" eventType="touchUpInside" id="0qg-P0-5nU"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A6T-3e-8pl">
-                                        <rect key="frame" x="485" y="282" width="208" height="58"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <rect key="frame" x="318" y="303" width="208" height="58"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="italicSystem" pointSize="18"/>
                                         <state key="normal" title="Use Coupon" backgroundImage="pink button">
                                             <color key="titleColor" systemColor="systemYellowColor"/>
@@ -328,6 +300,19 @@
                                             <action selector="useCoupon:" destination="qbE-VB-Ixd" eventType="touchUpInside" id="97e-iZ-PCw"/>
                                         </connections>
                                     </button>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8kE-GD-JEL">
+                                        <rect key="frame" x="146" y="131" width="547" height="164"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <viewLayoutGuide key="contentLayoutGuide" id="UUP-CC-OMn"/>
+                                        <viewLayoutGuide key="frameLayoutGuide" id="FYj-1C-Y5U"/>
+                                    </scrollView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efZ-gB-Z2l">
+                                        <rect key="frame" x="487" y="72" width="206" height="53"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="36"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -338,6 +323,7 @@
                     <connections>
                         <outlet property="couponLabel" destination="efZ-gB-Z2l" id="DJi-gN-oMH"/>
                         <outlet property="cppointLabel" destination="CFP-Yo-3ed" id="XTd-fh-fJK"/>
+                        <outlet property="scrView" destination="8kE-GD-JEL" id="qMf-oH-Re1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xKE-pj-nRi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -545,7 +531,7 @@
         <!--FirstUse View Controller-->
         <scene sceneID="uN4-QR-YjA">
             <objects>
-                <viewController id="XD3-Xf-ipr" userLabel="FirstUse View Controller" customClass="FirstUseViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="first" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XD3-Xf-ipr" userLabel="FirstUse View Controller" customClass="FirstUseViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleAspectFit" id="ru9-wj-t4J">
                         <rect key="frame" x="0.0" y="0.0" width="844" height="390"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -838,7 +824,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PxL-7I-8rK">
-                                                <rect key="frame" x="237" y="219" width="191" height="32"/>
+                                                <rect key="frame" x="211" y="211" width="191" height="32"/>
                                                 <segments>
                                                     <segment title="中文"/>
                                                     <segment title="English"/>
@@ -910,12 +896,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nt8-mI-Qrz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1710" y="61"/>
+            <point key="canvasLocation" x="1757" y="975"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="ZYn-Hy-Q2I"/>
-        <segue reference="fqg-cZ-p4m"/>
+        <segue reference="lKC-rh-bF3"/>
         <segue reference="zei-zr-r6n"/>
     </inferredMetricsTieBreakers>
     <resources>
