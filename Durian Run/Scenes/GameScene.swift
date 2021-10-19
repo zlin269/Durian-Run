@@ -981,9 +981,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 			self.addChild(wall)
 		default:
             let c = arc4random_uniform(3) + 1
-            for i in 1...c {
+            for _ in 1...c {
                 let blocker = Sleeper()
-                blocker.position = CGPoint(x: platforms.last!.position.x + platforms.last!.width * CGFloat(Double(i) - 0.2) / CGFloat(3), y: 600)
+                blocker.position = CGPoint(x: platforms.last!.position.x + platforms.last!.width * CGFloat(arc4random()) / CGFloat(UINT32_MAX) * 0.7 + 200, y: 600)
                 blocker.zPosition = 100
                 enemies.append(blocker)
                 self.addChild(blocker)
