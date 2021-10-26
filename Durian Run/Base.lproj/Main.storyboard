@@ -12,7 +12,7 @@
         <scene sceneID="tXr-a1-R10">
             <objects>
                 <viewController modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="BV1-FR-VrT" customClass="GameViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleAspectFit" id="3se-qz-xqx" customClass="SKView">
+                    <view key="view" contentMode="scaleAspectFit" restorationIdentifier="game" id="3se-qz-xqx" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="844" height="390"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>

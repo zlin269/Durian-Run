@@ -19,6 +19,18 @@ class Coupon: NSObject, NSCoding {
         numberOfUse = 1
     }
     
+    init(random: Bool) {
+        if random {
+            couponType = "Random Coupon \(arc4random_uniform(32))"
+            expirationDate = Date(timeIntervalSinceNow: 60 * 60 * 24 * Double(arc4random_uniform(31) + 1)).timeIntervalSince1970
+            numberOfUse = Int(1 + arc4random_uniform(5))
+        } else {
+            couponType = "Durian Coupon"
+            expirationDate = Date(timeIntervalSinceNow: 60 * 60 * 24 * 7).timeIntervalSince1970
+            numberOfUse = 1
+        }
+    }
+    
     init(type: String, duration_day: Int, use: Int) {
         couponType = type
         expirationDate = Date(timeIntervalSinceNow: TimeInterval(60 * 60 * 24 * duration_day)).timeIntervalSince1970

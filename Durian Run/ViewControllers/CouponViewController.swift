@@ -14,7 +14,7 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
     let couponPrice = 10
     
     @IBOutlet weak var scrView: UIScrollView!
-    var arrLabels : [UILabel] = []
+    var arrLabels : [UITextView] = []
     var totalDistance: Int = 0
 	var totalCoins: Int = 0
 	var numberOfRuns: Int = 0
@@ -39,13 +39,14 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
                 print("success")
                 print(avaiableCoupons.count)
                 for c in coupons {
-                    let label = UILabel()
+                    let label = UITextView()
+                    label.isEditable = false
                     label.backgroundColor = .yellow
                     label.text = c.couponType + "\n"
                     label.text! += "Remaining Usage: \(c.numberOfUse) \n"
                     label.text! += "Expires On: " + Date(timeIntervalSince1970: c.expirationDate).toString(dateFormat: "dd MMM yyyy HH:mm")
-                    label.adjustsFontSizeToFitWidth = true
                     label.textAlignment = .center
+                    label.font = UIFont(name: "ArialMT", size: 30)
                     arrLabels.append(label)
                 }
             }
@@ -85,6 +86,7 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
                                                 Int(scrView.frame.size.width), height: Int(scrView.frame.size.height)))
             label.text = "No Coupon Available. Go Play Some Games"
             label.textAlignment = .center
+            label.font = UIFont(name: "ArialMT", size: 25)
             self.scrView.addSubview(label)
         }
     }
@@ -115,7 +117,7 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
         if UserDefaults.int(forKey: .cppoint)! >= couponPrice {
             UserDefaults.set(value: UserDefaults.int(forKey: .cppoint)! - couponPrice, forKey: .cppoint)
             UserDefaults.set(value: UserDefaults.int(forKey: .coupon)! + 1, forKey: .coupon)
-            avaiableCoupons.append(Coupon())
+            avaiableCoupons.append(Coupon(random: true))
             let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("coupons")
             do {
                 let data = try NSKeyedArchiver.archivedData(withRootObject: avaiableCoupons!, requiringSecureCoding: false)
@@ -136,9 +138,12 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
         if UserDefaults.int(forKey: .coupon)! > 0 {
             let alert = UIAlertController(title: "Confirmation", message: "Are You Sure You Want To Use A Coupon?\nUsed Coupon Cannot Be Restored!", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("YES", comment: "Yes action"), style: .default, handler: { [self] _ in
-                UserDefaults.set(value: UserDefaults.int(forKey: .coupon)! - 1, forKey: .coupon)
                 let index = Int(round(scrView.contentOffset.x/scrView.frame.size.width))
-                avaiableCoupons.remove(at: index)
+                avaiableCoupons[index].numberOfUse -= 1
+                if avaiableCoupons[index].numberOfUse == 0 {
+                    avaiableCoupons.remove(at: index)
+                    UserDefaults.set(value: UserDefaults.int(forKey: .coupon)! - 1, forKey: .coupon)
+                }
                 let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("coupons")
                 do {
                     let data = try NSKeyedArchiver.archivedData(withRootObject: avaiableCoupons!, requiringSecureCoding: false)
@@ -149,11 +154,22 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
                 viewDidLoad()
                 loadScrollView()
             }))
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "No action"), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "No action"), style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
         } else {
             let alert = UIAlertController(title: "Notice", message: "Not Sufficient Coupons", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Play", comment: ""), style: .default, handler: {_ in
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "game")
+                vc.view.frame = (self.view?.frame)!
+                vc.view.layoutIfNeeded()
+                UIView.transition(with: self.view!, duration: 0.3, options: .transitionCrossDissolve, animations:
+                                    {
+                                        self.view?.window?.rootViewController = vc
+                                    }, completion: { completed in
+                                    })
+            }))
             self.present(alert, animated: true, completion: nil)
         }
     }

@@ -41,7 +41,7 @@ class SettingsViewController: UIViewController {
 		scrollView.isScrollEnabled = true
 		scrollView.bounces = true
 		scrollView.showsVerticalScrollIndicator = true
-		scrollView.contentSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height * 2)
+        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height * 2.5)
         for v in scrollView.subviews {
             v.removeFromSuperview()
         }
