@@ -12,6 +12,8 @@ class MainMenuViewController: UIViewController {
     
     override func viewDidLoad() {
         
+        GameScene.sharedInstance = nil
+        
         let allSubviews = view.subviews
         for v in allSubviews {
             if v.restorationIdentifier == "TouchToStart" {

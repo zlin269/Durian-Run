@@ -230,16 +230,32 @@ class SettingsViewController: UIViewController {
     
     @objc func fullReset(_ sender: UIButton!) {
         
-        UserDefaults.set(value: false, forKey: .hasFirstAccepted)
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "first")
-        vc.view.frame = (self.view?.frame)!
-        vc.view.layoutIfNeeded()
-        UIView.transition(with: self.view!, duration: 0.3, options: .transitionCrossDissolve, animations:
-                            {
-                                self.view?.window?.rootViewController = vc
-                            }, completion: { completed in
-                            })
+        let alert = UIAlertController(title: {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "注意!"
+        case "English": return "Caution!"
+        case "Thai": return "คำเตือน!"
+        default: return "注意!"
+        }}(), message: {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "您确定要初始化所有设置吗？这将抹掉所有数据。"
+        case "English": return "Are you sure you want to do a FULL RESET? This will wipe out all local data."
+        case "Thai": return "คุณแน่ใจหรือไม่ว่าต้องการทำการรีเซ็ตแบบเต็ม? การดำเนินการนี้จะล้างข้อมูลในเครื่องทั้งหมด"
+        default: return ""
+        }}(), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Yes", comment: "OK"), style: .destructive, handler: {_ in
+                                        UserDefaults.set(value: false, forKey: .hasFirstAccepted)
+                                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                        let vc = storyboard.instantiateViewController(withIdentifier: "first")
+                                        vc.view.frame = (self.view?.frame)!
+                                        vc.view.layoutIfNeeded()
+                                        UIView.transition(with: self.view!, duration: 0.3, options: .transitionCrossDissolve, animations:
+                                                            {
+                                                                self.view?.window?.rootViewController = vc
+                                                            }, completion: { completed in
+                                                            })}))
+        
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Default action"), style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     override var shouldAutorotate: Bool {
