@@ -34,7 +34,6 @@ extension UserDefaults {
         case charactersOwned
         // Coupon Points
         case cppoint
-        case coupon
         
         case hasFirstAccepted // has accepted protocol(not first used)
         case hasSetName // has accepted set username and avatar

@@ -11,7 +11,7 @@
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="BV1-FR-VrT" customClass="GameViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="game" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BV1-FR-VrT" customClass="GameViewController" customModule="Durian_Run" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleAspectFit" restorationIdentifier="game" id="3se-qz-xqx" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="844" height="390"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -653,7 +653,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="yes" smartInsertDeleteType="yes" textContentType="nickname"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, What's your name?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" id="5EB-7u-9t1">
                                 <rect key="frame" x="249" y="72" width="346" height="38"/>
@@ -902,7 +902,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="ZYn-Hy-Q2I"/>
         <segue reference="lKC-rh-bF3"/>
-        <segue reference="zei-zr-r6n"/>
+        <segue reference="QXr-7K-gKV"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Durian Run" width="547" height="106"/>

@@ -10,12 +10,12 @@ import Foundation
 class Coupon: NSObject, NSCoding {
     
     let couponType: String
-    let expirationDate: Double
+    private let expirationDate: Double
     var numberOfUse: Int
     
     override init() {
         couponType = "Durian Coupon"
-        expirationDate = Date(timeIntervalSinceNow: 60 * 60 * 24 * 7).timeIntervalSince1970
+        expirationDate = Date(timeIntervalSinceNow: 7).timeIntervalSince1970
         numberOfUse = 1
     }
     
@@ -60,6 +60,14 @@ class Coupon: NSObject, NSCoding {
         coder.encode(couponType, forKey: "type")
         coder.encode(expirationDate, forKey: "date")
         coder.encode(numberOfUse, forKey: "uses")
+    }
+    
+    func getExprirationDate() -> String {
+        return Date(timeIntervalSince1970: expirationDate).toString(dateFormat: "MMM dd, yyyy HH:mm")
+    }
+    
+    func checkDate() -> Bool {
+       return Date(timeIntervalSinceNow: 0).timeIntervalSince1970 <= expirationDate
     }
 }
 

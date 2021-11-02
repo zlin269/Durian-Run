@@ -38,17 +38,25 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
                 avaiableCoupons = coupons
                 print("success")
                 print(avaiableCoupons.count)
+                var i : Int = 0
                 for c in coupons {
-                    let label = UITextView()
-                    label.isEditable = false
-                    label.backgroundColor = .yellow
-                    label.text = c.couponType + "\n"
-                    label.text! += "Remaining Usage: \(c.numberOfUse) \n"
-                    label.text! += "Expires On: " + Date(timeIntervalSince1970: c.expirationDate).toString(dateFormat: "dd MMM yyyy HH:mm")
-                    label.textAlignment = .center
-                    label.font = UIFont(name: "ArialMT", size: 30)
-                    arrLabels.append(label)
+                    if c.checkDate() {
+                        let label = UITextView()
+                        label.isEditable = false
+                        label.backgroundColor = .yellow
+                        label.text = c.couponType + "\n"
+                        label.text! += "Remaining Usage: \(c.numberOfUse) \n"
+                        label.text! += "Expires On: " + c.getExprirationDate()
+                        label.textAlignment = .center
+                        label.font = UIFont(name: "ArialMT", size: 30)
+                        arrLabels.append(label)
+                        i += 1
+                    } else {
+                        avaiableCoupons.remove(at: i)
+                    }
                 }
+                let newdata = try NSKeyedArchiver.archivedData(withRootObject: avaiableCoupons!, requiringSecureCoding: false)
+                try newdata.write(to: path)
             }
         } catch {
             print("ERROR: \(error.localizedDescription)")
@@ -57,7 +65,7 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
 		
 		// Do any additional setup after loading the view.
         cppointLabel.text = "\(couponPrice - UserDefaults.int(forKey: .cppoint)!)"
-        couponLabel.text = "\(UserDefaults.int(forKey: .coupon)!)"
+        couponLabel.text = "\(avaiableCoupons.count)"
         
         if UserDefaults.int(forKey: .cppoint)! >= couponPrice {
             redeemCoupon();
@@ -116,8 +124,7 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
     func redeemCoupon() {
         if UserDefaults.int(forKey: .cppoint)! >= couponPrice {
             UserDefaults.set(value: UserDefaults.int(forKey: .cppoint)! - couponPrice, forKey: .cppoint)
-            UserDefaults.set(value: UserDefaults.int(forKey: .coupon)! + 1, forKey: .coupon)
-            avaiableCoupons.append(Coupon(random: true))
+            avaiableCoupons.append(Coupon())
             let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("coupons")
             do {
                 let data = try NSKeyedArchiver.archivedData(withRootObject: avaiableCoupons!, requiringSecureCoding: false)
@@ -135,14 +142,20 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     @IBAction func useCoupon(_ sender: UIButton) {
-        if UserDefaults.int(forKey: .coupon)! > 0 {
+        if avaiableCoupons.count > 0 {
             let alert = UIAlertController(title: "Confirmation", message: "Are You Sure You Want To Use A Coupon?\nUsed Coupon Cannot Be Restored!", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("YES", comment: "Yes action"), style: .default, handler: { [self] _ in
                 let index = Int(round(scrView.contentOffset.x/scrView.frame.size.width))
+                if avaiableCoupons[index].checkDate() {
                 avaiableCoupons[index].numberOfUse -= 1
-                if avaiableCoupons[index].numberOfUse == 0 {
+                    if avaiableCoupons[index].numberOfUse == 0 {
+                        avaiableCoupons.remove(at: index)
+                    }
+                } else {
+                    let notice = UIAlertController(title: "Notice", message: "The Coupon has Expired!", preferredStyle: .alert)
+                    notice.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "No action"), style: .default, handler: nil))
                     avaiableCoupons.remove(at: index)
-                    UserDefaults.set(value: UserDefaults.int(forKey: .coupon)! - 1, forKey: .coupon)
+                    self.present(notice, animated: true, completion: nil)
                 }
                 let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("coupons")
                 do {
