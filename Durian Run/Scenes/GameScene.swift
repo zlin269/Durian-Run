@@ -371,7 +371,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     @objc func doubleTapped (sender: UITapGestureRecognizer) {
-        if isPaused {
+        if isPaused || !gameStarted {
             return
         }
         if durian.state != DurianState.boost && healthBar.secondaryIsMoreThanOrEqualTo(100) {
@@ -387,7 +387,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
 	
 	@objc func swipedUp (sender: UISwipeGestureRecognizer) {
-		if !isPaused {
+		if !isPaused || gameStarted {
 			if durian.inAir != 0 {
 				durian.jump()
 			}
@@ -395,13 +395,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
 	
 	@objc func swipedDown (sender: UISwipeGestureRecognizer) {
-		if !isPaused {
+		if !isPaused || gameStarted {
 			durian.drop()
 		}
 	}
     
 	@objc func swipedLeft (sender: UISwipeGestureRecognizer) {
-        if isPaused {
+        if isPaused || !gameStarted {
             return
         }
 		if durian.state != DurianState.boost {
@@ -418,7 +418,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	}
     
     @objc func swipedRight (sender: UISwipeGestureRecognizer) {
-        if isPaused {
+        if isPaused || !gameStarted {
             return
         }
         if spellCD.isEmpty() {
@@ -755,6 +755,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             } else if durian.position.x > 605 {
                 durian.run(SKAction.moveBy(x: -5, y: 0, duration: dt))
             }
+            if durian.position.x > 1500 {
+                durian.physicsBody?.isResting = true
+            }
             
             
             // MARK: --Absorbtion Related
@@ -856,8 +859,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.lastUpdateTime = currentTime
     }
     
-    // initial animation
+    // MARK: --initial animation
     func startingAnimation () {
+        self.isUserInteractionEnabled = false
         let truck = SKSpriteNode(imageNamed: "truck")
         platforms.first!.addChild(truck)
         truck.anchorPoint = .zero
@@ -873,10 +877,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         durian.run(SKAction.wait(forDuration: 2), completion: {
             self.durian.physicsBody?.isResting = true
             self.gameStarted = true
+            self.isUserInteractionEnabled = true
         })
     }
 	
-	// Creates a game over scene
+	// MARK: game over scene
 	func displayGameOver() {
 		
         musicNode.run(SKAction.stop())

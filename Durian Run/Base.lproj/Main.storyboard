@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XD3-Xf-ipr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XD3-Xf-ipr">
     <device id="retina6_0" orientation="landscape" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -106,7 +107,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="aF9-fw-6XX">
-                                <rect key="frame" x="362" y="316.66666666666669" width="120.33333333333331" height="26.333333333333314"/>
+                                <rect key="frame" x="344.66666666666669" y="318" width="154.66666666666669" height="25"/>
                             </pageControl>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" restorationIdentifier="scrView" layoutMarginsFollowReadableWidth="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQd-Hq-TJb">
                                 <rect key="frame" x="155" y="84" width="535" height="225"/>
@@ -114,14 +115,14 @@
                                 <viewLayoutGuide key="frameLayoutGuide" id="FuO-fl-Rp5"/>
                             </scrollView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" restorationIdentifier="equipButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WzC-Ny-Xyo">
-                                <rect key="frame" x="154" y="315" width="39" height="30"/>
+                                <rect key="frame" x="154" y="315.66666666666669" width="39" height="30"/>
                                 <state key="normal" title="Equip"/>
                                 <connections>
                                     <action selector="equip:" destination="vUy-sl-Mkc" eventType="touchUpInside" id="oex-eE-5ea"/>
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" restorationIdentifier="purchaseButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUC-fv-lx4">
-                                <rect key="frame" x="626" y="315" width="64" height="30"/>
+                                <rect key="frame" x="626" y="315.66666666666669" width="64" height="30"/>
                                 <state key="normal" title="Purchase"/>
                                 <connections>
                                     <action selector="purchase:" destination="vUy-sl-Mkc" eventType="touchUpInside" id="VeN-zL-NX8"/>
@@ -234,6 +235,14 @@
                                 <color key="shadowColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <size key="shadowOffset" width="2" height="2"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rws-X5-Z6h">
+                                <rect key="frame" x="45" y="20" width="34" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="coin"/>
+                                <connections>
+                                    <segue destination="qbE-VB-Ixd" kind="showDetail" id="Pjh-Qk-474"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="rFz-RQ-d4X"/>
                         <color key="backgroundColor" systemColor="systemTealColor"/>
@@ -242,7 +251,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yiA-Ta-RCc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="76.911544227886068" y="976.79999999999995"/>
+            <point key="canvasLocation" x="76.777251184834114" y="975.38461538461536"/>
         </scene>
         <!--Coupon View Controller-->
         <scene sceneID="mQ5-RP-TfW">
@@ -265,7 +274,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="back"/>
                                         <connections>
-                                            <segue destination="InB-lg-D8O" kind="showDetail" id="ZYn-Hy-Q2I"/>
+                                            <segue destination="n7s-q0-5nW" kind="showDetail" id="UZC-qp-huU"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CP Points Until Next Counpon: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eKE-pR-mVv">
@@ -498,14 +507,6 @@
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rws-X5-Z6h">
-                                        <rect key="frame" x="770" y="29" width="22" height="23"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="coin"/>
-                                        <connections>
-                                            <segue destination="qbE-VB-Ixd" kind="showDetail" id="Pjh-Qk-474"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
                                 <constraints>
@@ -900,9 +901,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ZYn-Hy-Q2I"/>
-        <segue reference="lKC-rh-bF3"/>
-        <segue reference="QXr-7K-gKV"/>
+        <segue reference="KBu-VP-B6d"/>
+        <segue reference="fqg-cZ-p4m"/>
+        <segue reference="zei-zr-r6n"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Durian Run" width="547" height="106"/>
@@ -946,7 +947,7 @@
             <color red="0.34509803921568627" green="0.33725490196078434" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemTealColor">
-            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

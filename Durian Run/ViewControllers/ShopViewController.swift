@@ -168,13 +168,13 @@ class ShopViewController: UIViewController, UIScrollViewDelegate {
 
     @objc func purchase(_ sender: UIButton!) {
         print("purchasing")
-        if UserDefaults.int(forKey: .coins)! >= 1000 {
+        if UserDefaults.int(forKey: .coins)! >= PlayerModelInfo(rawValue: pageControl.currentPage)!.cost {
             print("purchased Success")
             var arr = UserDefaults.array(forKey: .charactersOwned)!
             arr[pageControl.currentPage] = true
             UserDefaults.set(value: arr, forKey: .charactersOwned)
-            UserDefaults.set(value: UserDefaults.int(forKey: .coins)! - 1000, forKey: .coins)
-            coins -= 1000
+            UserDefaults.set(value: UserDefaults.int(forKey: .coins)! - PlayerModelInfo(rawValue: pageControl.currentPage)!.cost, forKey: .coins)
+            coins -= PlayerModelInfo(rawValue: pageControl.currentPage)!.cost
             coinLabel.text = "Coins: " + String(coins)
             equipButton.isHidden = false
             purchaseButton.isHidden = true
