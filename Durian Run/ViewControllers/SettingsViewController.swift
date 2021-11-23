@@ -19,6 +19,7 @@ class SettingsViewController: UIViewController {
     var musicSlider: UISlider!
     var musicLabel: UILabel!
     var languageSegmentedControl: UISegmentedControl!
+    var controlSegmentedControl: UISegmentedControl!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +42,7 @@ class SettingsViewController: UIViewController {
 		scrollView.isScrollEnabled = true
 		scrollView.bounces = true
 		scrollView.showsVerticalScrollIndicator = true
-        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height * 2.5)
+        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height * 3)
         for v in scrollView.subviews {
             v.removeFromSuperview()
         }
@@ -140,6 +141,31 @@ class SettingsViewController: UIViewController {
         languageSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         languageSegmentedControl.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 270).isActive = true
         languageSegmentedControl.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
+        
+        let controlLabel = UILabel()
+        controlLabel.translatesAutoresizingMaskIntoConstraints = false
+        controlLabel.text = {()->String in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return "控制"
+        case "English": return "Control"
+        case "Thai": return "ดำเนินงาน"
+        default: return "Control"
+        }}()
+        viewInScrollView.addSubview(controlLabel)
+        controlLabel.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 340).isActive = true
+        controlLabel.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
+        
+        controlSegmentedControl = UISegmentedControl(items: {()->[String] in switch UserDefaults.string(forKey: .language) {
+        case "Chinese": return ["滑动","操纵杆","按钮"]
+        case "English": return ["Swipe","Joystick","Buttons"]
+        case "Thai": return ["ปัด","จอยสติ๊ก", "ปุ่ม"]
+        default: return ["Swipe","Joystick","Buttons"]
+        }}())
+        controlSegmentedControl.selectedSegmentIndex = UserDefaults.string(forKey: .control)!.toControlIndex()
+        controlSegmentedControl.addTarget(self, action: #selector(changeControl(_:)), for: .valueChanged)
+        viewInScrollView.addSubview(controlSegmentedControl)
+        controlSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        controlSegmentedControl.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 390).isActive = true
+        controlSegmentedControl.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
 		
         let resetID = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
         resetID.translatesAutoresizingMaskIntoConstraints = false
@@ -152,7 +178,7 @@ class SettingsViewController: UIViewController {
         resetID.setTitleColor(.healthColor, for: .normal)
 		viewInScrollView.addSubview(resetID)
         resetID.addTarget(self, action: #selector(setNameAndAvatar(_:)), for: .touchUpInside)
-        resetID.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 340).isActive = true
+        resetID.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 460).isActive = true
         resetID.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
         
         let reset = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
@@ -166,7 +192,7 @@ class SettingsViewController: UIViewController {
         reset.setTitleColor(.healthColor, for: .normal)
         viewInScrollView.addSubview(reset)
         reset.addTarget(self, action: #selector(fullReset(_:)), for: .touchUpInside)
-        reset.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 390).isActive = true
+        reset.topAnchor.constraint(equalTo: viewInScrollView.topAnchor, constant: 510).isActive = true
         reset.centerXAnchor.constraint(equalTo: viewInScrollView.centerXAnchor, constant: 0).isActive = true
         
 
@@ -214,6 +240,22 @@ class SettingsViewController: UIViewController {
 //        }))
 //        self.present(alert, animated: true, completion: nil)
         viewDidLoad()
+    }
+    
+    @objc func changeControl (_ sender: UISegmentedControl!) {
+        var control : String
+        switch controlSegmentedControl.selectedSegmentIndex {
+        case 0:
+            control = "Swipe"
+        case 1:
+            control = "Joystick"
+        case 2:
+            control = "Buttons"
+        default:
+            control = "Swipe"
+        }
+        UserDefaults.set(value: control, forKey: .control)
+        print("Control Setting Changed")
     }
     
     @objc func setNameAndAvatar(_ sender: UIButton!) {

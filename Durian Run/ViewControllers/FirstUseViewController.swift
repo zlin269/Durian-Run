@@ -155,6 +155,7 @@ class FirstUseViewController: UIViewController {
         UserDefaults.set(value: true, forKey: .hasFirstAccepted)
         UserDefaults.set(value: 1.0, forKey: .gameVolume)
         UserDefaults.set(value: 1.0, forKey: .musicVolume)
+        UserDefaults.set(value: "Swipe", forKey: .control)
         UserDefaults.set(value: 0, forKey: .coins)
         UserDefaults.set(value: 0, forKey: .highScore)
         UserDefaults.set(value: 0, forKey: .mostSeasons)

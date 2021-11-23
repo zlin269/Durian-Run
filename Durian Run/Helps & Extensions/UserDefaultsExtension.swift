@@ -16,6 +16,7 @@ extension UserDefaults {
 		case gameVolume
 		case musicVolume
         case language
+        case control
         // top record
 		case highScore
 		case mostSeasons
@@ -100,6 +101,18 @@ extension String {
             return 2
         } else {
             return 1
+        }
+    }
+    
+    func toControlIndex () -> Int {
+        if self == "Swipe" {
+            return 0
+        } else if self == "Joystick" {
+            return 1
+        } else if self == "Buttons" {
+            return 2
+        } else {
+            return 0
         }
     }
     

@@ -23,6 +23,8 @@ class GameSettingsViewController: UIViewController {
     @IBOutlet weak var musicSlider: UISlider!
     @IBOutlet weak var languageLabel: UILabel!
     @IBOutlet weak var languageSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var controlLabel: UILabel!
+    @IBOutlet weak var controlSegmentedControl: UISegmentedControl!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,8 +33,8 @@ class GameSettingsViewController: UIViewController {
         
         volumeSlider.value = Float(volume)
         musicSlider.value = Float(music)
-        let list = ["Chinese", "English", "Thai"]
-        languageSegmentedControl.selectedSegmentIndex = list.firstIndex(of: UserDefaults.string(forKey: .language)!)!
+        languageSegmentedControl.selectedSegmentIndex = UserDefaults.string(forKey: .language)!.toLanguageIndex()
+        controlSegmentedControl.selectedSegmentIndex = UserDefaults.string(forKey: .control)!.toControlIndex()
         updateSubviews()
     }
     
@@ -43,16 +45,28 @@ class GameSettingsViewController: UIViewController {
             volumeLabel.text = "游戏音量" + " " + String(format: "%.2f", volume)
             musicLabel.text = "音乐音量" + " " + String(format: "%.2f", music)
             languageLabel.text = "语言"
+            controlLabel.text = "控制"
+            controlSegmentedControl.setTitle("滑动", forSegmentAt: 0)
+            controlSegmentedControl.setTitle("操纵杆", forSegmentAt: 1)
+            controlSegmentedControl.setTitle("按钮", forSegmentAt: 2)
         case "English":
             settingsLabel.text = "Settings"
             volumeLabel.text = "Game Volume" + " " + String(format: "%.2f", volume)
             musicLabel.text = "Music Volume" + " " + String(format: "%.2f", music)
             languageLabel.text = "Language"
+            controlLabel.text = "Control"
+            controlSegmentedControl.setTitle("Swipe", forSegmentAt: 0)
+            controlSegmentedControl.setTitle("Joystick", forSegmentAt: 1)
+            controlSegmentedControl.setTitle("Buttons", forSegmentAt: 2)
         case "Thai":
             settingsLabel.text = "การตั้งค่า"
             volumeLabel.text = "ปริมาณเกม" + " " + String(format: "%.2f", volume)
             musicLabel.text = "ระดับเสียงเพลง" + " " + String(format: "%.2f", music)
             languageLabel.text = "ภาษา"
+            controlLabel.text = "ดำเนินงาน"
+            controlSegmentedControl.setTitle("ปัด", forSegmentAt: 0)
+            controlSegmentedControl.setTitle("จอยสติ๊ก", forSegmentAt: 1)
+            controlSegmentedControl.setTitle("ปุ่ม", forSegmentAt: 2)
         default:
             break
         }
@@ -82,6 +96,12 @@ class GameSettingsViewController: UIViewController {
         updateSubviews()
     }
     
+    @IBAction func changeControl(_ sender: UISegmentedControl) {
+        let list = ["Swipe", "Joystick", "Buttons"]
+        UserDefaults.set(value: list[min(sender.selectedSegmentIndex, 2)], forKey: .control)
+        updateSubviews()
+    }
+
     override var shouldAutorotate: Bool {
         return true
     }

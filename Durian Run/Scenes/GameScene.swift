@@ -10,22 +10,22 @@ import SpriteKit
 import GameplayKit
 
 enum Season : Int {
-	case Spring, Summer, Fall, Winter
-
-	var description: String {
-		get {
-			switch self {
-			case .Spring:
-				return "Spring"
-			case .Summer:
-				return "Summer"
-			case .Fall:
-				return "Fall"
-			case .Winter:
-				return "Winter"
-			}
-		}
-	}
+    case Spring, Summer, Fall, Winter
+    
+    var description: String {
+        get {
+            switch self {
+            case .Spring:
+                return "Spring"
+            case .Summer:
+                return "Summer"
+            case .Fall:
+                return "Fall"
+            case .Winter:
+                return "Winter"
+            }
+        }
+    }
     
     var chinese: String {
         get {
@@ -60,166 +60,171 @@ enum Season : Int {
 
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-	
+    
     public var openSettingsClosure: (() -> Void)?
     
     static var sharedInstance : GameScene? = GameScene()
-	
-	// Season Info
-	private var seasonInfo = SeasonInfo()
-	
-	// time var
+    
+    // Season Info
+    private var seasonInfo = SeasonInfo()
+    
+    // time var
     private var lastUpdateTime : TimeInterval = 0
-	private var boostStartTime : TimeInterval = 0 // keep track of when boost will end
-	private var gameTime : TimeInterval = 0
+    private var boostStartTime : TimeInterval = 0 // keep track of when boost will end
+    private var gameTime : TimeInterval = 0
     private var currentRainDropSpawnTime : TimeInterval = 0
     private var rainDropSpawnRate : TimeInterval = 0.1
-	private var season : Season = Season.Spring {
-		didSet {
-			seasonInfo.nextSeason()
-			isRaining = false
-			switch season {
-			case .Spring:
+    private var season : Season = Season.Spring {
+        didSet {
+            seasonInfo.nextSeason()
+            isRaining = false
+            switch season {
+            case .Spring:
                 let text = {()->String in switch UserDefaults.string(forKey: .language) {
                 case "Chinese": return "新的一年 "
                 case "English": return "New Year "
                 case "Thai": return "ปีใหม่ "
                 default: return "ปีใหม่ "
                 }}() + "+1500"
-				scoreChangeIndicate(text, yPos: frame.height - 700)
-				score += 1500
-				difficulty += 1
-			default: // .Winter
-				break
-			}
-		}
-	}
-	private var seasonTimer : TimeInterval = 0 {
-		didSet {
-			if seasonTimer > 40 {
-				nextSeason()
-				seasonTimer = 0
-			}
-		}
-	}
-	
-	// MARK: --Difficulty
-	var difficulty : Double = 1
-	
-	// MARK: --Scoring
-	var score : Double = 0 {
-		didSet {
-			scoreLabel.text = String(Int(score))
-		}
-	}
-	lazy var scoreLabel = SKLabelNode(text: String(Int(score)))
-	var seasonsPassed : Int = 0
-	var coins : Int = 0 {
-		didSet {
-			coinLabel.text = String(coins)
-		}
-	}
-	lazy var coinLabel = SKLabelNode(text: String(coins))
-	
-	// Boolean & Tracker
-	var isRaining: Bool = false
-	var isStorming: Bool = false
+                scoreChangeIndicate(text, yPos: frame.height - 700)
+                score += 1500
+                difficulty += 1
+            default: // .Winter
+                break
+            }
+        }
+    }
+    private var seasonTimer : TimeInterval = 0 {
+        didSet {
+            if seasonTimer > 40 {
+                nextSeason()
+                seasonTimer = 0
+            }
+        }
+    }
+    
+    // MARK: --Difficulty
+    var difficulty : Double = 1
+    
+    // MARK: --Scoring
+    var score : Double = 0 {
+        didSet {
+            scoreLabel.text = String(Int(score))
+        }
+    }
+    lazy var scoreLabel = SKLabelNode(text: String(Int(score)))
+    var seasonsPassed : Int = 0
+    var coins : Int = 0 {
+        didSet {
+            coinLabel.text = String(coins)
+        }
+    }
+    lazy var coinLabel = SKLabelNode(text: String(coins))
+    
+    // Boolean & Tracker
+    var isRaining: Bool = false
+    var isStorming: Bool = false
     var justUnpaused : Bool = false // prevent loss of health during pause
-	var isActuallyPaused : Bool = false
+    var isActuallyPaused : Bool = false
     var gameStarted : Bool = false
     
-	// Big game elements
-	lazy var durian = PlayerModelInfo(rawValue: UserDefaults.int(forKey: .selectedCharacter)!)!.model
-	lazy var platform = Platform(initial: true)
+    // Big game elements
+    lazy var durian = PlayerModelInfo(rawValue: UserDefaults.int(forKey: .selectedCharacter)!)!.model
+    lazy var platform = Platform(initial: true)
     lazy var platformLevel = Platform()
-	lazy var healthBar = StatusBar(UIColor.red)
+    lazy var healthBar = StatusBar(UIColor.red)
     lazy var spellCD = CoolDownIndicator(.white)
+    lazy var joystick = Joystick()
     
-	lazy var fertilizer = Fertilizer()
-	lazy var supply = Supply()
-
-	lazy var gameSound = SKAudioNode(fileNamed: "coin.wav")
+    lazy var fertilizer = Fertilizer()
+    lazy var supply = Supply()
+    
+    lazy var gameSound = SKAudioNode(fileNamed: "coin.wav")
     var bgms : [String] = ["airtone_-_birdsongs_1.mp3", "airtone_-_precarity_10.mp3", "batchbug-sweet-dreams.mp3", "Beluga_-_Cloudy_Evening_1.mp3", "donnieozone_-_Rainy_Feels_1.mp3", "fission9__thunder-and-beginning-of-rainfall.mp3", "HinaCC0_011_Fallen_leaves.mp3", "Lights.mp3", "Loyalty_Freak_Music_-_17_-_Summer_Pride.mp3", "Merry-Bay-Upbeat-Summer-Lofi.mp3", "purrple-cat-field-of-fireflies.mp3", "春のテーマ-Spring-field-.mp3"]
     lazy var musicNode = SKAudioNode(fileNamed: bgms.randomElement()!)
-	
+    
     lazy var platforms = [Platform]()
     lazy var platformLevels = [Platform]()
-	lazy var fences = [Fence]()
-	lazy var enemies = [Enemy]()
-	lazy var raindrops = [Rain]()
-
-	// platforms
-	static var platformSpeed : CGFloat = 1000
-	var platformGap : CGFloat {
-		return GameScene.platformSpeed / 4
-	}
+    lazy var fences = [Fence]()
+    lazy var enemies = [Enemy]()
+    lazy var raindrops = [Rain]()
+    
+    // platforms
+    static var platformSpeed : CGFloat = 1000
+    var platformGap : CGFloat {
+        return GameScene.platformSpeed / 4
+    }
     var platformPositionR: CGFloat = 0
     
-	// buttons
-	var pauseButton = Button(imageNamed: "pause")
+    // buttons
+    var pauseButton = Button(imageNamed: "pause")
     var resumeButton = SKSpriteNode(imageNamed: "Resume-1")
     var settingsButton = SKSpriteNode(imageNamed: "setting")
     var quitButton = SKSpriteNode(imageNamed: "quit")
-	
+    lazy var jumpButton = Button(imageNamed: "up")
+    lazy var dropButton = Button(imageNamed: "down")
+    lazy var toggleButton = Button(imageNamed: "star")
+    lazy var dashButton = Button(imageNamed: "right")
+    lazy var boostButton = Button(imageNamed: "boost")
     
     // Pause
     var blur : SKSpriteNode!
     var pausebg : SKSpriteNode!
     
-	
-	// MARK: --Layers in Scene
-	// Layers of nodes in the scene are determined by their zPosition
-	// In this game we use the following convention:
-	// Any background nodes has zPos < 0
-	// Any gameplay related non-physics node has 0 <= zPos < 100
-	// Any physics node has 100 <= zPos < 200
-	// Any UI node has zPos >= 200
-	override func didMove(to view: SKView) {
+    
+    // MARK: --Layers in Scene
+    // Layers of nodes in the scene are determined by their zPosition
+    // In this game we use the following convention:
+    // Any background nodes has zPos < 0
+    // Any gameplay related non-physics node has 0 <= zPos < 100
+    // Any physics node has 100 <= zPos < 200
+    // Any UI node has zPos >= 200
+    override func didMove(to view: SKView) {
         
         
-		GameScene.sharedInstance = self
-		
-		GameScene.platformSpeed = 800
-		
+        GameScene.sharedInstance = self
+        
+        GameScene.platformSpeed = 800
+        
         print("Inside Gameplay Scene")
-            createBackground()
+        createBackground()
         
         musicNode.autoplayLooped = true
         self.addChild(musicNode)
         musicNode.run(SKAction.play())
-    
+        
         gameSound.autoplayLooped = false
         self.addChild(gameSound)
-		
-		let boundary = Boundary()
-		boundary.position = CGPoint(x: -500, y: -300)
-		self.addChild(boundary)
-		
-		let swipeUpRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedUp))
-		self.view?.addGestureRecognizer(swipeUpRecognizer)
-		swipeUpRecognizer.direction = .up
-		
-		let swipeDownRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedDown))
-		self.view?.addGestureRecognizer(swipeDownRecognizer)
-		swipeDownRecognizer.direction = .down
-		
-		let swipeRightRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedRight))
-		self.view?.addGestureRecognizer(swipeRightRecognizer)
-		swipeRightRecognizer.direction = .right
-		
-		let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedLeft))
-		self.view?.addGestureRecognizer(swipeLeftRecognizer)
-		swipeLeftRecognizer.direction = .left
-		
+        
+        let boundary = Boundary()
+        boundary.position = CGPoint(x: -500, y: -300)
+        self.addChild(boundary)
+        
+        let swipeUpRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedUp))
+        self.view?.addGestureRecognizer(swipeUpRecognizer)
+        swipeUpRecognizer.direction = .up
+        
+        let swipeDownRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedDown))
+        self.view?.addGestureRecognizer(swipeDownRecognizer)
+        swipeDownRecognizer.direction = .down
+        
+        let swipeRightRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedRight))
+        self.view?.addGestureRecognizer(swipeRightRecognizer)
+        swipeRightRecognizer.direction = .right
+        
+        let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedLeft))
+        self.view?.addGestureRecognizer(swipeLeftRecognizer)
+        swipeLeftRecognizer.direction = .left
+        
         let doubleTapRecognizer  = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
         self.view?.addGestureRecognizer(doubleTapRecognizer)
         doubleTapRecognizer.numberOfTapsRequired = 2
         
-		// MARK: --gravity
-		self.physicsWorld.contactDelegate = self
-		self.physicsWorld.gravity = CGVector(dx: 0, dy: -50)
-		
-		// MARK: -- game elements
+        // MARK: --gravity
+        self.physicsWorld.contactDelegate = self
+        self.physicsWorld.gravity = CGVector(dx: 0, dy: -50)
+        
+        // MARK: -- game elements
         
         let buildings = SKSpriteNode(texture: SKTexture(imageNamed: "Shanghai"), size: self.size)
         buildings.zPosition = -100
@@ -227,67 +232,68 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         buildings.position = .zero
         self.addChild(buildings)
         
-		durian.name = "durian"
-		durian.state = .normal
-		durian.position = CGPoint(x: 600, y: 450)
-		durian.zPosition = 100
-		durian.size = CGSize(width: durian.size.width * 3, height: durian.size.height * 3)
-		self.addChild(durian)
-		
-		platform.name = "platform"
-		platform.position = CGPoint(x: 0, y: 0)
-		platform.zPosition = 50
+        durian.name = "durian"
+        durian.state = .normal
+        durian.position = CGPoint(x: 600, y: 450)
+        durian.zPosition = 100
+        durian.size = CGSize(width: durian.size.width * 3, height: durian.size.height * 3)
+        self.addChild(durian)
+        
+        platform.name = "platform"
+        platform.position = CGPoint(x: 0, y: 0)
+        platform.zPosition = 50
         platformPositionR = platform.position.x + platform.width
-		self.addChild(platform)
+        self.addChild(platform)
         platforms.append(platform)
         
-		
-		healthBar.name = "health"
-		healthBar.position = CGPoint(x: 80, y: 850)
-		healthBar.zPosition = 200
-		healthBar.setEmpty()
-		healthBar.increase(by: 30)
+        
+        healthBar.name = "health"
+        healthBar.position = CGPoint(x: 80, y: 850)
+        healthBar.zPosition = 200
+        healthBar.setEmpty()
+        healthBar.increase(by: 30)
         healthBar.secondaryIncrease(by: 100)
         healthBar.alpha = 0.8
         healthBar.zRotation = .pi / 16
-		self.addChild(healthBar)
+        self.addChild(healthBar)
         
         spellCD.name = "cd"
         spellCD.position = CGPoint(x: 140, y: 750)
         spellCD.zPosition = 200
         spellCD.setFull()
         self.addChild(spellCD)
-		
+        
         resumeButton.name = "resume"
         settingsButton.name = "setting"
         quitButton.name = "quit"
         
-		pauseButton.name = "pauseButton"
-        pauseButton.position = CGPoint(x: self.size.width - pauseButton.size.width - 80, y: 1100)
-		pauseButton.zPosition = 200
-		pauseButton.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
-		self.addChild(pauseButton)
-		
-		scoreLabel.fontName = "ChalkboardSE-Bold"
-		scoreLabel.fontSize = 200
+        pauseButton.name = "pauseButton"
+        pauseButton.position = CGPoint(x: self.size.width - pauseButton.size.width - 25, y: 1130)
+        pauseButton.size = CGSize(width: 120, height: 120)
+        pauseButton.zPosition = 200
+        pauseButton.anchorPoint = CGPoint(x: 0, y: 1) // anchor point at top left
+        self.addChild(pauseButton)
+        
+        scoreLabel.fontName = "ChalkboardSE-Bold"
+        scoreLabel.fontSize = 200
         scoreLabel.fontColor = .healthColor
-		scoreLabel.position = CGPoint(x: frame.width / 2, y: frame.height - 200)
-		scoreLabel.zPosition = 200
-		self.addChild(scoreLabel)
-		
+        scoreLabel.position = CGPoint(x: frame.width / 2, y: frame.height - 200)
+        scoreLabel.zPosition = 200
+        self.addChild(scoreLabel)
+        
         let coinIcon = SKSpriteNode(imageNamed: "coin")
         coinIcon.anchorPoint = CGPoint(x: 0, y: 0)
         coinIcon.position = CGPoint(x: frame.width - 430, y: frame.height - 142)
         coinIcon.zPosition = 200
         coinIcon.setScale(3)
         self.addChild(coinIcon)
-		coinLabel.fontName = "Italic"
-		coinLabel.fontSize = 100
-		coinLabel.fontColor = UIColor.orange
+        coinLabel.fontName = "Italic"
+        coinLabel.fontSize = 100
+        coinLabel.fontColor = UIColor.orange
         coinLabel.position = CGPoint(x: frame.width - 340, y: frame.height - 140)
-		coinLabel.zPosition = 200
+        coinLabel.zPosition = 200
         coinLabel.horizontalAlignmentMode = .left
-		self.addChild(coinLabel)
+        self.addChild(coinLabel)
         
         startingAnimation()
         
@@ -324,6 +330,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         durianHog.position = CGPoint(x: 200, y: 100)
         durianHog.zPosition = 1
         pausebg.addChild(durianHog)
+        
+        if UserDefaults.string(forKey: .control) == "Joystick" {
+            joystick.position = CGPoint(x: 350, y: 300)
+            joystick.zPosition = 200
+            joystick.setScale(1.5)
+            self.addChild(joystick)
+        } else if UserDefaults.string(forKey: .control) == "Buttons" {
+            jumpButton.position = CGPoint(x: 200, y: 350)
+            jumpButton.zPosition = 200
+            jumpButton.name = "jump"
+            self.addChild(jumpButton)
+            dropButton.position = CGPoint(x: 450, y: 200)
+            dropButton.zPosition = 200
+            dropButton.name = "drop"
+            self.addChild(dropButton)
+            toggleButton.position = CGPoint(x: self.frame.width - 550, y: 200)
+            toggleButton.zPosition = 200
+            toggleButton.name = "toggle"
+            self.addChild(toggleButton)
+            dashButton.position = CGPoint(x: self.frame.width - 250, y: 450)
+            dashButton.zPosition = 200
+            dashButton.name = "dash"
+            self.addChild(dashButton)
+            boostButton.position = CGPoint(x: self.frame.width - 300, y: 200)
+            boostButton.zPosition = 200
+            boostButton.name = "boost"
+            self.addChild(boostButton)
+        }
     }
     
     // MARK: --AUDIO--
@@ -334,6 +368,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         gameSound.removeAllActions()
         gameSound.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0))
+        
+        joystick.removeFromParent()
+        jumpButton.removeFromParent()
+        dropButton.removeFromParent()
+        toggleButton.removeFromParent()
+        dashButton.removeFromParent()
+        boostButton.removeFromParent()
+        
+        if UserDefaults.string(forKey: .control) == "Joystick" {
+            joystick.position = CGPoint(x: 350, y: 300)
+            joystick.zPosition = 200
+            joystick.setScale(1.5)
+            self.addChild(joystick)
+        } else if UserDefaults.string(forKey: .control) == "Buttons" {
+            jumpButton.position = CGPoint(x: 200, y: 350)
+            jumpButton.zPosition = 200
+            jumpButton.name = "jump"
+            self.addChild(jumpButton)
+            dropButton.position = CGPoint(x: 450, y: 200)
+            dropButton.zPosition = 200
+            dropButton.name = "drop"
+            self.addChild(dropButton)
+            toggleButton.position = CGPoint(x: self.frame.width - 550, y: 200)
+            toggleButton.zPosition = 200
+            toggleButton.name = "toggle"
+            self.addChild(toggleButton)
+            dashButton.position = CGPoint(x: self.frame.width - 250, y: 450)
+            dashButton.zPosition = 200
+            dashButton.name = "dash"
+            self.addChild(dashButton)
+            boostButton.position = CGPoint(x: self.frame.width - 300, y: 200)
+            boostButton.zPosition = 200
+            boostButton.name = "boost"
+            self.addChild(boostButton)
+        }
     }
     
     public func changeBGM() {
@@ -371,7 +440,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     @objc func doubleTapped (sender: UITapGestureRecognizer) {
-        if isPaused || !gameStarted {
+        if isPaused || !gameStarted || UserDefaults.string(forKey: .control) == "Buttons" {
             return
         }
         if durian.state != DurianState.boost && healthBar.secondaryIsMoreThanOrEqualTo(100) {
@@ -384,41 +453,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 3), SKAction.removeFromParent()]))
         }
     }
-	
-	
-	@objc func swipedUp (sender: UISwipeGestureRecognizer) {
-		if !isPaused || gameStarted {
-			if durian.inAir != 0 {
-				durian.jump()
-			}
-		}
-	}
-	
-	@objc func swipedDown (sender: UISwipeGestureRecognizer) {
-		if !isPaused || gameStarted {
-			durian.drop()
-		}
-	}
     
-	@objc func swipedLeft (sender: UISwipeGestureRecognizer) {
-        if isPaused || !gameStarted {
+    
+    @objc func swipedUp (sender: UISwipeGestureRecognizer) {
+        if !isPaused && gameStarted  && UserDefaults.string(forKey: .control) == "Swipe" {
+            if durian.inAir != 0 {
+                durian.jump()
+            }
+        }
+    }
+    
+    @objc func swipedDown (sender: UISwipeGestureRecognizer) {
+        if !isPaused && gameStarted && UserDefaults.string(forKey: .control) == "Swipe" {
+            durian.drop()
+        }
+    }
+    
+    @objc func swipedLeft (sender: UISwipeGestureRecognizer) {
+        if isPaused || !gameStarted || UserDefaults.string(forKey: .control) != "Swipe" {
             return
         }
-		if durian.state != DurianState.boost {
-			let tempAudioNode = SKAudioNode(fileNamed: "switch.wav")
-			tempAudioNode.autoplayLooped = false
-			self.addChild(tempAudioNode)
-			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
-			if durian.state == .normal {
-				durian.state = .absorb
-			} else {
-				durian.state = .normal
-			}
-		}
-	}
+        if durian.state != DurianState.boost {
+            let tempAudioNode = SKAudioNode(fileNamed: "switch.wav")
+            tempAudioNode.autoplayLooped = false
+            self.addChild(tempAudioNode)
+            tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
+            if durian.state == .normal {
+                durian.state = .absorb
+            } else {
+                durian.state = .normal
+            }
+        }
+    }
     
     @objc func swipedRight (sender: UISwipeGestureRecognizer) {
-        if isPaused || !gameStarted {
+        if isPaused || !gameStarted || UserDefaults.string(forKey: .control) != "Swipe" {
             return
         }
         if spellCD.isEmpty() {
@@ -427,13 +496,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-	
-	// MARK: --CONTACT DETECTION
-	func didBegin(_ contact: SKPhysicsContact) {
-		if ((contact.bodyA.node is Platform || contact.bodyA.node is Fence) && contact.bodyB.node is Durian) ||
+    
+    // MARK: --CONTACT DETECTION
+    func didBegin(_ contact: SKPhysicsContact) {
+        if ((contact.bodyA.node is Platform || contact.bodyA.node is Fence) && contact.bodyB.node is Durian) ||
             ((contact.bodyB.node is Platform || contact.bodyB.node is Fence) && contact.bodyA.node is Durian) {
-			durian.inAir += 1
-		}
+            durian.inAir += 1
+        }
         if contact.bodyB.node?.name == "cone" && contact.bodyA.node is Durian {
             contact.bodyB.node?.run(SKAction.rotate(byAngle: .pi/2, duration: 0.5))
             contact.bodyB.node?.run(SKAction.moveBy(x: 100, y: 100, duration: 0.5), completion: {
@@ -442,62 +511,62 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             durian.run(SKAction.moveBy(x: -50, y: 0, duration: 0.5))
         }
         if (contact.bodyA.node is Durian && contact.bodyB.node is Fertilizer) {
-			fertilizer.getCollected()
-			score += 100
+            fertilizer.getCollected()
+            score += 100
             let text = {()->String in switch UserDefaults.string(forKey: .language) {
             case "Chinese": return "收集到肥料"
             case "English": return "Fertilizer Collected"
             case "Thai": return "เก็บปุ๋ย"
             default: return "Fertilizer Collected"
             }}() + " +100"
-			scoreChangeIndicate(text, yPos: frame.height - 500)
-			healthBar.secondaryIncrease(by: 20)
+            scoreChangeIndicate(text, yPos: frame.height - 500)
+            healthBar.secondaryIncrease(by: 20)
         }
-		if (contact.bodyA.node is Durian && contact.bodyB.node is Supply)  {
-			supply.getCollected()
-			score += 100
+        if (contact.bodyA.node is Durian && contact.bodyB.node is Supply)  {
+            supply.getCollected()
+            score += 100
             let text = {()->String in switch UserDefaults.string(forKey: .language) {
             case "Chinese": return "收集到补给"
             case "English": return "Supply Collected"
             case "Thai": return "รวบรวมเสบียง"
             default: return "Supply Collected"
             }}() + " +100"
-			scoreChangeIndicate(text, yPos: frame.height - 500)
-			healthBar.increase(by: 20)
-		}
-
-		if contact.bodyA.node is Durian && contact.bodyB.node is Enemy {
-			if contact.bodyB.node is Wall {
-				return
-			}
-            if !durian.invincible {
-               if healthBar.stacks > 0 {
-					healthBar.stacks -= 1
-					if let b = contact.bodyB.node as? Dasher {
-						b.selfDestruction()
-						durian.physicsBody?.isResting = true
-					}
-				} else {
-					healthBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
-				}
-			}
-		}
+            scoreChangeIndicate(text, yPos: frame.height - 500)
+            healthBar.increase(by: 20)
+        }
         
-		if contact.bodyA.node is Boundary {
-			contact.bodyB.node?.removeFromParent()
-		} else if contact.bodyB.node is Boundary {
-			contact.bodyA.node?.removeFromParent()
-		}
-		
-		if contact.bodyA.node is Durian && contact.bodyB.node is Coin {
-			let c = contact.bodyB.node as! Coin
-			c.getCollected()
-			let tempAudioNode = SKAudioNode(fileNamed: "coin.wav")
-			tempAudioNode.autoplayLooped = false
-			self.addChild(tempAudioNode)
-			tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
-			coins += 1
-		}
+        if contact.bodyA.node is Durian && contact.bodyB.node is Enemy {
+            if contact.bodyB.node is Wall {
+                return
+            }
+            if !durian.invincible {
+                if healthBar.stacks > 0 {
+                    healthBar.stacks -= 1
+                    if let b = contact.bodyB.node as? Dasher {
+                        b.selfDestruction()
+                        durian.physicsBody?.isResting = true
+                    }
+                } else {
+                    healthBar.decrease(by: 10 + (CGFloat(difficulty) * 5))
+                }
+            }
+        }
+        
+        if contact.bodyA.node is Boundary {
+            contact.bodyB.node?.removeFromParent()
+        } else if contact.bodyB.node is Boundary {
+            contact.bodyA.node?.removeFromParent()
+        }
+        
+        if contact.bodyA.node is Durian && contact.bodyB.node is Coin {
+            let c = contact.bodyB.node as! Coin
+            c.getCollected()
+            let tempAudioNode = SKAudioNode(fileNamed: "coin.wav")
+            tempAudioNode.autoplayLooped = false
+            self.addChild(tempAudioNode)
+            tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
+            coins += 1
+        }
         if contact.bodyB.node?.name == "bullet" {
             if let enemy = contact.bodyA.node as? Enemy {
                 healthBar.increase(by: 10)
@@ -516,46 +585,97 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
             }
         }
-		
-	}
-	
-	func didEnd(_ contact: SKPhysicsContact) {
-		if ((contact.bodyA.node is Platform || contact.bodyA.node is Fence) && contact.bodyB.node is Durian) ||
-            ((contact.bodyB.node is Platform || contact.bodyB.node is Fence) && contact.bodyA.node is Durian) {
-			durian.inAir -= 1
-		}
-	}
+        
+    }
     
-	// Boost Mode and Attack handled at touchDown
+    func didEnd(_ contact: SKPhysicsContact) {
+        if ((contact.bodyA.node is Platform || contact.bodyA.node is Fence) && contact.bodyB.node is Durian) ||
+            ((contact.bodyB.node is Platform || contact.bodyB.node is Fence) && contact.bodyA.node is Durian) {
+            durian.inAir -= 1
+        }
+    }
+    
+    // MARK: touchDown
     func touchDown(atPoint pos : CGPoint) {
         let touchedNode = atPoint(pos)
-            if touchedNode.name == "pauseButton" {
-                pause()
-            } else if touchedNode.name == "quit" {
-                displayGameOver()
-            } else if touchedNode.name == "setting" {
-                if let openSettingsClosure = openSettingsClosure {
-                    openSettingsClosure()
-                }
-            } else if touchedNode.name == "resume" {
-                unpause()
+        switch touchedNode.name {
+        case "pauseButton":
+            pause()
+        case "quit":
+            displayGameOver()
+        case "setting":
+            if let openSettingsClosure = openSettingsClosure {
+                openSettingsClosure()
             }
-	}
+        case "resume":
+            unpause()
+        case "jump":
+            if isPaused || !gameStarted {
+                break
+            }
+            if durian.inAir != 0 {
+                durian.jump()
+            }
+        case "drop":
+            if isPaused || !gameStarted {
+                break
+            }
+            durian.drop()
+        case "toggle":
+            if isPaused || !gameStarted {
+                break
+            }
+            if durian.state != DurianState.boost {
+                let tempAudioNode = SKAudioNode(fileNamed: "switch.wav")
+                tempAudioNode.autoplayLooped = false
+                self.addChild(tempAudioNode)
+                tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
+                if durian.state == .normal {
+                    durian.state = .absorb
+                } else {
+                    durian.state = .normal
+                }
+                joystick.resetVelocity()
+            }
+        case "dash":
+            if isPaused || !gameStarted {
+                break
+            }
+            if spellCD.isEmpty() {
+                durian.attack()
+                spellCD.setFull()
+            }
+        case "boost":
+            if isPaused || !gameStarted {
+                break
+            }
+            if durian.state != DurianState.boost && healthBar.secondaryIsMoreThanOrEqualTo(100) {
+                durian.state = DurianState.boost
+                boostStartTime = self.lastUpdateTime
+                durian.run()
+                let tempAudioNode = SKAudioNode(fileNamed: "powerup.wav")
+                tempAudioNode.autoplayLooped = false
+                self.addChild(tempAudioNode)
+                tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 3), SKAction.removeFromParent()]))
+            }
+        default: break
+        }
+    }
     
-//    // Not needed
-//    func touchMoved(toPoint pos : CGPoint) {
-//    }
+    //    // Not needed
+    //    func touchMoved(toPoint pos : CGPoint) {
+    //    }
     
-	// Pause and Jump handled at touchUp
-//    func touchUp(atPoint pos : CGPoint) {
-//	}
-	
+    // Pause and Jump handled at touchUp
+    //    func touchUp(atPoint pos : CGPoint) {
+    //	}
+    
     // MARK: --Pause
-	func pause() {
-		print("Pausing")
-		isActuallyPaused = true
-		isPaused = true
-		justUnpaused = true
+    func pause() {
+        print("Pausing")
+        isActuallyPaused = true
+        isPaused = true
+        justUnpaused = true
         
         blur.removeFromParent()
         pausebg.removeFromParent()
@@ -568,47 +688,47 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(resumeButton)
         self.addChild(settingsButton)
         self.addChild(quitButton)
-	}
-	
-	func unpause() {
-		print("Unpausing")
-		isActuallyPaused = false
-		isPaused = false
-		justUnpaused = true
+    }
+    
+    func unpause() {
+        print("Unpausing")
+        isActuallyPaused = false
+        isPaused = false
+        justUnpaused = true
         
         blur.removeFromParent()
         pausebg.removeFromParent()
         resumeButton.removeFromParent()
         settingsButton.removeFromParent()
         quitButton.removeFromParent()
-	}
-    
-	// ------------ No Need to Modify Any of the Touches ------------
-	
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-		for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
     
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
-//    }
+    // ------------ No Need to Modify Any of the Touches ------------
     
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-//    }
-//
-//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-//    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+    }
     
-	// ------------ No Need to Modify Any of the Touches ------------
+    //    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    //        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+    //    }
+    
+    //    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    //        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+    //    }
+    //
+    //    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    //        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+    //    }
+    
+    // ------------ No Need to Modify Any of the Touches ------------
     
     // MARK: --Update
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-		if isActuallyPaused {
-			pause()
-		}
+        if isActuallyPaused {
+            pause()
+        }
         
         // Initialize _lastUpdateTime if it has not already been
         if (self.lastUpdateTime == 0) {
@@ -617,14 +737,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Calculate time since last update
         var dt = currentTime - self.lastUpdateTime
-		
-		// Do not update status bars the first frame after unpause
-		// Otherwise health bar drops by a lot (because its based on dt)
-		// Unpaused
-		if justUnpaused {
-			justUnpaused = false
-			dt = 0
-		}
+        
+        // Do not update status bars the first frame after unpause
+        // Otherwise health bar drops by a lot (because its based on dt)
+        // Unpaused
+        if justUnpaused {
+            justUnpaused = false
+            dt = 0
+        }
         
         gameTime += dt
         
@@ -632,19 +752,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             seasonTimer += dt
             
             GameScene.platformSpeed += CGFloat(dt * 2)
-        // Scoring Update
+            // Scoring Update
             score += dt * Double(GameScene.platformSpeed) / 15
             
             // MARK: --Platforms
             // Platform move
             if(platforms[0].position.x + platforms[0].width < 0){
-            // remove platform that out of scene
+                // remove platform that out of scene
                 platforms[0].removeFromParent()
                 platforms.remove(at: 0)
             }
             
             if (platformPositionR < frame.width){
-            // create new platform
+                // create new platform
                 platform = Platform()
                 let num = (season == .Spring || season == .Summer) ? Int(arc4random_uniform(5))  + 1 : 5
                 platform.create(number: num)
@@ -715,9 +835,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             if season == .Fall || season == .Winter {
                 if Int(seasonTimer) >= (5 + 10 * seasonInfo.enemiesSpawned) {
-                     seasonInfo.enemiesSpawned += 1
-                     spawnBugs(Int(arc4random_uniform(season == .Fall ? 4 : 7)))
-                 }
+                    seasonInfo.enemiesSpawned += 1
+                    spawnBugs(Int(arc4random_uniform(season == .Fall ? 4 : 7)))
+                }
             }
             
             if durian.state != DurianState.boost {
@@ -790,7 +910,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if	!raindrops.isEmpty && !raindrops[0].inGame {
                 raindrops.removeFirst()
             }
-        
+            
             
             // MARK: Random Events Generation
             let epsilon = 0.1
@@ -805,11 +925,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         // spawnFactory()
                     }
                     break
-    //			case .Fall, .Winter:
-    //				if 1 < num && num <= 20 && enemies.count == 0 {
-    //                    spawnBugs(Int(arc4random_uniform(4) + ((season == .Winter) ? arc4random_uniform(4) : 0)))
-    //				}
-    //				break
+                    //			case .Fall, .Winter:
+                    //				if 1 < num && num <= 20 && enemies.count == 0 {
+                    //                    spawnBugs(Int(arc4random_uniform(4) + ((season == .Winter) ? arc4random_uniform(4) : 0)))
+                    //				}
+                    //				break
                 default: break
                 }
                 
@@ -839,22 +959,54 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if isRaining {
                 // Update the spawn timer
                 currentRainDropSpawnTime += dt
-
+                
                 if currentRainDropSpawnTime > rainDropSpawnRate {
-                  currentRainDropSpawnTime = 0
-                  spawnRaindrop()
+                    currentRainDropSpawnTime = 0
+                    spawnRaindrop()
+                }
+            }
+            
+            // MARK: -Joystick
+            if UserDefaults.string(forKey: .control) == "Joystick" {
+                if joystick.velocity.y > 50 {
+                    if durian.inAir != 0 {
+                        durian.jump()
+                    }
+                } else if joystick.velocity.y < -50 {
+                    durian.drop()
+                    joystick.resetVelocity()
+                }
+                if joystick.velocity.x > 50 {
+                    if spellCD.isEmpty() {
+                        durian.attack()
+                        spellCD.setFull()
+                        joystick.resetVelocity()
+                    }
+                } else if joystick.velocity.x < -50 {
+                    if durian.state != DurianState.boost {
+                        let tempAudioNode = SKAudioNode(fileNamed: "switch.wav")
+                        tempAudioNode.autoplayLooped = false
+                        self.addChild(tempAudioNode)
+                        tempAudioNode.run(SKAction.sequence([SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .gameVolume)!), duration: 0), SKAction.play(), SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
+                        if durian.state == .normal {
+                            durian.state = .absorb
+                        } else {
+                            durian.state = .normal
+                        }
+                        joystick.resetVelocity()
+                    }
                 }
             }
         }
-
-		// MARK: --DEBUG INFO
-		print("game time:", gameTime)
-//		print("durian state:", durian.state)
-//		print("in air:", durian.inAir)
-		print("Season Timer: ", seasonTimer)
-		
-		print("Speed: ", GameScene.platformSpeed)
-
+        
+        // MARK: --DEBUG INFO
+        print("game time:", gameTime)
+        //		print("durian state:", durian.state)
+        //		print("in air:", durian.inAir)
+        print("Season Timer: ", seasonTimer)
+        
+        print("Speed: ", GameScene.platformSpeed)
+        
         
         self.lastUpdateTime = currentTime
     }
@@ -880,111 +1032,111 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.isUserInteractionEnabled = true
         })
     }
-	
-	// MARK: game over scene
-	func displayGameOver() {
-		
+    
+    // MARK: game over scene
+    func displayGameOver() {
+        
         musicNode.run(SKAction.stop())
-		
-		let gameOverScene = GameOverScene(size: size, score: score, seasons: seasonsPassed, coins: coins)
-		gameOverScene.scaleMode = scaleMode
-		
-		let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-		view?.presentScene(gameOverScene, transition: reveal)
-	}
-	
-	
-	
-	func spawnFertilizer () {
-		guard !fertilizer.inGame else {
-			return
-		}
-		fertilizer = Fertilizer()
-		fertilizer.name = "fertilizer"
-		fertilizer.inGame = true
-		fertilizer.position = CGPoint(x: self.frame.width + 400, y: 700)
-		fertilizer.zPosition = 100
-		self.addChild(fertilizer)
-	}
-	
-	func spawnSupply () {
-		seasonInfo.suppliesSpawned += 1
-		supply = Supply()
-		supply.inGame = true
-		supply.position = CGPoint(x: self.frame.width + 400, y: 700)
-		supply.zPosition = 100
-		supply.run(SKAction.moveTo(x: -200, duration: TimeInterval((self.size.width + 400) / GameScene.platformSpeed)), completion: {
-			self.supply.removeFromParent()
-		})
-		self.addChild(supply)
-		print("supply spawned")
-	}
-	
+        
+        let gameOverScene = GameOverScene(size: size, score: score, seasons: seasonsPassed, coins: coins)
+        gameOverScene.scaleMode = scaleMode
+        
+        let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+        view?.presentScene(gameOverScene, transition: reveal)
+    }
+    
+    
+    
+    func spawnFertilizer () {
+        guard !fertilizer.inGame else {
+            return
+        }
+        fertilizer = Fertilizer()
+        fertilizer.name = "fertilizer"
+        fertilizer.inGame = true
+        fertilizer.position = CGPoint(x: self.frame.width + 400, y: 700)
+        fertilizer.zPosition = 100
+        self.addChild(fertilizer)
+    }
+    
+    func spawnSupply () {
+        seasonInfo.suppliesSpawned += 1
+        supply = Supply()
+        supply.inGame = true
+        supply.position = CGPoint(x: self.frame.width + 400, y: 700)
+        supply.zPosition = 100
+        supply.run(SKAction.moveTo(x: -200, duration: TimeInterval((self.size.width + 400) / GameScene.platformSpeed)), completion: {
+            self.supply.removeFromParent()
+        })
+        self.addChild(supply)
+        print("supply spawned")
+    }
+    
     
     // MARK: --ENEMIES
-	func spawnBugs (_ num: Int) {
-		switch num {
-		case 0:
-			let bug1 = Bug()
-			bug1.position = CGPoint(x: self.frame.width , y: 600)
-			bug1.zPosition = 100
-			enemies.append(bug1)
-			self.addChild(bug1)
-			let bug2 = Bug()
-			bug2.position = CGPoint(x: self.frame.width + 800 + GameScene.platformSpeed / 10, y: 600)
-			bug2.zPosition = 100
-			enemies.append(bug2)
-			self.addChild(bug2)
-			break
-		case 1:
-			let bug1 = Bug()
-			bug1.position = CGPoint(x: self.frame.width + 200, y: 600)
-			bug1.zPosition = 100
-			enemies.append(bug1)
-			self.addChild(bug1)
-			let bug2 = Bug()
-			bug2.position = CGPoint(x: self.frame.width + 400 + GameScene.platformSpeed / 10, y: 600)
-			bug2.zPosition = 100
-			enemies.append(bug2)
-			self.addChild(bug2)
-			break
-		case 2:
-			let bug1 = Bug()
-			bug1.position = CGPoint(x: self.frame.width + 200, y: 600)
-			bug1.zPosition = 100
-			enemies.append(bug1)
-			self.addChild(bug1)
-			let bug2 = Bug()
-			bug2.position = CGPoint(x: self.frame.width + 200, y: 900)
-			bug2.zPosition = 100
-			enemies.append(bug2)
-			self.addChild(bug2)
-			break
-		case 3:
-			let fly = Fly()
-			fly.position = CGPoint(x: self.frame.width + 200, y: 800)
-			fly.zPosition = 100
-			enemies.append(fly)
-			self.addChild(fly)
-		case 4:
-			let waver = Waver()
-			waver.position = CGPoint(x: self.frame.width + 200 + CGFloat(arc4random_uniform(500)), y: 600)
-			waver.zPosition = 100
-			enemies.append(waver)
-			self.addChild(waver)
-		case 5:
-			let dasher = Dasher()
-			dasher.position = CGPoint(x: self.frame.width + 200, y: 300)
-			dasher.zPosition = 100
-			enemies.append(dasher)
-			self.addChild(dasher)
-		case 6:
-			let wall = Wall()
-			wall.position = CGPoint(x: self.frame.width + 200, y: 600)
-			wall.zPosition = 100
-			enemies.append(wall)
-			self.addChild(wall)
-		default:
+    func spawnBugs (_ num: Int) {
+        switch num {
+        case 0:
+            let bug1 = Bug()
+            bug1.position = CGPoint(x: self.frame.width , y: 600)
+            bug1.zPosition = 100
+            enemies.append(bug1)
+            self.addChild(bug1)
+            let bug2 = Bug()
+            bug2.position = CGPoint(x: self.frame.width + 800 + GameScene.platformSpeed / 10, y: 600)
+            bug2.zPosition = 100
+            enemies.append(bug2)
+            self.addChild(bug2)
+            break
+        case 1:
+            let bug1 = Bug()
+            bug1.position = CGPoint(x: self.frame.width + 200, y: 600)
+            bug1.zPosition = 100
+            enemies.append(bug1)
+            self.addChild(bug1)
+            let bug2 = Bug()
+            bug2.position = CGPoint(x: self.frame.width + 400 + GameScene.platformSpeed / 10, y: 600)
+            bug2.zPosition = 100
+            enemies.append(bug2)
+            self.addChild(bug2)
+            break
+        case 2:
+            let bug1 = Bug()
+            bug1.position = CGPoint(x: self.frame.width + 200, y: 600)
+            bug1.zPosition = 100
+            enemies.append(bug1)
+            self.addChild(bug1)
+            let bug2 = Bug()
+            bug2.position = CGPoint(x: self.frame.width + 200, y: 900)
+            bug2.zPosition = 100
+            enemies.append(bug2)
+            self.addChild(bug2)
+            break
+        case 3:
+            let fly = Fly()
+            fly.position = CGPoint(x: self.frame.width + 200, y: 800)
+            fly.zPosition = 100
+            enemies.append(fly)
+            self.addChild(fly)
+        case 4:
+            let waver = Waver()
+            waver.position = CGPoint(x: self.frame.width + 200 + CGFloat(arc4random_uniform(500)), y: 600)
+            waver.zPosition = 100
+            enemies.append(waver)
+            self.addChild(waver)
+        case 5:
+            let dasher = Dasher()
+            dasher.position = CGPoint(x: self.frame.width + 200, y: 300)
+            dasher.zPosition = 100
+            enemies.append(dasher)
+            self.addChild(dasher)
+        case 6:
+            let wall = Wall()
+            wall.position = CGPoint(x: self.frame.width + 200, y: 600)
+            wall.zPosition = 100
+            enemies.append(wall)
+            self.addChild(wall)
+        default:
             let c = arc4random_uniform(3) + 1
             for _ in 1...c {
                 let blocker = Sleeper()
@@ -993,112 +1145,112 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 enemies.append(blocker)
                 self.addChild(blocker)
             }
-		}
-			
-	}
-	
-	func nextSeason() {
-		score += 800
+        }
+        
+    }
+    
+    func nextSeason() {
+        score += 800
         let text = {()->String in switch UserDefaults.string(forKey: .language) {
         case "Chinese": return "季节更替"
         case "English": return "Season Changed"
         case "Thai": return "ฤดูกาลเปลี่ยน"
         default: return "ฤดูกาลเปลี่ยน"
         }}() + " +800"
-		scoreChangeIndicate(text, yPos: frame.height - 500)
-		seasonsPassed += 1
-		if season == .Spring {
-			season = .Summer
-		} else if season == .Summer {
-			season = .Fall
-		} else if season == .Fall {
-			season = .Winter
-		} else if season == .Winter {
-			season = .Spring
-		}
-	}
+        scoreChangeIndicate(text, yPos: frame.height - 500)
+        seasonsPassed += 1
+        if season == .Spring {
+            season = .Summer
+        } else if season == .Summer {
+            season = .Fall
+        } else if season == .Fall {
+            season = .Winter
+        } else if season == .Winter {
+            season = .Spring
+        }
+    }
     
     
     // MARK: --Weather Effects
     func spawnRaindrop() {
-		
-		let raindrop = Rain()
-		raindrop.name = "raindrop"
+        
+        let raindrop = Rain()
+        raindrop.name = "raindrop"
         raindrop.zPosition = 150
-		let xPosition = CGFloat(arc4random_uniform(UInt32(self.frame.width)))
+        let xPosition = CGFloat(arc4random_uniform(UInt32(self.frame.width)))
         let yPosition = size.height + raindrop.size.height
-
+        
         raindrop.position = CGPoint(x: xPosition, y: yPosition)
-		raindrop.run(SKAction.moveTo(y: -100, duration: 0.8), completion: {
-			raindrop.removeFromParent()
-			raindrop.inGame = false
-		})
-		raindrops.append(raindrop)
+        raindrop.run(SKAction.moveTo(y: -100, duration: 0.8), completion: {
+            raindrop.removeFromParent()
+            raindrop.inGame = false
+        })
+        raindrops.append(raindrop)
         self.addChild(raindrop)
-      }
-	
-	func lightening () {
-		let flash = SKSpriteNode(color: UIColor.black, size: self.frame.size)
-		flash.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
-		flash.zPosition = 150
-		self.addChild(flash)
-		flash.alpha = 0
-		flash.run(SKAction.sequence([SKAction.fadeAlpha(to: 0.8, duration: 2),
-									 SKAction.fadeAlpha(to: 0, duration: 0.1),
-									 SKAction.colorize(with: UIColor.white, colorBlendFactor: 0, duration: 0.1),
-									 SKAction.fadeAlpha(to: 1, duration: 0.1),
-									 SKAction.fadeAlpha(to: 0, duration: 0.7)]), completion: {
-										flash.removeFromParent()
-									})
-	}
-	
-	func startStorm () {
-		isStorming = true
-		if season == .Summer {
-				isRaining = true
-		}
-		let thunder = SKAudioNode(fileNamed: "thunder.wav")
-		thunder.autoplayLooped = false
-		thunder.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume)!), duration: 0))
-		let flash = SKSpriteNode(color: UIColor.black, size: self.frame.size)
-		flash.addChild(thunder)
-		thunder.run(SKAction.play())
-		flash.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
-		flash.zPosition = 300
-		self.addChild(flash)
-		flash.alpha = 0
-		flash.run(SKAction.sequence([SKAction.fadeAlpha(to: 0.8, duration: 2),
-									 SKAction.fadeAlpha(to: 0, duration: 0.1),
-									 SKAction.colorize(with: UIColor.white, colorBlendFactor: 0, duration: 0.1),
-									 SKAction.fadeAlpha(to: 1, duration: 0.1),
-									 SKAction.fadeAlpha(to: 0, duration: 0.7),
-									 SKAction.colorize(with: UIColor.black, colorBlendFactor: 0, duration: 0),
-									 SKAction.fadeAlpha(to: 0.5, duration: 2),
-									 SKAction.fadeAlpha(to: 0.8, duration: 2),
-									 SKAction.fadeAlpha(to: 0, duration: 0.1),
-									 SKAction.colorize(with: UIColor.white, colorBlendFactor: 0, duration: 0.1),
-									 SKAction.fadeAlpha(to: 1, duration: 0.1),
-									 SKAction.fadeAlpha(to: 0, duration: 0.7),
-									 SKAction.colorize(with: UIColor.black, colorBlendFactor: 0, duration: 0),
-									 SKAction.fadeAlpha(to: 0.5, duration: 1),
-									 SKAction.fadeAlpha(by: 0, duration: 1)]), completion: {
-										flash.removeFromParent()
-										self.isStorming = false
-										self.isRaining = false
-									})
-	}
-	
-	func scoreChangeIndicate (_ text: String, yPos: CGFloat) {
-		let scoreChangeLabel = SKLabelNode(text: text)
-		scoreChangeLabel.fontName = "Chalkduster"
-		scoreChangeLabel.fontSize = 100
-		scoreChangeLabel.fontColor = UIColor.red
-		scoreChangeLabel.position = CGPoint(x: frame.width / 2, y: yPos)
-		scoreChangeLabel.zPosition = 200
-		self.addChild(scoreChangeLabel)
-		scoreChangeLabel.run(SKAction.moveTo(y: frame.height - 300, duration: 1))
-		scoreChangeLabel.run(SKAction.fadeOut(withDuration: 1), completion: {
-			scoreChangeLabel.removeFromParent()
-		})
-	}
+    }
+    
+    func lightening () {
+        let flash = SKSpriteNode(color: UIColor.black, size: self.frame.size)
+        flash.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
+        flash.zPosition = 150
+        self.addChild(flash)
+        flash.alpha = 0
+        flash.run(SKAction.sequence([SKAction.fadeAlpha(to: 0.8, duration: 2),
+                                     SKAction.fadeAlpha(to: 0, duration: 0.1),
+                                     SKAction.colorize(with: UIColor.white, colorBlendFactor: 0, duration: 0.1),
+                                     SKAction.fadeAlpha(to: 1, duration: 0.1),
+                                     SKAction.fadeAlpha(to: 0, duration: 0.7)]), completion: {
+            flash.removeFromParent()
+        })
+    }
+    
+    func startStorm () {
+        isStorming = true
+        if season == .Summer {
+            isRaining = true
+        }
+        let thunder = SKAudioNode(fileNamed: "thunder.wav")
+        thunder.autoplayLooped = false
+        thunder.run(SKAction.changeVolume(to: Float(UserDefaults.double(forKey: .musicVolume)!), duration: 0))
+        let flash = SKSpriteNode(color: UIColor.black, size: self.frame.size)
+        flash.addChild(thunder)
+        thunder.run(SKAction.play())
+        flash.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
+        flash.zPosition = 300
+        self.addChild(flash)
+        flash.alpha = 0
+        flash.run(SKAction.sequence([SKAction.fadeAlpha(to: 0.8, duration: 2),
+                                     SKAction.fadeAlpha(to: 0, duration: 0.1),
+                                     SKAction.colorize(with: UIColor.white, colorBlendFactor: 0, duration: 0.1),
+                                     SKAction.fadeAlpha(to: 1, duration: 0.1),
+                                     SKAction.fadeAlpha(to: 0, duration: 0.7),
+                                     SKAction.colorize(with: UIColor.black, colorBlendFactor: 0, duration: 0),
+                                     SKAction.fadeAlpha(to: 0.5, duration: 2),
+                                     SKAction.fadeAlpha(to: 0.8, duration: 2),
+                                     SKAction.fadeAlpha(to: 0, duration: 0.1),
+                                     SKAction.colorize(with: UIColor.white, colorBlendFactor: 0, duration: 0.1),
+                                     SKAction.fadeAlpha(to: 1, duration: 0.1),
+                                     SKAction.fadeAlpha(to: 0, duration: 0.7),
+                                     SKAction.colorize(with: UIColor.black, colorBlendFactor: 0, duration: 0),
+                                     SKAction.fadeAlpha(to: 0.5, duration: 1),
+                                     SKAction.fadeAlpha(by: 0, duration: 1)]), completion: {
+            flash.removeFromParent()
+            self.isStorming = false
+            self.isRaining = false
+        })
+    }
+    
+    func scoreChangeIndicate (_ text: String, yPos: CGFloat) {
+        let scoreChangeLabel = SKLabelNode(text: text)
+        scoreChangeLabel.fontName = "Chalkduster"
+        scoreChangeLabel.fontSize = 100
+        scoreChangeLabel.fontColor = UIColor.red
+        scoreChangeLabel.position = CGPoint(x: frame.width / 2, y: yPos)
+        scoreChangeLabel.zPosition = 200
+        self.addChild(scoreChangeLabel)
+        scoreChangeLabel.run(SKAction.moveTo(y: frame.height - 300, duration: 1))
+        scoreChangeLabel.run(SKAction.fadeOut(withDuration: 1), completion: {
+            scoreChangeLabel.removeFromParent()
+        })
+    }
 }
