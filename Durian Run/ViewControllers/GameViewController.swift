@@ -46,7 +46,7 @@ class GameViewController: UIViewController {
             
             view.showsFPS = true
             view.showsNodeCount = false
-            view.showsPhysics = false
+            view.showsPhysics = true
             view.showsDrawCount = false
         }
         

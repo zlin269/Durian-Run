@@ -10,7 +10,7 @@ import SpriteKit
 class Supply: Collectable {
 	
 	init() {
-		super.init(imageNamed: "mushroom_red")
+		super.init(imageNamed: "potion_h")
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

@@ -9,7 +9,7 @@ import SpriteKit
 class Fertilizer: Collectable {
 	
 	init() {
-		super.init(imageNamed: "potion")
+		super.init(imageNamed: "potion_e")
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

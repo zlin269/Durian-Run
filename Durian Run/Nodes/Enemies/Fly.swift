@@ -16,6 +16,7 @@ class Fly: Enemy {
 		self.yScale = 1.5
 		self.run(SKAction.repeatForever(SKAction.animate(with: [SKTexture(imageNamed: "flyMan_fly"), SKTexture(imageNamed: "flyMan_still_fly")], timePerFrame: 0.5)))
 		self.physicsBody?.affectedByGravity = false
+        self.physicsBody?.collisionBitMask = 0
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

@@ -61,7 +61,7 @@ extension UILabel {
         UIView.animate(withDuration: 2, //Time duration you want,
             delay: 0.0,
             options: [.curveEaseInOut, .autoreverse, .repeat],
-            animations: { [weak self] in self?.alpha = 0.0 },
+            animations: { [weak self] in self?.alpha = 0.2 },
             completion: { [weak self] _ in self?.alpha = 1.0 })
     }
 }

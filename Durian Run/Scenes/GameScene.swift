@@ -181,6 +181,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // Any UI node has zPos >= 200
     override func didMove(to view: SKView) {
         
+        nextSeason()
+        nextSeason()
         
         GameScene.sharedInstance = self
         
@@ -345,15 +347,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             dropButton.zPosition = 200
             dropButton.name = "drop"
             self.addChild(dropButton)
-            toggleButton.position = CGPoint(x: self.frame.width - 550, y: 200)
+            toggleButton.position = CGPoint(x: self.size.width - 550, y: 200)
             toggleButton.zPosition = 200
             toggleButton.name = "toggle"
             self.addChild(toggleButton)
-            dashButton.position = CGPoint(x: self.frame.width - 250, y: 450)
+            dashButton.position = CGPoint(x: self.size.width - 250, y: 450)
             dashButton.zPosition = 200
             dashButton.name = "dash"
             self.addChild(dashButton)
-            boostButton.position = CGPoint(x: self.frame.width - 300, y: 200)
+            boostButton.position = CGPoint(x: self.size.width - 300, y: 200)
             boostButton.zPosition = 200
             boostButton.name = "boost"
             self.addChild(boostButton)
@@ -390,15 +392,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             dropButton.zPosition = 200
             dropButton.name = "drop"
             self.addChild(dropButton)
-            toggleButton.position = CGPoint(x: self.frame.width - 550, y: 200)
+            toggleButton.position = CGPoint(x: self.size.width - 550, y: 200)
             toggleButton.zPosition = 200
             toggleButton.name = "toggle"
             self.addChild(toggleButton)
-            dashButton.position = CGPoint(x: self.frame.width - 250, y: 450)
+            dashButton.position = CGPoint(x: self.size.width - 250, y: 450)
             dashButton.zPosition = 200
             dashButton.name = "dash"
             self.addChild(dashButton)
-            boostButton.position = CGPoint(x: self.frame.width - 300, y: 200)
+            boostButton.position = CGPoint(x: self.size.width - 300, y: 200)
             boostButton.zPosition = 200
             boostButton.name = "boost"
             self.addChild(boostButton)
@@ -635,7 +637,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 } else {
                     durian.state = .normal
                 }
-                joystick.resetVelocity()
             }
         case "dash":
             if isPaused || !gameStarted {
@@ -779,7 +780,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     if num == 5 {
                         for i in 1...3 {
                             let fence = Fence(type: arc4random_uniform(4))
-                            fence.position = CGPoint(x: platform.position.x + CGFloat(i) * platform.width/4, y: platform.position.y + platform.height / 2 + fence.frame.height / 2)
+                            fence.position = CGPoint(x: platform.position.x + CGFloat(i) * platform.width/4, y: platform.position.y + platform.height / 2 + fence.size.height / 2)
                             fence.zPosition = 100
                             self.addChild(fence)
                             fences.append(fence)
@@ -789,13 +790,113 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     }
                 } else {
                     // MARK: --level platform
-                    for i in 1...(arc4random_uniform(6)+3) {
-                        let fence = Fence(type: 3)
-                        fence.yScale = 1.5
-                        fence.position = CGPoint(x: platform.position.x + CGFloat(i) * fence.frame.width + 300, y: platform.position.y + platform.height / 2 + fence.frame.height / 2)
-                        fence.zPosition = 100
-                        self.addChild(fence)
-                        fences.append(fence)
+                    switch arc4random_uniform(6) {
+                    case 0:
+                        let fence1 = Fence(type: 4)
+                        fence1.position = CGPoint(x: platform.position.x + platform.width/4, y: platform.position.y + platform.height / 2 + fence1.size.height / 2)
+                        fence1.zPosition = 80
+                        self.addChild(fence1)
+                        fences.append(fence1)
+                        let fence2 = Fence(type: 5)
+                        fence2.position = CGPoint(x: fence1.position.x + fence1.size.width/2 + fence2.size.width/2 + 150, y: platform.position.y + platform.height / 2 + fence2.size.height / 2)
+                        fence2.zPosition = 80
+                        self.addChild(fence2)
+                        fences.append(fence2)
+                        let fence3 = Fence(type: 4)
+                        fence3.position = CGPoint(x: fence2.position.x + fence2.size.width/2 + fence3.size.width/2 + 150, y: platform.position.y + platform.height / 2 + fence3.size.height / 2)
+                        fence3.zPosition = 80
+                        self.addChild(fence3)
+                        fences.append(fence3)
+                    case 1:
+                        let fence1 = Fence(type: 4)
+                        fence1.position = CGPoint(x: platform.position.x + platform.width/4, y: platform.position.y + platform.height / 2 + fence1.size.height / 2)
+                        fence1.zPosition = 80
+                        self.addChild(fence1)
+                        fences.append(fence1)
+                        let fence2 = Fence(type: 5)
+                        fence2.position = CGPoint(x: fence1.position.x + fence1.size.width/2 + fence2.size.width/2 + 50, y: platform.position.y + platform.height / 2 + fence2.size.height / 2)
+                        fence2.zPosition = 80
+                        self.addChild(fence2)
+                        fences.append(fence2)
+                        let fence3 = Fence(type: 5)
+                        fence3.position = CGPoint(x: fence2.position.x + fence2.size.width/2 + fence3.size.width/2 + 300, y: platform.position.y + platform.height / 2 + fence3.size.height / 2)
+                        fence3.zPosition = 80
+                        self.addChild(fence3)
+                        fences.append(fence3)
+                        let fence4 = Fence(type: 4)
+                        fence4.position = CGPoint(x: fence3.position.x + fence3.size.width/2 + fence4.size.width/2 + 50, y: platform.position.y + platform.height / 2 + fence4.size.height / 2)
+                        fence4.zPosition = 80
+                        self.addChild(fence4)
+                        fences.append(fence4)
+                    case 2:
+                        let fence1 = Fence(type: 3)
+                        fence1.position = CGPoint(x: platform.position.x + platform.width/4, y: platform.position.y + platform.height / 2 + fence1.size.height / 2)
+                        fence1.zPosition = 80
+                        self.addChild(fence1)
+                        fences.append(fence1)
+                        let fence2 = Fence(type: 5)
+                        fence2.position = CGPoint(x: platform.position.x + 2 * platform.width/4, y: platform.position.y + platform.height / 2 + fence2.size.height / 2)
+                        fence2.zPosition = 80
+                        self.addChild(fence2)
+                        fences.append(fence2)
+                        let fence3 = Fence(type: 3)
+                        fence3.position = CGPoint(x: platform.position.x + 3 * platform.width/4, y: platform.position.y + platform.height / 2 + fence3.size.height / 2)
+                        fence3.zPosition = 80
+                        self.addChild(fence3)
+                        fences.append(fence3)
+                    case 3:
+                        let fence1 = Fence(type: 6)
+                        fence1.position = CGPoint(x: platform.position.x + platform.width/4, y: platform.position.y + platform.height / 2 + fence1.size.height / 2)
+                        fence1.zPosition = 80
+                        self.addChild(fence1)
+                        fences.append(fence1)
+                        let fence2 = Fence(type: 4)
+                        fence2.position = CGPoint(x: fence1.position.x + fence1.size.width/2 + fence2.size.width/2 + 200, y: platform.position.y + platform.height / 2 + fence2.size.height / 2)
+                        fence2.zPosition = 80
+                        self.addChild(fence2)
+                        fences.append(fence2)
+                        let fence3 = Fence(type: 5)
+                        fence3.position = CGPoint(x: fence2.position.x + fence2.size.width/2 + fence3.size.width/2 + 150, y: platform.position.y + platform.height / 2 + fence3.size.height / 2)
+                        fence3.zPosition = 80
+                        self.addChild(fence3)
+                        fences.append(fence3)
+                    case 4:
+                        let fence1 = Fence(type: 4)
+                        fence1.position = CGPoint(x: platform.position.x + platform.width/4, y: platform.position.y + platform.height / 2 + fence1.size.height / 2)
+                        fence1.zPosition = 80
+                        self.addChild(fence1)
+                        fences.append(fence1)
+                        let fence2 = Fence(type: 4)
+                        fence2.position = CGPoint(x: fence1.position.x + fence1.size.width/2 + fence2.size.width/2 + 150, y: platform.position.y + platform.height / 2 + fence2.size.height / 2)
+                        fence2.zPosition = 80
+                        self.addChild(fence2)
+                        fences.append(fence2)
+                        let fence3 = Fence(type: 4)
+                        fence3.position = CGPoint(x: fence2.position.x, y: fence2.position.y + fence2.size.height/2 + fence3.size.height / 2)
+                        fence3.zPosition = 80
+                        self.addChild(fence3)
+                        fences.append(fence3)
+                        let fence4 = Fence(type: 5)
+                        fence4.position = CGPoint(x: fence2.position.x + fence2.size.width/2 + fence3.size.width/2 + 150, y: platform.position.y + platform.height / 2 + fence4.size.height / 2)
+                        fence4.zPosition = 80
+                        self.addChild(fence4)
+                        fences.append(fence4)
+                    default:
+                        let fence1 = Fence(type: 4)
+                        fence1.position = CGPoint(x: platform.position.x + platform.width/4, y: platform.position.y + platform.height / 2 + fence1.size.height / 2)
+                        fence1.zPosition = 80
+                        self.addChild(fence1)
+                        fences.append(fence1)
+                        let fence2 = Fence(type: 5)
+                        fence2.position = CGPoint(x: platform.position.x + platform.width/4 + fence1.size.width, y: platform.position.y + platform.height / 2 + fence2.size.height / 2)
+                        fence2.zPosition = 80
+                        self.addChild(fence2)
+                        fences.append(fence2)
+                        let fence3 = Fence(type: 6)
+                        fence3.position = CGPoint(x: platform.position.x + platform.width/4 + fence1.size.width + fence2.size.width + fence3.size.width/2, y: platform.position.y + platform.height / 2 + fence3.size.height / 2)
+                        fence3.zPosition = 80
+                        self.addChild(fence3)
+                        fences.append(fence3)
                     }
                 }
             }
@@ -1054,7 +1155,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         fertilizer = Fertilizer()
         fertilizer.name = "fertilizer"
         fertilizer.inGame = true
-        fertilizer.position = CGPoint(x: self.frame.width + 400, y: 700)
+        fertilizer.position = CGPoint(x: self.size.width + 400, y: 700)
         fertilizer.zPosition = 100
         self.addChild(fertilizer)
     }
@@ -1063,7 +1164,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         seasonInfo.suppliesSpawned += 1
         supply = Supply()
         supply.inGame = true
-        supply.position = CGPoint(x: self.frame.width + 400, y: 700)
+        supply.position = CGPoint(x: self.size.width + 400, y: 700)
         supply.zPosition = 100
         supply.run(SKAction.moveTo(x: -200, duration: TimeInterval((self.size.width + 400) / GameScene.platformSpeed)), completion: {
             self.supply.removeFromParent()
@@ -1078,61 +1179,61 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         switch num {
         case 0:
             let bug1 = Bug()
-            bug1.position = CGPoint(x: self.frame.width , y: 600)
+            bug1.position = CGPoint(x: self.size.width , y: 600)
             bug1.zPosition = 100
             enemies.append(bug1)
             self.addChild(bug1)
             let bug2 = Bug()
-            bug2.position = CGPoint(x: self.frame.width + 800 + GameScene.platformSpeed / 10, y: 600)
+            bug2.position = CGPoint(x: self.size.width + 800 + GameScene.platformSpeed / 10, y: 600)
             bug2.zPosition = 100
             enemies.append(bug2)
             self.addChild(bug2)
             break
         case 1:
             let bug1 = Bug()
-            bug1.position = CGPoint(x: self.frame.width + 200, y: 600)
+            bug1.position = CGPoint(x: self.size.width + 200, y: 600)
             bug1.zPosition = 100
             enemies.append(bug1)
             self.addChild(bug1)
             let bug2 = Bug()
-            bug2.position = CGPoint(x: self.frame.width + 400 + GameScene.platformSpeed / 10, y: 600)
+            bug2.position = CGPoint(x: self.size.width + 400 + GameScene.platformSpeed / 10, y: 600)
             bug2.zPosition = 100
             enemies.append(bug2)
             self.addChild(bug2)
             break
         case 2:
             let bug1 = Bug()
-            bug1.position = CGPoint(x: self.frame.width + 200, y: 600)
+            bug1.position = CGPoint(x: self.size.width + 200, y: 600)
             bug1.zPosition = 100
             enemies.append(bug1)
             self.addChild(bug1)
             let bug2 = Bug()
-            bug2.position = CGPoint(x: self.frame.width + 200, y: 900)
+            bug2.position = CGPoint(x: self.size.width + 200, y: 900)
             bug2.zPosition = 100
             enemies.append(bug2)
             self.addChild(bug2)
             break
         case 3:
             let fly = Fly()
-            fly.position = CGPoint(x: self.frame.width + 200, y: 800)
+            fly.position = CGPoint(x: self.size.width + 200, y: 800)
             fly.zPosition = 100
             enemies.append(fly)
             self.addChild(fly)
         case 4:
             let waver = Waver()
-            waver.position = CGPoint(x: self.frame.width + 200 + CGFloat(arc4random_uniform(500)), y: 600)
+            waver.position = CGPoint(x: self.size.width + 200 + CGFloat(arc4random_uniform(500)), y: 600)
             waver.zPosition = 100
             enemies.append(waver)
             self.addChild(waver)
         case 5:
             let dasher = Dasher()
-            dasher.position = CGPoint(x: self.frame.width + 200, y: 300)
+            dasher.position = CGPoint(x: self.size.width + 200, y: 300)
             dasher.zPosition = 100
             enemies.append(dasher)
             self.addChild(dasher)
         case 6:
             let wall = Wall()
-            wall.position = CGPoint(x: self.frame.width + 200, y: 600)
+            wall.position = CGPoint(x: self.size.width + 200, y: 600)
             wall.zPosition = 100
             enemies.append(wall)
             self.addChild(wall)
@@ -1177,7 +1278,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let raindrop = Rain()
         raindrop.name = "raindrop"
         raindrop.zPosition = 150
-        let xPosition = CGFloat(arc4random_uniform(UInt32(self.frame.width)))
+        let xPosition = CGFloat(arc4random_uniform(UInt32(self.size.width)))
         let yPosition = size.height + raindrop.size.height
         
         raindrop.position = CGPoint(x: xPosition, y: yPosition)
