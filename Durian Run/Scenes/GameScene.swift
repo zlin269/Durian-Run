@@ -181,8 +181,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // Any UI node has zPos >= 200
     override func didMove(to view: SKView) {
         
-        nextSeason()
-        nextSeason()
+        //nextSeason()
+        //nextSeason()
         
         GameScene.sharedInstance = self
         
@@ -238,7 +238,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         durian.state = .normal
         durian.position = CGPoint(x: 600, y: 450)
         durian.zPosition = 100
-        durian.size = CGSize(width: durian.size.width * 3, height: durian.size.height * 3)
+        durian.size = CGSize(width: durian.size.width * 3.5, height: durian.size.height * 3.5)
         self.addChild(durian)
         
         platform.name = "platform"

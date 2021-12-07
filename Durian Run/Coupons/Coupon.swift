@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SpriteKit
 
 class Coupon: NSObject, NSCoding {
     
@@ -15,7 +16,7 @@ class Coupon: NSObject, NSCoding {
     
     override init() {
         couponType = "Durian Coupon"
-        expirationDate = Date(timeIntervalSinceNow: 7).timeIntervalSince1970
+        expirationDate = Date(timeIntervalSinceNow: 1000).timeIntervalSince1970
         numberOfUse = 1
     }
     
@@ -69,6 +70,7 @@ class Coupon: NSObject, NSCoding {
     func checkDate() -> Bool {
        return Date(timeIntervalSinceNow: 0).timeIntervalSince1970 <= expirationDate
     }
+    
 }
 
 extension Date
