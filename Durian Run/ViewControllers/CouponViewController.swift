@@ -10,28 +10,28 @@ import UIKit
 import GameKit
 
 class CouponViewController: UIViewController, UIScrollViewDelegate {
-	
+    
     let couponPrice = 10
     
     @IBOutlet weak var scrView: UIScrollView!
-    var arrLabels : [UITextView] = []
+    var arrLabels : [UIView] = []
     var totalDistance: Int = 0
-	var totalCoins: Int = 0
-	var numberOfRuns: Int = 0
-	var screenTapped: Int = 0
-	var distanceLabel: UILabel!
-	var coinLabel: UILabel!
-	var runLabel: UILabel!
-	var tapLabel: UILabel!
+    var totalCoins: Int = 0
+    var numberOfRuns: Int = 0
+    var screenTapped: Int = 0
+    var distanceLabel: UILabel!
+    var coinLabel: UILabel!
+    var runLabel: UILabel!
+    var tapLabel: UILabel!
     var avaiableCoupons: [Coupon]!
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         arrLabels = []
         
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("coupons")
-
+        
         do {
             let data = try Data(contentsOf: path)
             if let coupons = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Coupon] {
@@ -43,12 +43,13 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
                     if c.checkDate() {
                         let label = UITextView()
                         label.isEditable = false
-                        label.backgroundColor = .yellow
+                        label.backgroundColor = .healthColor
                         label.text = c.couponType + "\n"
                         label.text! += "Remaining Usage: \(c.numberOfUse) \n"
                         label.text! += "Expires On: " + c.getExprirationDate()
                         label.textAlignment = .center
-                        label.font = UIFont(name: "ArialMT", size: 30)
+                        label.font = UIFont(name: "ArialMT", size: 40)
+                        label.textColor = .white
                         arrLabels.append(label)
                         i += 1
                     } else {
@@ -61,22 +62,23 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
         } catch {
             print("ERROR: \(error.localizedDescription)")
         }
-		
-		
-		// Do any additional setup after loading the view.
+        
+        
+        // Do any additional setup after loading the view.
         cppointLabel.text = "\(couponPrice - UserDefaults.int(forKey: .cppoint)!)"
         couponLabel.text = "\(avaiableCoupons.count)"
         
         if UserDefaults.int(forKey: .cppoint)! >= couponPrice {
             redeemCoupon();
         }
-	}
+    }
     
     func loadScrollView() {
         scrView.delegate = self
-        scrView.backgroundColor = UIColor.cyan
+        scrView.backgroundColor = UIColor.clear
         scrView.alpha = 0.5
         scrView.isPagingEnabled = true
+        
         scrView.contentSize = CGSize(width: scrView.frame.width * CGFloat(arrLabels.count), height: scrView.frame.height)
         for v in scrView.subviews {
             v.removeFromSuperview()
@@ -85,7 +87,7 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
         for i in (0..<arrLabels.count) {
             
             arrLabels[i].frame = CGRect(x: i * Int(scrView.frame.size.width) , y: 0 , width:
-                                        Int(scrView.frame.size.width) , height: Int(scrView.frame.size.height))
+                                            Int(scrView.frame.size.width) , height: Int(scrView.frame.size.height))
             
             self.scrView.addSubview(arrLabels[i])
         }
@@ -97,26 +99,29 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
             label.font = UIFont(name: "ArialMT", size: 25)
             self.scrView.addSubview(label)
         }
+        
     }
     
     override func viewDidLayoutSubviews() {
         loadScrollView()
+        
+        scrView.setContentOffset(CGPoint(x: 45, y: 0), animated: false)
     }
-	
-	override var shouldAutorotate: Bool {
-		return true
-	}
-	
-	
-	override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-		if UIDevice.current.userInterfaceIdiom == .phone {
-			return .landscape
-		} else {
-			return .landscape
-		}
-	}
-
-	
+    
+    override var shouldAutorotate: Bool {
+        return true
+    }
+    
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return .landscape
+        } else {
+            return .landscape
+        }
+    }
+    
+    
     @IBOutlet weak var cppointLabel: UILabel!
     
     @IBOutlet weak var couponLabel: UILabel!
@@ -147,7 +152,7 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
             alert.addAction(UIAlertAction(title: NSLocalizedString("YES", comment: "Yes action"), style: .default, handler: { [self] _ in
                 let index = Int(round(scrView.contentOffset.x/scrView.frame.size.width))
                 if avaiableCoupons[index].checkDate() {
-                avaiableCoupons[index].numberOfUse -= 1
+                    avaiableCoupons[index].numberOfUse -= 1
                     if avaiableCoupons[index].numberOfUse == 0 {
                         avaiableCoupons.remove(at: index)
                     }
@@ -179,12 +184,14 @@ class CouponViewController: UIViewController, UIScrollViewDelegate {
                 vc.view.layoutIfNeeded()
                 UIView.transition(with: self.view!, duration: 0.3, options: .transitionCrossDissolve, animations:
                                     {
-                                        self.view?.window?.rootViewController = vc
-                                    }, completion: { completed in
-                                    })
+                    self.view?.window?.rootViewController = vc
+                }, completion: { completed in
+                })
             }))
             self.present(alert, animated: true, completion: nil)
         }
     }
+    
+    
 }
 

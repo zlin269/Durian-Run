@@ -71,6 +71,30 @@ class Coupon: NSObject, NSCoding {
        return Date(timeIntervalSinceNow: 0).timeIntervalSince1970 <= expirationDate
     }
     
+    func getView() -> UIView {
+        let view = UIView()
+        let background = UIImageView(image: UIImage(named: "coupon"))
+        view.addSubview(background)
+        
+        
+        let text = UILabel()
+        text.text = couponType
+        text.font = UIFont(name: "bold", size: 30)
+        text.textColor = UIColor.healthColor
+        
+        let expiration = UILabel()
+        expiration.textColor = .white
+        expiration.text = "expires on: " + getExprirationDate()
+        
+        let stack = UIStackView(arrangedSubviews: [text, expiration])
+        stack.axis = .vertical
+        stack.distribution = .fillProportionally
+        view.addSubview(stack)
+        view.bringSubviewToFront(stack)
+        
+        return view
+    }
+    
 }
 
 extension Date
